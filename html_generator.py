@@ -70,7 +70,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             p5_questions_html += f"""
             <div class="question-block">
                 <div class="q-header">
-                    <span class="q-tag">Question {qid}</span>
+                    <span class="q-tag">第 {qid} 題 / 共 {len(part5)} 題</span>
                     <span class="q-time">⏱️ 限時 {sec} 秒</span>
                 </div>
                 <div class="q-text">{html.escape(q['question'])}</div>
@@ -84,7 +84,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                 <!-- 專屬單題防雷按鈕 -->
                 <details class="spoiler-card">
                     <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看 Q{qid} 答案與解析</span>
+                        <span>🛡️ 點擊查看第 {qid} 題答案與解析</span>
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
@@ -108,7 +108,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         </section>
 
         <section class="section-container">
-            <div class="section-title">⚡ Part 5 實戰校正題 (共 {len(part5)} 題)</div>
+            <div class="section-title">⚡ Part 5 實戰校正題 (第 1 ～ {len(part5)} 題，共 {len(part5)} 題)</div>
             {p5_questions_html}
         </section>
         """
@@ -139,15 +139,26 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             </div>
             """
 
-        # Spaced Traps (Each with dedicated per-question spoiler button right below!)
+        # Passages setup
+        passages = p7.get("passages")
+        if not passages:
+            passages = [{
+                "text_type": p7.get("text_type", "Business Document"),
+                "title": p7.get("title", ""),
+                "content": p7.get("content", ""),
+                "questions": p7.get("questions", [])
+            }]
+        total_p7_q = sum(len(p.get("questions", [])) for p in passages)
+        total_aft_q = len(traps) + total_p7_q
+
+        # Spaced Traps (Questions 1 to len(traps))
         traps_q_html = ""
-        for t in traps:
-            tid = t.get("id", 1)
+        for idx, t in enumerate(traps, 1):
             opts = t.get("options", {})
             traps_q_html += f"""
             <div class="question-block">
                 <div class="q-header">
-                    <span class="q-tag">陷阱題 {tid}</span>
+                    <span class="q-tag">第 {idx} 題 / 共 {total_aft_q} 題 (陷阱題)</span>
                     <span class="q-time">🔥 易錯陷阱</span>
                 </div>
                 <div class="q-text">{html.escape(t['question'])}</div>
@@ -161,7 +172,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                 <!-- 專屬陷阱題防雷按鈕 -->
                 <details class="spoiler-card">
                     <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看陷阱題 {tid} 答案與解析</span>
+                        <span>🛡️ 點擊查看第 {idx} 題答案與解析</span>
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
@@ -173,19 +184,8 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             </div>
             """
 
-        # Part 7 Micro-Reading (Support single passage or multiple passages)
-        passages = p7.get("passages")
-        if not passages:
-            passages = [{
-                "text_type": p7.get("text_type", "Business Document"),
-                "title": p7.get("title", ""),
-                "content": p7.get("content", ""),
-                "questions": p7.get("questions", [])
-            }]
-
         p7_sections_html = ""
-        total_p7_q = 0
-        global_q_idx = 1
+        global_q_idx = len(traps) + 1
         for p_idx, pas in enumerate(passages, 1):
             p_body = html.escape(pas.get("content", "")).replace("\n", "<br>")
             p7_doc_label = f" (文本 {p_idx})" if len(passages) > 1 else ""
@@ -197,12 +197,11 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             </div>
             """
             for pq in pas.get("questions", []):
-                total_p7_q += 1
                 opts = pq.get("options", {})
                 p7_sections_html += f"""
                 <div class="question-block">
                     <div class="q-header">
-                        <span class="q-tag">Part 7 題 {global_q_idx}</span>
+                        <span class="q-tag">第 {global_q_idx} 題 / 共 {total_aft_q} 題 (Part 7)</span>
                     </div>
                     <div class="q-text">{html.escape(pq['question'])}</div>
                     <div class="options-grid">
@@ -215,7 +214,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                     <!-- 專屬 Part 7 防漏看雷達按鈕 -->
                     <details class="spoiler-card">
                         <summary class="spoiler-summary">
-                            <span>🔍 點擊查看題 {global_q_idx} 答案與防漏看雷達</span>
+                            <span>🔍 點擊查看第 {global_q_idx} 題答案與防漏看雷達</span>
                             <span class="tap-hint">防雷揭曉</span>
                         </summary>
                         <div class="spoiler-body">
@@ -230,17 +229,17 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         body_content = f"""
         <section class="section-container">
-            <div class="section-title">🧠 早間記憶快篩 ({len(recall)} 題)</div>
+            <div class="section-title">🧠 早間記憶快篩 ({len(recall)} 題語塊速查)</div>
             {recall_html}
         </section>
 
         <section class="section-container">
-            <div class="section-title">🪤 間隔重複錯題變體 ({len(traps)} 題)</div>
+            <div class="section-title">⚡ Part 5/6 易錯陷阱特訓 (第 1 ～ {len(traps)} 題 / 共 {total_aft_q} 題)</div>
             {traps_q_html}
         </section>
 
         <section class="section-container">
-            <div class="section-title">📑 Part 7 細節抓漏微閱讀 ({total_p7_q} 題)</div>
+            <div class="section-title">📑 Part 7 細節抓漏雙篇微閱讀 (第 {len(traps)+1} ～ {total_aft_q} 題 / 共 {total_aft_q} 題)</div>
             {p7_sections_html}
         </section>
         """
