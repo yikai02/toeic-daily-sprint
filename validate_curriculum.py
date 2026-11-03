@@ -18,6 +18,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--min-morning", type=int, default=0)
     ap.add_argument("--min-afternoon", type=int, default=0)
+    ap.add_argument("--min-p7-words", type=int, default=0, help="Minimum word count per Part 7 passage")
     args = ap.parse_args()
     errors = []
     for n in range(1, 26):
@@ -28,6 +29,12 @@ def main():
             errors.append(f"Day {n}: morning {len(morning)} < {args.min_morning}")
         if len(recall) + len(traps) + len(p7) < args.min_afternoon:
             errors.append(f"Day {n}: afternoon {len(recall)+len(traps)+len(p7)} < {args.min_afternoon}")
+        if args.min_p7_words > 0:
+            passages = DAYS_DATA[n]["afternoon"]["part7"].get("passages", [])
+            for p_idx, p in enumerate(passages):
+                wc = len(p["content"].split())
+                if wc < args.min_p7_words:
+                    errors.append(f"Day {n} P{p_idx+1}: word count {wc} < {args.min_p7_words}")
         for q in morning + traps + p7:
             if q["answer"] not in q["options"]:
                 errors.append(f"Day {n}: answer {q['answer']} not in options: {q['question'][:40]}")

@@ -35,7 +35,7 @@ def determine_session(now: datetime = None) -> str:
     return "afternoon" if now.hour >= 12 else "morning"
 
 
-def run_dispatch(session: str = "auto", target_day: int = None) -> bool:
+def run_dispatch(session: str = "auto", target_day: int = None, dry_run: bool = False) -> bool:
     if session == "auto":
         session = determine_session()
     session = session.lower()
@@ -51,6 +51,10 @@ def run_dispatch(session: str = "auto", target_day: int = None) -> bool:
     file_path.write_text(html_content, encoding="utf-8")
     print(f"Generated {file_path.name} ({len(html_content)} bytes), Day {day_num} ({tag})")
 
+    if dry_run:
+        print(f"[DRY RUN] Generated {file_path.name} successfully. Network dispatch skipped.")
+        return True
+
     ok = dispatch_report(str(file_path))
     print(f"{'✅ Sent' if ok else '❌ FAILED to send'} Day {day_num} {tag}")
     return ok
@@ -60,5 +64,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TOEIC Daily Telegram Dispatcher")
     parser.add_argument("--session", choices=["morning", "afternoon", "auto"], default="auto")
     parser.add_argument("--day", type=int, default=None, help="Specific Day (1-25)")
+    parser.add_argument("--dry-run", action="store_true", help="Generate HTML without sending to Telegram")
     args = parser.parse_args()
-    sys.exit(0 if run_dispatch(args.session, args.day) else 1)
+    sys.exit(0 if run_dispatch(args.session, args.day, args.dry_run) else 1)
