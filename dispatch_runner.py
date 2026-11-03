@@ -29,7 +29,16 @@ def calculate_current_day(today: date = None) -> int:
     return max(1, min(TOTAL_DAYS, (today - START_DATE).days + 1))
 
 
-def run_dispatch(session: str, target_day: int = None) -> bool:
+def determine_session(now: datetime = None) -> str:
+    """Returns 'morning' (< 12:00) or 'afternoon' (>= 12:00) in Taipei time."""
+    now = now or datetime.now(TZ)
+    return "afternoon" if now.hour >= 12 else "morning"
+
+
+def run_dispatch(session: str = "auto", target_day: int = None) -> bool:
+    if session == "auto":
+        session = determine_session()
+    session = session.lower()
     day_num = target_day if target_day is not None else calculate_current_day()
     if day_num not in DAYS_DATA:
         print(f"Error: Day {day_num} not found in curriculum data!")
@@ -40,7 +49,7 @@ def run_dispatch(session: str, target_day: int = None) -> bool:
     tag = "Morning" if session == "morning" else "Afternoon"
     file_path = REPORTS_DIR / f"TOEIC_Day{day_num:02d}_{tag}.html"
     file_path.write_text(html_content, encoding="utf-8")
-    print(f"Generated {file_path.name} ({len(html_content)} bytes), Day {day_num}")
+    print(f"Generated {file_path.name} ({len(html_content)} bytes), Day {day_num} ({tag})")
 
     ok = dispatch_report(str(file_path))
     print(f"{'✅ Sent' if ok else '❌ FAILED to send'} Day {day_num} {tag}")
@@ -49,7 +58,7 @@ def run_dispatch(session: str, target_day: int = None) -> bool:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TOEIC Daily Telegram Dispatcher")
-    parser.add_argument("--session", choices=["morning", "afternoon"], default="morning")
+    parser.add_argument("--session", choices=["morning", "afternoon", "auto"], default="auto")
     parser.add_argument("--day", type=int, default=None, help="Specific Day (1-25)")
     args = parser.parse_args()
     sys.exit(0 if run_dispatch(args.session, args.day) else 1)

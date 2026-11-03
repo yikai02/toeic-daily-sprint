@@ -1,32 +1,257 @@
 # -*- coding: utf-8 -*-
 """
-Mobile-Optimized HTML Generator for TOEIC 25-Day Sprint.
-Produces standalone, responsive HTML files engineered specifically for smartphone screens.
+HTML Generator for TOEIC 25-Day Sprint.
+
+Generates standalone, mobile-optimized HTML reports.
 Features:
-- Extra-large readable typography for mobile screens (16px base, 17-19px headings)
-- Per-Question Anti-Spoiler Accordions: Instant answer & explanation button right below each question
-- Clean iOS/Material hybrid card aesthetics
-- High visual hierarchy (short blocks, bold keywords, chip tags)
-- Light/Dark mode support
+- Large readable typography (16px+ body, 24px hero, 19px chunk titles, 17px questions)
+- Interactive Tap-to-Answer with instant visual feedback (Green for correct, Red for wrong)
+- Sticky Live Score & Progress Bar with one-click Expand/Collapse/Reset
+- Clickable 15-second Countdown Timers for Part 5 reflex training
+- Dedicated Anti-spoiler <details> accordions directly beneath each question
+- Part 7 Fine-Print Radar Highlights for conditional clauses and asterisks
+- Consecutive numbering (Questions 1 to 20) across all daily sessions
+- Zero external dependencies, 100% offline-ready, responsive dark mode support
 """
 
 import html
+import re
+
+INTERACTIVE_SCRIPT = """
+    <!-- Interactive Quiz Engine & Live Stats -->
+    <script>
+    let totalAnswered = 0;
+    let correctCount = 0;
+    let wrongOnlyMode = false;
+    const day = document.body.dataset.day || '1';
+    const session = document.body.dataset.session || 'm';
+    const STORAGE_KEY = `toeic_sprint_d${day}_${session}`;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateScoreBar();
+        restoreProgress();
+    });
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.opt-btn');
+        if (!btn) return;
+        const grid = btn.closest('.options-grid');
+        if (!grid || grid.classList.contains('answered')) return;
+
+        grid.classList.add('answered');
+        totalAnswered++;
+
+        const chosen = btn.getAttribute('data-opt');
+        const correct = grid.getAttribute('data-answer');
+        const allBtns = grid.querySelectorAll('.opt-btn');
+        const qBlock = btn.closest('.question-block');
+
+        if (chosen === correct) {
+            btn.classList.add('opt-correct');
+            correctCount++;
+            if (qBlock) qBlock.classList.add('has-correct');
+        } else {
+            btn.classList.add('opt-wrong');
+            if (qBlock) qBlock.classList.add('has-wrong');
+            allBtns.forEach(b => {
+                if (b.getAttribute('data-opt') === correct) {
+                    b.classList.add('opt-correct');
+                }
+            });
+        }
+
+        if (qBlock) {
+            const details = qBlock.querySelector('details.spoiler-card');
+            if (details) details.open = true;
+        }
+
+        updateScoreBar();
+        saveProgress();
+    });
+
+    // When user manually opens spoiler details without clicking an option, show correct answer
+    document.addEventListener('toggle', (e) => {
+        if (e.target.tagName && e.target.tagName.toLowerCase() === 'details' && e.target.open) {
+            const qBlock = e.target.closest('.question-block');
+            if (qBlock) {
+                const grid = qBlock.querySelector('.options-grid');
+                if (grid && !grid.classList.contains('answered')) {
+                    const correct = grid.getAttribute('data-answer');
+                    const correctBtn = grid.querySelector('.opt-btn[data-opt="' + correct + '"]');
+                    if (correctBtn) correctBtn.classList.add('opt-correct');
+                }
+            }
+        }
+    }, true);
+
+    function updateScoreBar() {
+        const progEl = document.getElementById('score-progress');
+        const pctEl = document.getElementById('score-pct');
+        const fillEl = document.getElementById('score-progress-fill');
+        const total = document.querySelectorAll('.question-block').length;
+        if (!progEl || !pctEl || total === 0) return;
+
+        const pct = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+        const fillPct = Math.round((totalAnswered / total) * 100);
+
+        progEl.innerText = `${totalAnswered} / ${total}`;
+        pctEl.innerText = `${pct}% 正確 (${correctCount} 題對)`;
+        if (fillEl) fillEl.style.width = `${fillPct}%`;
+
+        const card = document.getElementById('final-summary-card');
+        if (card && totalAnswered === total && total > 0) {
+            card.style.display = 'block';
+            const fText = document.getElementById('final-score-text');
+            if (fText) fText.innerText = `${correctCount} / ${total} (${pct}%)`;
+        }
+    }
+
+    function toggleAllSpoilers(open) {
+        document.querySelectorAll('details.spoiler-card').forEach(d => d.open = open);
+    }
+
+    function toggleWrongOnly() {
+        const btn = document.getElementById('wrong-filter-btn');
+        const wrongBlocks = document.querySelectorAll('.question-block.has-wrong');
+        const answeredGrids = document.querySelectorAll('.options-grid.answered');
+
+        if (answeredGrids.length === 0) {
+            alert('💡 請先開始作答題目，答錯的題目即可點此一鍵聚焦複習！');
+            return;
+        }
+
+        wrongOnlyMode = !wrongOnlyMode;
+        if (wrongOnlyMode) {
+            if (wrongBlocks.length === 0) {
+                alert('🎉 太厲害了！目前作答題目全部正確，沒有錯題！');
+                wrongOnlyMode = false;
+                return;
+            }
+            if (btn) {
+                btn.classList.add('btn-active');
+                btn.innerText = '📋 全部';
+            }
+            document.querySelectorAll('.question-block').forEach(qb => {
+                if (qb.classList.contains('has-wrong')) {
+                    qb.style.display = 'block';
+                    const d = qb.querySelector('details.spoiler-card');
+                    if (d) d.open = true;
+                } else {
+                    qb.style.display = 'none';
+                }
+            });
+        } else {
+            if (btn) {
+                btn.classList.remove('btn-active');
+                btn.innerText = '❌ 錯題';
+            }
+            document.querySelectorAll('.question-block').forEach(qb => {
+                qb.style.display = 'block';
+            });
+        }
+    }
+
+    function resetQuiz() {
+        if (!confirm('確定要清除本次作答紀錄，重新開始特訓嗎？')) return;
+        totalAnswered = 0;
+        correctCount = 0;
+        wrongOnlyMode = false;
+        const btn = document.getElementById('wrong-filter-btn');
+        if (btn) {
+            btn.classList.remove('btn-active');
+            btn.innerText = '❌ 錯題';
+        }
+        document.querySelectorAll('.question-block').forEach(qb => {
+            qb.style.display = 'block';
+            qb.classList.remove('has-correct', 'has-wrong');
+        });
+        document.querySelectorAll('.options-grid').forEach(g => {
+            g.classList.remove('answered');
+            g.querySelectorAll('.opt-btn').forEach(b => {
+                b.classList.remove('opt-correct', 'opt-wrong');
+            });
+        });
+        document.querySelectorAll('details.spoiler-card').forEach(d => d.open = false);
+        const card = document.getElementById('final-summary-card');
+        if (card) card.style.display = 'none';
+        try { sessionStorage.removeItem(STORAGE_KEY); } catch(e) {}
+        updateScoreBar();
+    }
+
+    function saveProgress() {
+        try {
+            const data = {};
+            document.querySelectorAll('.question-block').forEach(qb => {
+                const qid = qb.id;
+                const grid = qb.querySelector('.options-grid.answered');
+                if (grid) {
+                    const picked = grid.querySelector('.opt-btn.opt-correct, .opt-btn.opt-wrong');
+                    if (picked) data[qid] = picked.getAttribute('data-opt');
+                }
+            });
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch(e) {}
+    }
+
+    function restoreProgress() {
+        try {
+            const raw = sessionStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            if (!data) return;
+            Object.keys(data).forEach(qid => {
+                const qb = document.getElementById(qid);
+                if (!qb) return;
+                const optLetter = data[qid];
+                const btn = qb.querySelector(`.opt-btn[data-opt="${optLetter}"]`);
+                if (btn && !btn.closest('.options-grid').classList.contains('answered')) {
+                    btn.click();
+                }
+            });
+        } catch(e) {}
+    }
+
+    // 15-second countdown timer with urgent visual cues
+    function startTimer(el, seconds) {
+        if (el.dataset.running === 'true') return;
+        el.dataset.running = 'true';
+        el.classList.add('timer-running');
+        let remaining = seconds;
+        el.innerText = `⏱️ ${remaining} 秒...`;
+        const intervalId = setInterval(() => {
+            remaining--;
+            if (remaining > 5) {
+                el.innerText = `⏱️ ${remaining} 秒...`;
+            } else if (remaining > 0) {
+                el.innerText = `🔥 ${remaining} 秒！`;
+                el.classList.add('timer-urgent');
+            } else {
+                clearInterval(intervalId);
+                el.innerText = '⏰ 時間到！秒殺停筆';
+                el.classList.remove('timer-urgent');
+                setTimeout(() => {
+                    el.classList.remove('timer-running');
+                    el.dataset.running = 'false';
+                    el.innerText = `⏱️ 限時 ${seconds} 秒 ▶`;
+                }, 2800);
+            }
+        }, 1000);
+    }
+    </script>
+"""
+
 
 def render_day_html(day_data: dict, session: str = "morning") -> str:
-    """
-    Renders a single day's session ('morning' or 'afternoon') into a responsive HTML document.
-    """
-    day = day_data["day"]
+    day = day_data.get("day", 1)
     date_str = day_data.get("date", "")
     phase = day_data.get("phase", 1)
     phase_name = day_data.get("phase_name", "")
     topic = day_data.get("topic", "")
 
     is_morning = (session.lower() == "morning")
-    session_title = "☀️ 早間晨報 (Morning Boost)" if is_morning else "🌙 盤後特訓 (Afternoon Review & Drill)"
+    session_title = "☀️ 早間晨報 (Morning Boost) — 實戰 20 題" if is_morning else "🌙 盤後特訓 (Afternoon Review & Drill) — 實戰 20 題"
     badge_color = "#2563eb" if is_morning else "#7c3aed"
 
-    # Content generation
     if is_morning:
         m_data = day_data.get("morning", {})
         chunks = m_data.get("chunks", [])
@@ -61,24 +286,25 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         </div>
         """
 
-        # Build Part 5 Questions (With dedicated per-question spoiler button right below each!)
+        # Build Part 5 Questions (With interactive selection & per-question spoiler card)
         p5_questions_html = ""
         for q in part5:
-            qid = q["id"]
+            qid = q.get("id", 1)
             sec = q.get("target_seconds", 15)
             opts = q.get("options", {})
+            ans = q.get("answer", "A")
             p5_questions_html += f"""
-            <div class="question-block">
+            <div class="question-block" id="q-block-{qid}">
                 <div class="q-header">
                     <span class="q-tag">第 {qid} 題 / 共 {len(part5)} 題</span>
-                    <span class="q-time">⏱️ 限時 {sec} 秒</span>
+                    <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ 限時 {sec} 秒 ▶</span>
                 </div>
                 <div class="q-text">{html.escape(q['question'])}</div>
-                <div class="options-grid">
-                    <div class="opt-btn"><b>(A)</b> {html.escape(opts.get('A', ''))}</div>
-                    <div class="opt-btn"><b>(B)</b> {html.escape(opts.get('B', ''))}</div>
-                    <div class="opt-btn"><b>(C)</b> {html.escape(opts.get('C', ''))}</div>
-                    <div class="opt-btn"><b>(D)</b> {html.escape(opts.get('D', ''))}</div>
+                <div class="options-grid" data-answer="{ans}">
+                    <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
                 </div>
 
                 <!-- 專屬單題防雷按鈕 -->
@@ -88,7 +314,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({q['answer']})</b></div>
+                        <div class="ans-badge"><b>正解：({ans})</b></div>
                         <div class="ans-analysis">💡 <b>視覺秒殺詳解：</b>{html.escape(q['analysis'])}</div>
                         <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
                     </div>
@@ -107,10 +333,36 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             {anchor_html}
         </section>
 
+        <!-- Sticky Progress Toolbar -->
+        <div class="sticky-control-bar" id="live-score-bar">
+            <div class="bar-top-row">
+                <div class="score-stats">
+                    <span>📝 作答進度: <b id="score-progress">0 / {len(part5)}</b></span>
+                    <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                </div>
+                <div class="bar-actions">
+                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
+                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
+                    <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                    <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
         <section class="section-container">
             <div class="section-title">⚡ Part 5 實戰校正題 (第 1 ～ {len(part5)} 題，共 {len(part5)} 題)</div>
             {p5_questions_html}
         </section>
+
+        <div id="final-summary-card" class="summary-card" style="display: none;">
+            <div class="summary-icon">🎉</div>
+            <h3 class="summary-title">本日 Part 5 實戰校正完成！</h3>
+            <div class="summary-score">最終成績：<b id="final-score-text">0 / {len(part5)} (0%)</b></div>
+            <div class="summary-tip">保持這個視覺秒殺語感，11/29 金色證書（860+）勢在必得！</div>
+        </div>
         """
 
     else:
@@ -120,7 +372,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         traps = a_data.get("spaced_traps", [])
         p7 = a_data.get("part7", {})
 
-        # Quick Recall (Each with sleek fold)
+        # Quick Recall (Warm-up)
         recall_html = ""
         for idx, r in enumerate(recall, 1):
             recall_html += f"""
@@ -139,7 +391,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             </div>
             """
 
-        # Passages setup
         passages = p7.get("passages")
         if not passages:
             passages = [{
@@ -155,18 +406,19 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         traps_q_html = ""
         for idx, t in enumerate(traps, 1):
             opts = t.get("options", {})
+            ans = t.get("answer", "A")
             traps_q_html += f"""
-            <div class="question-block">
+            <div class="question-block" id="q-block-{idx}">
                 <div class="q-header">
                     <span class="q-tag">第 {idx} 題 / 共 {total_aft_q} 題 (陷阱題)</span>
-                    <span class="q-time">🔥 易錯陷阱</span>
+                    <span class="q-time timer-badge" onclick="startTimer(this, 20)" title="點擊啟動倒數">⏱️ 限時 20 秒 ▶</span>
                 </div>
                 <div class="q-text">{html.escape(t['question'])}</div>
-                <div class="options-grid">
-                    <div class="opt-btn"><b>(A)</b> {html.escape(opts.get('A', ''))}</div>
-                    <div class="opt-btn"><b>(B)</b> {html.escape(opts.get('B', ''))}</div>
-                    <div class="opt-btn"><b>(C)</b> {html.escape(opts.get('C', ''))}</div>
-                    <div class="opt-btn"><b>(D)</b> {html.escape(opts.get('D', ''))}</div>
+                <div class="options-grid" data-answer="{ans}">
+                    <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
+                    <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
                 </div>
 
                 <!-- 專屬陷阱題防雷按鈕 -->
@@ -176,9 +428,10 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({t['answer']})</b></div>
+                        <div class="ans-badge"><b>正解：({ans})</b></div>
                         <div class="trap-point">⚠️ <b>命題陷阱點：</b>{html.escape(t.get('trap_point', ''))}</div>
                         <div class="ans-analysis">💡 <b>解析：</b>{html.escape(t['analysis'])}</div>
+                        <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(t.get('translation', ''))}</div>
                     </div>
                 </details>
             </div>
@@ -187,7 +440,9 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         p7_sections_html = ""
         global_q_idx = len(traps) + 1
         for p_idx, pas in enumerate(passages, 1):
-            p_body = html.escape(pas.get("content", "")).replace("\n", "<br>")
+            raw_body = html.escape(pas.get("content", "")).replace("\n", "<br>")
+            # Emphasize fine-print clauses starting with asterisk (*)
+            p_body = re.sub(r'(\*[^\n<]+)', r'<div class="fine-print-highlight">\1</div>', raw_body)
             p7_doc_label = f" (文本 {p_idx})" if len(passages) > 1 else ""
             p7_sections_html += f"""
             <div class="p7-doc">
@@ -198,17 +453,18 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             """
             for pq in pas.get("questions", []):
                 opts = pq.get("options", {})
+                ans = pq.get("answer", "A")
                 p7_sections_html += f"""
-                <div class="question-block">
+                <div class="question-block" id="q-block-{global_q_idx}">
                     <div class="q-header">
                         <span class="q-tag">第 {global_q_idx} 題 / 共 {total_aft_q} 題 (Part 7)</span>
                     </div>
                     <div class="q-text">{html.escape(pq['question'])}</div>
-                    <div class="options-grid">
-                        <div class="opt-btn"><b>(A)</b> {html.escape(opts.get('A', ''))}</div>
-                        <div class="opt-btn"><b>(B)</b> {html.escape(opts.get('B', ''))}</div>
-                        <div class="opt-btn"><b>(C)</b> {html.escape(opts.get('C', ''))}</div>
-                        <div class="opt-btn"><b>(D)</b> {html.escape(opts.get('D', ''))}</div>
+                    <div class="options-grid" data-answer="{ans}">
+                        <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
+                        <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
+                        <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
+                        <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
                     </div>
 
                     <!-- 專屬 Part 7 防漏看雷達按鈕 -->
@@ -218,7 +474,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                             <span class="tap-hint">防雷揭曉</span>
                         </summary>
                         <div class="spoiler-body">
-                            <div class="ans-badge"><b>正解：({pq['answer']})</b></div>
+                            <div class="ans-badge"><b>正解：({ans})</b></div>
                             <div class="radar-box">{html.escape(pq.get('radar', ''))}</div>
                             <div class="ans-analysis">💡 <b>詳解：</b>{html.escape(pq['analysis'])}</div>
                         </div>
@@ -233,6 +489,25 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             {recall_html}
         </section>
 
+        <!-- Sticky Progress Toolbar -->
+        <div class="sticky-control-bar" id="live-score-bar">
+            <div class="bar-top-row">
+                <div class="score-stats">
+                    <span>📝 盤後進度: <b id="score-progress">0 / {total_aft_q}</b></span>
+                    <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                </div>
+                <div class="bar-actions">
+                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
+                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
+                    <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                    <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                </div>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
         <section class="section-container">
             <div class="section-title">⚡ Part 5/6 易錯陷阱特訓 (第 1 ～ {len(traps)} 題 / 共 {total_aft_q} 題)</div>
             {traps_q_html}
@@ -242,6 +517,13 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             <div class="section-title">📑 Part 7 細節抓漏雙篇微閱讀 (第 {len(traps)+1} ～ {total_aft_q} 題 / 共 {total_aft_q} 題)</div>
             {p7_sections_html}
         </section>
+
+        <div id="final-summary-card" class="summary-card" style="display: none;">
+            <div class="summary-icon">🏆</div>
+            <h3 class="summary-title">本日盤後實戰 20 題特訓全數完成！</h3>
+            <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_aft_q} (0%)</b></div>
+            <div class="summary-tip">防漏看雷達已完全校正，今日核心弱點清零成功！</div>
+        </div>
         """
 
     # Assemble Full Responsive HTML Page
@@ -299,7 +581,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             padding: 22px 18px;
             border-radius: 18px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }}
 
         .hero-top {{
@@ -320,7 +602,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .hero-title {{
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 800;
             letter-spacing: -0.3px;
             margin-bottom: 6px;
@@ -332,13 +614,99 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             line-height: 1.5;
         }}
 
+        /* Sticky Control Toolbar */
+        .sticky-control-bar {{
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
+            border-radius: 14px;
+            padding: 10px 14px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+        }}
+
+        .bar-top-row {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }}
+
+        .score-stats {{
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }}
+
+        .score-pct-badge {{
+            background: rgba(37, 99, 235, 0.14);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 800;
+        }}
+
+        .bar-actions {{
+            display: flex;
+            gap: 6px;
+        }}
+
+        .action-btn-sm {{
+            background: rgba(100, 116, 139, 0.12);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 5px 9px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s ease;
+        }}
+
+        .action-btn-sm:active {{
+            transform: scale(0.94);
+        }}
+
+        .action-btn-sm.btn-active {{
+            background: #dc2626 !important;
+            color: #ffffff !important;
+            border-color: #dc2626 !important;
+        }}
+
+        .progress-track {{
+            width: 100%;
+            height: 6px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 999px;
+            overflow: hidden;
+        }}
+
+        .progress-fill {{
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            border-radius: 999px;
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }}
+
         /* Section Container */
         .section-container {{
             margin-bottom: 26px;
         }}
 
         .section-title {{
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 800;
             margin-bottom: 14px;
             display: flex;
@@ -379,7 +747,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .chunk-meaning {{
-            font-size: 16px;
+            font-size: 16.5px;
             font-weight: 700;
             color: var(--text-main);
             margin-bottom: 8px;
@@ -387,38 +755,37 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         .chunk-scenario {{
             font-size: 15px;
-            color: var(--text-sub);
-            margin-bottom: 8px;
-            background: rgba(148, 163, 184, 0.12);
+            color: var(--text-main);
+            margin-bottom: 6px;
+            line-height: 1.55;
+            background: rgba(148, 163, 184, 0.08);
             padding: 9px 12px;
             border-radius: 8px;
-            line-height: 1.6;
         }}
 
         .chunk-para {{
             font-size: 14px;
             color: var(--text-sub);
+            margin-top: 6px;
         }}
 
         .chunk-para code {{
-            background: rgba(5, 150, 105, 0.15);
-            color: #047857;
-            padding: 3px 8px;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
+            background: rgba(5, 150, 105, 0.12);
+            color: #059669;
+            padding: 3px 6px;
+            border-radius: 4px;
             font-weight: 700;
+            font-size: 13.5px;
         }}
 
         .alert-box {{
-            margin-top: 10px;
-            font-size: 14px;
-            color: #dc2626;
-            background: rgba(220, 38, 38, 0.12);
-            padding: 9px 12px;
+            background: rgba(220, 38, 38, 0.1);
+            color: #b91c1c;
+            padding: 8px 12px;
             border-radius: 8px;
-            font-weight: 600;
-            line-height: 1.5;
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-top: 8px;
         }}
 
         /* Visual Anchor Card */
@@ -427,24 +794,26 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             border: 2px solid var(--accent-gold);
             border-radius: 16px;
             padding: 18px 16px;
-            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.14);
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
         }}
 
         .anchor-badge {{
             display: inline-block;
             background: var(--accent-gold);
             color: #ffffff;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }}
 
         .anchor-title {{
             font-size: 19px;
             font-weight: 800;
+            color: var(--accent-gold);
             margin-bottom: 10px;
         }}
 
@@ -475,6 +844,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             padding: 16px;
             margin-bottom: 16px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: border-color 0.2s ease;
         }}
 
         .q-header {{
@@ -497,6 +867,43 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             font-size: 13px;
             color: var(--text-sub);
             font-weight: 700;
+            background: rgba(100, 116, 139, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            user-select: none;
+        }}
+
+        .timer-badge {{
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }}
+
+        .timer-badge:active {{
+            transform: scale(0.92);
+        }}
+
+        .timer-running {{
+            background: rgba(220, 38, 38, 0.15) !important;
+            color: #dc2626 !important;
+            font-weight: 800;
+            animation: pulse 1s infinite;
+        }}
+
+        .timer-urgent {{
+            background: rgba(220, 38, 38, 0.28) !important;
+            color: #b91c1c !important;
+            font-weight: 800;
+            animation: urgent-pulse 0.5s infinite;
+        }}
+
+        @keyframes pulse {{
+            0%, 100% {{ opacity: 1; }}
+            50% {{ opacity: 0.6; }}
+        }}
+
+        @keyframes urgent-pulse {{
+            0%, 100% {{ transform: scale(1); opacity: 1; }}
+            50% {{ transform: scale(1.04); opacity: 0.7; }}
         }}
 
         .q-text {{
@@ -506,6 +913,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             margin-bottom: 14px;
         }}
 
+        /* Interactive Options Grid */
         .options-grid {{
             display: grid;
             grid-template-columns: 1fr;
@@ -514,13 +922,85 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .opt-btn {{
-            background: rgba(148, 163, 184, 0.1);
-            border: 1px solid var(--border-color);
-            padding: 10px 14px;
-            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            background: rgba(148, 163, 184, 0.08);
+            border: 1.5px solid var(--border-color);
+            padding: 12px 14px;
+            border-radius: 12px;
             font-size: 16px;
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.45;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            outline: none;
+            font-family: inherit;
+            -webkit-appearance: none;
+        }}
+
+        .opt-btn:active {{
+            transform: scale(0.985);
+        }}
+
+        .opt-letter {{
+            font-weight: 800;
+            min-width: 28px;
+            color: var(--text-sub);
+        }}
+
+        .opt-txt {{
+            flex: 1;
+        }}
+
+        /* Correct / Wrong Tap Feedback */
+        .opt-btn.opt-correct {{
+            background: #ecfdf5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+            font-weight: 700;
+        }}
+
+        .opt-btn.opt-correct::after {{
+            content: "✓ 正確";
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 800;
+            color: #059669;
+            padding-left: 8px;
+        }}
+
+        .opt-btn.opt-wrong {{
+            background: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+            font-weight: 700;
+        }}
+
+        .opt-btn.opt-wrong::after {{
+            content: "✗ 錯誤";
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 800;
+            color: #dc2626;
+            padding-left: 8px;
+        }}
+
+        @media (prefers-color-scheme: dark) {{
+            .opt-btn {{
+                background: rgba(255, 255, 255, 0.04);
+            }}
+            .opt-btn.opt-correct {{
+                background: #064e3b !important;
+                border-color: #10b981 !important;
+                color: #a7f3d0 !important;
+            }}
+            .opt-btn.opt-wrong {{
+                background: #7f1d1d !important;
+                border-color: #ef4444 !important;
+                color: #fecaca !important;
+            }}
         }}
 
         /* Per-Question Anti-Spoiler Accordion */
@@ -548,14 +1028,14 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             font-size: 12px;
             background: #64748b;
             color: #ffffff;
-            padding: 3px 7px;
-            border-radius: 6px;
-            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 700;
         }}
 
         .spoiler-body {{
             padding: 14px;
-            border-top: 1px solid var(--border-color);
+            border-top: 1px dashed var(--border-color);
             background: var(--card-bg);
         }}
 
@@ -632,6 +1112,16 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             white-space: normal;
         }}
 
+        .fine-print-highlight {{
+            background: rgba(217, 119, 6, 0.12);
+            border-left: 3px solid var(--accent-gold);
+            padding: 6px 10px;
+            margin: 8px 0;
+            border-radius: 0 6px 6px 0;
+            font-weight: 600;
+            color: var(--text-main);
+        }}
+
         /* Quick Recall */
         .recall-item {{
             background: var(--card-bg);
@@ -654,6 +1144,40 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             margin-bottom: 6px;
         }}
 
+        /* Summary Celebration Card */
+        .summary-card {{
+            background: linear-gradient(135deg, #059669, #0d9488);
+            color: #ffffff;
+            padding: 22px 18px;
+            border-radius: 16px;
+            margin: 24px 0;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25);
+        }}
+
+        .summary-icon {{
+            font-size: 32px;
+            margin-bottom: 6px;
+        }}
+
+        .summary-title {{
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }}
+
+        .summary-score {{
+            font-size: 16px;
+            opacity: 0.95;
+            margin-bottom: 10px;
+        }}
+
+        .summary-tip {{
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }}
+
         /* Footer */
         .footer {{
             text-align: center;
@@ -664,9 +1188,22 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             border-top: 1px solid var(--border-color);
             line-height: 1.6;
         }}
+
+        @media print {{
+            .sticky-control-bar, .timer-badge, .tap-hint, .bar-actions {{
+                display: none !important;
+            }}
+            details.spoiler-card {{
+                border: 1px solid #cbd5e1 !important;
+                display: block !important;
+            }}
+            .spoiler-body {{
+                display: block !important;
+            }}
+        }}
     </style>
 </head>
-<body>
+<body data-day="{day}" data-session="{session.lower()}">
     <header class="hero-banner">
         <div class="hero-top">
             <span class="phase-badge">Phase {phase} · {phase_name}</span>
@@ -682,7 +1219,5 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         多益 860+ 金色證書特訓 · 考前 25 天專屬 AI 衝刺教練<br>
         持之以恆，語感秒殺，金色必達！
     </footer>
-</body>
-</html>
 """
-    return full_html
+    return full_html + INTERACTIVE_SCRIPT + "\n</body>\n</html>\n"
