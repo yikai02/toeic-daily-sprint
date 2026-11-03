@@ -1,0 +1,53 @@
+name: 多益 25 天金色證書每日雲端推播 (08:00 & 14:00)
+
+on:
+  schedule:
+    # 早上八點 (台北時間 08:00 = UTC 00:00)
+    - cron: '0 0 * * *'
+    # 下午兩點 (台北時間 14:00 = UTC 06:00)
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      session:
+        description: '推播梯次：morning 或 afternoon'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TZ: Asia/Taipei
+      PYTHONUTF8: '1'
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - name: 下載專案程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python 環境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安裝依賴
+        run: pip install requests
+
+      - name: 判定推播梯次並發送純檔案
+        run: |
+          INPUT_SESSION="${{ github.event.inputs.session }}"
+          if [ -n "$INPUT_SESSION" ]; then
+            SESSION="$INPUT_SESSION"
+          else
+            HOUR=$(TZ='Asia/Taipei' date '+%H')
+            if [ "$HOUR" -ge 12 ]; then
+              SESSION="afternoon"
+            else
+              SESSION="morning"
+            fi
+          fi
+          python3 dispatch_runner.py --session "$SESSION"
