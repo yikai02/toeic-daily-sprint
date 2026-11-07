@@ -20,9 +20,11 @@ from html_generator import render_day_html
 from master_curriculum import DAYS_DATA
 from telegram_sender import (
     check_already_sent_today,
+    claim_session_today,
     dispatch_report,
     get_credentials,
     mark_session_sent_today,
+    release_session_claim,
 )
 
 BASE_DIR = Path(__file__).parent
@@ -119,17 +121,29 @@ def run_dispatch(
     force_env = os.environ.get("FORCE_RESEND", "").lower() in ("1", "true", "yes")
     is_forced = force or force_env or (target_day is not None)
 
+    claimed = False
     if not is_forced and token:
         if check_already_sent_today(token, today_str, session):
             print(
                 f"⏭️ [防重複推播保護] 今日 ({today_str}) Day {day_num} {zh_label} "
-                f"已於稍早成功推播至 Telegram，本次執行自動略過。"
+                f"已於稍早成功推播至 Telegram 或正在推播中，本次執行自動略過。"
             )
             return True
+        if not claim_session_today(token, today_str, session):
+            print(
+                f"⏭️ [分散式鎖保護] 今日 ({today_str}) Day {day_num} {zh_label} "
+                f"已有另一個節點搶先進入發送流程，本次執行自動略過避免重複。"
+            )
+            return True
+        claimed = True
 
     ok = dispatch_report(str(file_path))
-    if ok and token and not (target_day is not None and not force):
-        mark_session_sent_today(token, today_str, session)
+    if ok:
+        if token and not (target_day is not None and not force):
+            mark_session_sent_today(token, today_str, session)
+    else:
+        if claimed and token:
+            release_session_claim(token, today_str, session)
     print(f"{'✅ Sent' if ok else '❌ FAILED to send'} Day {day_num} {tag} ({zh_label})")
     return ok
 

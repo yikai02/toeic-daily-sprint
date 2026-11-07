@@ -22,6 +22,7 @@ import copy
 import json
 import math
 from pathlib import Path
+import re
 from typing import Dict, List, Tuple
 
 from master_curriculum import DAYS_DATA
@@ -415,9 +416,10 @@ def select_part4_cloze_passages(
             cq["id"] = q_cursor
             cq["blank_num"] = b_idx
             # Replace ___[b_idx]___ in passage content with highlighted marker [第 q_cursor 題 / 空格 b_idx]
-            pas["content"] = pas["content"].replace(
-                f"___[{b_idx}]___",
+            pas["content"] = re.sub(
+                rf"___\s*\[{b_idx}\]\s*___",
                 f"【第 {q_cursor} 題 (空格 {b_idx})】",
+                pas["content"],
             )
             q_cursor += 1
 

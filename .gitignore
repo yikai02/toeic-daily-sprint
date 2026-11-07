@@ -7,3 +7,4 @@ reports/*.html
 scratch/
 reports/manifests/
 .remote_agent.lock
+user_weakness_profile.json

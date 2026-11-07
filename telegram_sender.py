@@ -46,6 +46,26 @@ def _session_tag_prefix(session: str, today_str: str) -> str:
     return f"{prefix}:{today_str}"
 
 
+def _claim_tag_prefix(session: str, today_str: str) -> str:
+    prefix = "MORNING_CLAIM" if session.lower() == "morning" else "AFTERNOON_CLAIM"
+    return f"{prefix}:{today_str}"
+
+
+def is_claim_valid(tag: str, max_age_seconds: int = 180) -> bool:
+    """Checks if a CLAIM tag was set within max_age_seconds."""
+    try:
+        parts = tag.split()
+        if len(parts) >= 2:
+            claim_time_str = parts[1]
+            now = datetime.now(TZ)
+            claim_dt = datetime.strptime(f"{now.strftime('%Y-%m-%d')} {claim_time_str}", "%Y-%m-%d %H:%M:%S").replace(tzinfo=TZ)
+            diff = (now - claim_dt).total_seconds()
+            return 0 <= diff <= max_age_seconds
+    except Exception:
+        pass
+    return False
+
+
 def get_bot_short_description(token: str) -> str:
     """Fetches the bot's cloud short_description (silent metadata, zero chat messages)."""
     if not token:
@@ -63,16 +83,79 @@ def get_bot_short_description(token: str) -> str:
 
 
 def check_already_sent_today(token: str, today_str: str, session: str) -> bool:
-    """Checks Telegram Bot cloud state to see if today's morning/afternoon practice was already sent."""
+    """Checks Telegram Bot cloud state to see if today's practice was sent or is currently being dispatched."""
     if not token:
         return False
     desc = get_bot_short_description(token)
-    tag_prefix = _session_tag_prefix(session, today_str)
-    return tag_prefix in desc
+    sent_prefix = _session_tag_prefix(session, today_str)
+    if sent_prefix in desc:
+        return True
+    claim_prefix = _claim_tag_prefix(session, today_str)
+    for part in desc.split("|"):
+        part = part.strip()
+        if part.startswith(claim_prefix) and is_claim_valid(part, max_age_seconds=180):
+            return True
+    return False
+
+
+def claim_session_today(token: str, today_str: str, session: str) -> bool:
+    """Pre-claims the dispatch lock for today's session to prevent concurrent duplicate uploads."""
+    if not token:
+        return True
+    cur_desc = get_bot_short_description(token)
+    sent_prefix = _session_tag_prefix(session, today_str)
+    if sent_prefix in cur_desc:
+        return False
+    claim_prefix = _claim_tag_prefix(session, today_str)
+    for part in cur_desc.split("|"):
+        part = part.strip()
+        if part.startswith(claim_prefix) and is_claim_valid(part, max_age_seconds=180):
+            return False
+
+    other_session = "afternoon" if session.lower() == "morning" else "morning"
+    other_sent_prefix = _session_tag_prefix(other_session, today_str)
+    preserved_other = ""
+    for part in cur_desc.split("|"):
+        part = part.strip()
+        if part.startswith(other_sent_prefix):
+            preserved_other = part
+
+    now_hm = datetime.now(TZ).strftime("%H:%M:%S")
+    this_claim = f"{claim_prefix} {now_hm}"
+    if session.lower() == "morning":
+        new_desc = f"{this_claim} | {preserved_other}" if preserved_other else this_claim
+    else:
+        new_desc = f"{preserved_other} | {this_claim}" if preserved_other else this_claim
+
+    url = f"https://api.telegram.org/bot{token}/setMyShortDescription"
+    try:
+        resp = requests.post(url, json={"short_description": new_desc[:120]}, timeout=8)
+        if resp.status_code == 200 and resp.json().get("ok"):
+            print(f"🔒 Pre-claimed dispatch lock: {this_claim}")
+            return True
+    except Exception as e:
+        print(f"Warning: claim_session_today failed: {_redact(str(e), token)}")
+    return True
+
+
+def release_session_claim(token: str, today_str: str, session: str) -> bool:
+    """Releases the dispatch claim if upload fails so retries are allowed."""
+    if not token:
+        return False
+    cur_desc = get_bot_short_description(token)
+    claim_prefix = _claim_tag_prefix(session, today_str)
+    parts = [p.strip() for p in cur_desc.split("|") if not p.strip().startswith(claim_prefix)]
+    new_desc = " | ".join(parts)
+    url = f"https://api.telegram.org/bot{token}/setMyShortDescription"
+    try:
+        requests.post(url, json={"short_description": new_desc[:120]}, timeout=8)
+        return True
+    except Exception:
+        return False
 
 
 def mark_session_sent_today(token: str, today_str: str, session: str) -> bool:
-    """Records in Telegram Bot cloud metadata that today's session has been dispatched."""
+    """Records in Telegram Bot cloud metadata that today's session has been successfully dispatched."""
     if not token:
         return False
     cur_desc = get_bot_short_description(token)

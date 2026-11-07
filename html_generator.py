@@ -309,8 +309,8 @@ INTERACTIVE_SCRIPT = """
         const wrongIds = [];
         const wrongWords = [];
         wrongBlocks.forEach(qb => {
-            const m = (qb.id || '').match(/q-block-(\\d+)/);
-            if (m) wrongIds.push(m[1]);
+            const qnum = (qb.id || '').replace(/^q-block-/, '').trim();
+            if (qnum) wrongIds.push(qnum);
             const w = (qb.getAttribute('data-word') || '').trim();
             if (w) wrongWords.push(w);
         });
@@ -329,7 +329,7 @@ INTERACTIVE_SCRIPT = """
         } else {
             const manual = prompt('目前頁面上尚無答錯標記，您可直接輸入想回報的題號（1~43，如 3, 18, 29, 40）或想加練的主題（如 段落填空、假設語氣）：', '3, 18, 29');
             if (!manual) return;
-            cmdText = /^[0-9,\\s，、]+$/.test(manual)
+            cmdText = /^[0-9, ，、\\s]+$/.test(manual)
                 ? `錯題回報 Day${dNum} ${sessLabel}: ${manual}`
                 : `加練 ${manual}`;
         }
@@ -1316,6 +1316,35 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             border-radius: 6px;
             cursor: pointer;
             user-select: none;
+            transition: all 0.15s ease;
+        }}
+
+        .timer-badge:active {{
+            transform: scale(0.92);
+        }}
+
+        .timer-running {{
+            background: rgba(220, 38, 38, 0.15) !important;
+            color: #dc2626 !important;
+            font-weight: 800;
+            animation: pulse 1s infinite;
+        }}
+
+        .timer-urgent {{
+            background: rgba(220, 38, 38, 0.28) !important;
+            color: #b91c1c !important;
+            font-weight: 800;
+            animation: urgent-pulse 0.5s infinite;
+        }}
+
+        @keyframes pulse {{
+            0%, 100% {{ opacity: 1; }}
+            50% {{ opacity: 0.6; }}
+        }}
+
+        @keyframes urgent-pulse {{
+            0%, 100% {{ transform: scale(1); opacity: 1; }}
+            50% {{ transform: scale(1.04); opacity: 0.7; }}
         }}
 
         .q-text {{
