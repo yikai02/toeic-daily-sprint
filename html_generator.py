@@ -237,6 +237,45 @@ INTERACTIVE_SCRIPT = """
             }
         }, 1000);
     }
+
+    function sendWrongToRemoteAgent() {
+        const wrongBlocks = document.querySelectorAll('.question-block.has-wrong');
+        const wrongIds = [];
+        wrongBlocks.forEach(qb => {
+            const m = (qb.id || '').match(/q-block-(\\d+)/);
+            if (m) wrongIds.push(m[1]);
+        });
+        const dNum = String(day).padStart(2, '0');
+        const sessLabel = (session === 'morning' || session === 'm') ? 'morning' : 'afternoon';
+        let cmdText = '';
+        if (wrongIds.length > 0) {
+            cmdText = `錯題回報 Day${dNum} ${sessLabel}: ${wrongIds.join(', ')}`;
+        } else {
+            const manual = prompt('目前頁面上尚無答錯標記，您可直接輸入想回報的題號（如 3, 8, 15）或想加練的主題（如 假設語氣）：', '3, 8, 15');
+            if (!manual) return;
+            cmdText = /^[0-9,\\s，、]+$/.test(manual)
+                ? `錯題回報 Day${dNum} ${sessLabel}: ${manual}`
+                : `加練 ${manual}`;
+        }
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(cmdText);
+            }
+        } catch(e) {}
+        const tgUrl = `https://t.me/Toeic_practice_bot?text=${encodeURIComponent(cmdText)}`;
+        window.open(tgUrl, '_blank');
+    }
+
+    function requestAgentTopicDrill(topic) {
+        const cmdText = `加練 ${topic}`;
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(cmdText);
+            }
+        } catch(e) {}
+        const tgUrl = `https://t.me/Toeic_practice_bot?text=${encodeURIComponent(cmdText)}`;
+        window.open(tgUrl, '_blank');
+    }
     </script>
 """
 
@@ -378,6 +417,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                     <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
                     <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
                     <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                    <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
                     <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
                 </div>
             </div>
@@ -396,7 +436,27 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             <h3 class="summary-title">本日上午練習（實戰 20 題）完成！</h3>
             <div class="summary-score">最終成績：<b id="final-score-text">0 / {len(part5)} (0%)</b></div>
             <div class="summary-tip">保持這個視覺秒殺語感，11/29 金色證書（860+）勢在必得！</div>
+            <div style="margin-top: 12px;">
+                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
+            </div>
         </div>
+
+        <section class="section-container">
+            <div class="section-title">🤖 遠端 Agent 智慧弱點追蹤與隨選加練</div>
+            <div class="chunk-card" style="border-left: 4px solid #0f766e;">
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">📲 與 @Toeic_practice_bot 遠端 Agent 即時連動</div>
+                <div style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 12px;">
+                    作答完畢後點擊下方按鈕，即可將本場答錯題號傳送給遠端 Agent，立即為您動態生成<b>「同觀念不同句型」的靶向弱點加練 HTML 卷</b>，並自動納入下午練習追蹤：
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:7px 12px;" onclick="sendWrongToRemoteAgent()">🤖 回傳本場錯題給遠端 Agent</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('分詞構句與減化子句')">⚡ 加練：分詞與減化子句</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('假設語氣與倒裝')">⚡ 加練：假設語氣與倒裝</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('連接詞與介系詞')">⚡ 加練：連介詞秒殺</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('高頻詞性槽位')">⚡ 加練：詞性槽位辨析</button>
+                </div>
+            </div>
+        </section>
         """
 
     else:
@@ -538,6 +598,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                     <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
                     <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
                     <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                    <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
                     <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
                 </div>
             </div>
@@ -561,7 +622,27 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             <h3 class="summary-title">本日下午練習（實戰 20 題）全數完成！</h3>
             <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_aft_q} (0%)</b></div>
             <div class="summary-tip">防漏看雷達已完全校正，今日核心弱點清零成功！</div>
+            <div style="margin-top: 12px;">
+                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
+            </div>
         </div>
+
+        <section class="section-container">
+            <div class="section-title">🤖 遠端 Agent 智慧弱點追蹤與隨選加練</div>
+            <div class="chunk-card" style="border-left: 4px solid #0f766e;">
+                <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">📲 與 @Toeic_practice_bot 遠端 Agent 即時連動</div>
+                <div style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 12px;">
+                    作答完畢後點擊下方按鈕，即可將本場答錯題號傳送給遠端 Agent，立即為您動態生成<b>「同觀念不同句型」的靶向弱點加練 HTML 卷</b>：
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:7px 12px;" onclick="sendWrongToRemoteAgent()">🤖 回傳本場錯題給遠端 Agent</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('分詞構句與減化子句')">⚡ 加練：分詞與減化子句</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('假設語氣與倒裝')">⚡ 加練：假設語氣與倒裝</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('連接詞與介系詞')">⚡ 加練：連介詞秒殺</button>
+                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('高頻詞性槽位')">⚡ 加練：詞性槽位辨析</button>
+                </div>
+            </div>
+        </section>
         """
 
     # Assemble Full Responsive HTML Page

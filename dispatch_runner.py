@@ -103,6 +103,14 @@ def run_dispatch(
         print(f"[DRY RUN] Generated {file_path.name} successfully. Network dispatch skipped.")
         return True
 
+    try:
+        from remote_agent_coach import process_pending_telegram_updates
+        processed_msgs = process_pending_telegram_updates(send_remedial_file=True, poll_timeout=0)
+        if processed_msgs > 0:
+            print(f"🤖 [遠端 Agent] 已同步並回應 {processed_msgs} 則 Telegram 弱點／加練指令。")
+    except Exception as exc:
+        print(f"[遠端 Agent 同步略過] {exc}")
+
     token, _ = get_credentials()
     force_env = os.environ.get("FORCE_RESEND", "").lower() in ("1", "true", "yes")
     is_forced = force or force_env or (target_day is not None)
