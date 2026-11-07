@@ -307,15 +307,25 @@ INTERACTIVE_SCRIPT = """
     function sendWrongToRemoteAgent() {
         const wrongBlocks = document.querySelectorAll('.question-block.has-wrong');
         const wrongIds = [];
+        const wrongWords = [];
         wrongBlocks.forEach(qb => {
             const m = (qb.id || '').match(/q-block-(\\d+)/);
             if (m) wrongIds.push(m[1]);
+            const w = (qb.getAttribute('data-word') || '').trim();
+            if (w) wrongWords.push(w);
         });
         const dNum = String(day).padStart(2, '0');
         const sessLabel = (session === 'morning' || session === 'm') ? 'morning' : 'afternoon';
         let cmdText = '';
-        if (wrongIds.length > 0) {
-            cmdText = `錯題回報 Day${dNum} ${sessLabel}: ${wrongIds.join(', ')}`;
+        if (session === 'agent') {
+            // Agent drill pages: question numbers are local to this page, so report by answer word
+            if (wrongWords.length === 0) {
+                alert('目前沒有答錯的題目可回報。');
+                return;
+            }
+            cmdText = `錯題字彙 ${wrongWords.join(' ;; ')}`;
+        } else if (wrongIds.length > 0) {
+            cmdText = `錯題回報 Day${dNum} ${sessLabel}: ${wrongIds.join(', ')} || ${wrongWords.join(' ;; ')}`;
         } else {
             const manual = prompt('目前頁面上尚無答錯標記，您可直接輸入想回報的題號（1~43，如 3, 18, 29, 40）或想加練的主題（如 段落填空、假設語氣）：', '3, 18, 29');
             if (!manual) return;
@@ -538,7 +548,7 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     """
 
 
-def render_day_html(day_data: dict, session: str = "morning") -> str:
+def render_day_html(day_data: dict, session: str = "morning", payload: dict = None) -> str:
     day = int(day_data.get("day", 1))
     date_str = day_data.get("date", "")
     phase = day_data.get("phase", 1)
@@ -546,7 +556,8 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
     topic = day_data.get("topic", "")
 
     is_morning = session.lower().startswith("m")
-    payload = build_session_payload(day, "morning" if is_morning else "afternoon")
+    if payload is None:
+        payload = build_session_payload(day, "morning" if is_morning else "afternoon")
 
     part1_vocab = payload["part1_vocab"]
     part2_grammar = payload["part2_grammar"]

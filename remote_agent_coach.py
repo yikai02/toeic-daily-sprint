@@ -468,6 +468,143 @@ def render_agent_custom_html(
 </html>"""
 
 
+_POOL_CACHE: List[dict] = []
+
+
+def _question_pool() -> List[dict]:
+    """All known questions (860 bank + cloze bank + 25-day curriculum), built once."""
+    if not _POOL_CACHE:
+        _POOL_CACHE.extend(QUESTIONS_860_BANK)
+        for pas in CLOZE_PASSAGES_BANK:
+            _POOL_CACHE.extend(pas.get("questions", []))
+        for d in range(1, 26):
+            _POOL_CACHE.extend(DAYS_DATA[d]["morning"]["part5"])
+            _POOL_CACHE.extend(DAYS_DATA[d]["afternoon"]["spaced_traps"])
+    return _POOL_CACHE
+
+
+def find_question_by_answer_word(word: str, exclude_stems: set = frozenset()) -> Optional[dict]:
+    """Locate a question whose correct answer equals `word` (normalised)."""
+    nw = normalize_headword(word)
+    for q in _question_pool():
+        if q.get("question", "").strip() in exclude_stems:
+            continue
+        if normalize_headword(q.get("options", {}).get(q.get("answer", ""), "")) == nw:
+            return copy.deepcopy(q)
+    return None
+
+
+def register_miss(profile: dict, question: Optional[dict], word: str, label) -> dict:
+    """
+    Apply one miss to the persistent profile (error counter, SM-2 easiness factor, category and
+    rule counters) and return a diagnostic note for the report card.
+    """
+    profile.setdefault("weak_words", {})
+    profile.setdefault("weak_categories", {})
+    profile.setdefault("weak_rules", {})
+    profile.setdefault("word_srs", {})
+
+    norm_w = normalize_headword(word)
+    q = question or {}
+    cat = classify_question_category(q) if q else "860+ 高階商務單字與易混淆搭配"
+    r_ref = q.get("rule_ref") or q.get("trap_point") or cat
+
+    new_err = profile["weak_words"].get(norm_w, 0) + 1
+    profile["weak_words"][norm_w] = new_err
+    profile["weak_categories"][cat] = profile["weak_categories"].get(cat, 0) + 1
+    profile["weak_rules"][r_ref] = profile["weak_rules"].get(r_ref, 0) + 1
+
+    prev = profile["word_srs"].get(norm_w, {"ef": 2.5})
+    new_ef = round(max(1.3, float(prev.get("ef", 2.5)) - 0.3), 2)
+    profile["word_srs"][norm_w] = {
+        "ef": new_ef,
+        "errors": new_err,
+        "last_missed": str(get_taipei_today()),
+    }
+    return {
+        "orig_id": label,
+        "category": cat,
+        "rule_ref": r_ref,
+        "answer": q.get("answer", "-"),
+        "correct_word": word,
+        "err_count": new_err,
+        "ef": new_ef,
+        "summary": (q.get("analysis") or "此字彙已列入個人弱點庫，後續每日練習將提高其出現頻率。")[:140],
+    }
+
+
+def _handle_wrong_report(
+    profile: dict,
+    day_num: int,
+    session: str,
+    q_nums: List[int],
+    words: List[str],
+    bot_token: str,
+    chat_id: str,
+    send_remedial_file: bool,
+) -> Optional[Path]:
+    """Resolve reported misses (by number and/or answer word), update the SRS profile, send a drill."""
+    session_qs = get_session_questions(day_num, session) if q_nums else []
+    q_nums = sorted(set(q_nums))
+    words = [w.strip() for w in words if w.strip()]
+    # The page lists wrong questions in ascending order, so numbers and words pair up 1:1
+    paired = dict(zip(q_nums, words)) if len(words) == len(q_nums) else {}
+
+    missed_qs, diag_notes, exclude_stems = [], [], set()
+
+    def _add(mq, word, label):
+        if mq:
+            missed_qs.append(mq)
+            exclude_stems.add(mq["question"].strip())
+        diag_notes.append(register_miss(profile, mq, word, label))
+
+    for qn in q_nums:
+        mq = session_qs[qn - 1] if 1 <= qn <= len(session_qs) else None
+        word = paired.get(qn)
+        if mq is not None:
+            ans_word = mq["options"].get(mq["answer"], "")
+            if word and normalize_headword(word) != normalize_headword(ans_word):
+                # Stored question list is out of sync with what was sent: trust the reported word
+                mq = find_question_by_answer_word(word)
+            else:
+                word = ans_word
+        elif word:
+            mq = find_question_by_answer_word(word)
+        if mq is None and not word:
+            continue
+        _add(mq, word or mq["options"].get(mq["answer"], ""), qn)
+
+    if not q_nums:  # word-only report (from Remote Agent drill pages)
+        for w in words:
+            _add(find_question_by_answer_word(w), w, "字彙")
+
+    if not diag_notes:
+        return None
+
+    profile["history"].append({
+        "date": str(get_taipei_today()),
+        "day": day_num,
+        "session": session,
+        "wrong_ids": q_nums,
+        "wrong_words": [d["correct_word"] for d in diag_notes],
+        "categories": [d["category"] for d in diag_notes],
+    })
+    save_weakness_profile(profile)
+
+    if not send_remedial_file:
+        return None
+    remedial_qs = find_similar_remedial_questions(missed_qs, exclude_stems, target_count=15)
+    sess_zh = "上午練習" if session == "morning" else "下午練習"
+    ids_txt = ", ".join(map(str, q_nums)) if q_nums else ", ".join(d["correct_word"] for d in diag_notes)
+    title = f"Day {day_num:02d} {sess_zh} — 錯題基因診斷與演算法加練卷"
+    subtitle = f"針對您回報的 {ids_txt} 弱點，已調升 SM-2 複習權重並精選 {len(remedial_qs)} 道同觀念變形實戰題"
+    html_str = render_agent_custom_html(title, subtitle, diag_notes, remedial_qs, day_num)
+    out_path = OUTPUT_DIR / f"TOEIC_Day{day_num:02d}_Agent_Remedial.html"
+    out_path.write_text(html_str, encoding="utf-8")
+    send_html_report(bot_token, chat_id, str(out_path))
+    return out_path
+
+
 def parse_and_handle_message(
     text: str,
     profile: dict,
@@ -505,90 +642,35 @@ def parse_and_handle_message(
             send_html_report(bot_token, chat_id, str(out_path))
             return out_path
 
-    # Pattern 1: Wrong question report across Questions 1..43
-    day_match = re.search(r"day\s*0*(\d+)", clean_text, re.IGNORECASE)
+    # Pattern 1a: word-only report from agent drill pages ("錯題字彙 w1 ;; w2")
+    if clean_text.startswith("錯題字彙"):
+        words = [w for w in re.split(r"\s*;;\s*|\n", re.sub(r"^錯題字彙\s*[:：]?\s*", "", clean_text))]
+        out = _handle_wrong_report(profile, default_day, "morning", [], words, bot_token, chat_id, send_remedial_file)
+        if out is not None or not send_remedial_file:
+            return out
+
+    # Pattern 1b: wrong question report: "錯題回報 Day04 afternoon: 3, 18, 29 || word1 ;; word2"
+    numbers_part, _, words_part = clean_text.partition("||")
+    day_match = re.search(r"day\s*0*(\d+)", numbers_part, re.IGNORECASE)
     day_num = int(day_match.group(1)) if day_match else default_day
     day_num = max(1, min(25, day_num))
 
     session = "morning"
-    if any(k in clean_text.lower() for k in ["afternoon", "下午", "陷阱"]):
+    if any(k in numbers_part.lower() for k in ["afternoon", "下午", "陷阱"]):
         session = "afternoon"
 
-    is_wrong_report = any(k in clean_text.lower() for k in ["錯題", "wrong", "答錯", "mistake"]) or bool(
-        re.fullmatch(r"[\d\s,，、]+", clean_text)
+    is_wrong_report = any(k in numbers_part.lower() for k in ["錯題", "wrong", "答錯", "mistake"]) or bool(
+        re.fullmatch(r"[\d\s,，、]+", numbers_part.strip())
     )
 
-    if is_wrong_report:
-        text_without_day = re.sub(r"day\s*0*\d+", "", clean_text, flags=re.IGNORECASE)
-        q_nums = [int(n) for n in re.findall(r"\b(\d{1,2})\b", text_without_day) if 1 <= int(n) <= 45]
+    if is_wrong_report and not clean_text.startswith("錯題字彙"):
+        text_without_day = re.sub(r"day\s*0*\d+", "", numbers_part, flags=re.IGNORECASE)
+        q_nums = [int(n) for n in re.findall(r"\b(\d{1,2})\b", text_without_day) if 1 <= int(n) <= 43]
+        words = [w for w in re.split(r"\s*;;\s*", words_part)] if words_part.strip() else []
         if q_nums:
-            session_qs = get_session_questions(day_num, session)
-            missed_qs = []
-            diag_notes = []
-            exclude_stems = set()
-
-            profile.setdefault("weak_words", {})
-            profile.setdefault("weak_categories", {})
-            profile.setdefault("weak_rules", {})
-            profile.setdefault("word_srs", {})
-
-            for qn in sorted(set(q_nums)):
-                if 1 <= qn <= len(session_qs):
-                    mq = session_qs[qn - 1]
-                    missed_qs.append(mq)
-                    exclude_stems.add(mq["question"].strip())
-                    ans = mq["answer"]
-                    c_word = mq["options"].get(ans, "")
-                    norm_w = normalize_headword(c_word)
-                    cat = classify_question_category(mq)
-                    r_ref = mq.get("rule_ref") or mq.get("trap_point") or cat
-
-                    # Update SM-2 & error count
-                    new_err = profile["weak_words"].get(norm_w, 0) + 1
-                    profile["weak_words"][norm_w] = new_err
-                    profile["weak_categories"][cat] = profile["weak_categories"].get(cat, 0) + 1
-                    profile["weak_rules"][r_ref] = profile["weak_rules"].get(r_ref, 0) + 1
-
-                    srs_item = profile["word_srs"].get(norm_w, {"ef": 2.5, "errors": 0})
-                    new_ef = round(max(1.3, float(srs_item.get("ef", 2.5)) - 0.3), 2)
-                    profile["word_srs"][norm_w] = {
-                        "ef": new_ef,
-                        "errors": new_err,
-                        "last_missed": str(get_taipei_today()),
-                    }
-
-                    diag_notes.append({
-                        "orig_id": qn,
-                        "category": cat,
-                        "rule_ref": r_ref,
-                        "answer": ans,
-                        "correct_word": c_word,
-                        "err_count": new_err,
-                        "ef": new_ef,
-                        "summary": mq.get("analysis", "")[:140],
-                    })
-
-            profile["history"].append({
-                "date": str(get_taipei_today()),
-                "day": day_num,
-                "session": session,
-                "wrong_ids": sorted(set(q_nums)),
-                "categories": [d["category"] for d in diag_notes],
-            })
-            save_weakness_profile(profile)
-
-            if send_remedial_file and missed_qs:
-                remedial_qs = find_similar_remedial_questions(missed_qs, exclude_stems, target_count=15)
-                sess_zh = "上午練習" if session == "morning" else "下午練習"
-                title = f"Day {day_num:02d} {sess_zh} — 錯題基因診斷與演算法加練卷"
-                subtitle = (
-                    f"針對您回報的第 {', '.join(map(str, sorted(set(q_nums))))} 題弱點，已調升 SM-2 複習權重並精選 {len(remedial_qs)} 道同觀念變形實戰題"
-                )
-                html_str = render_agent_custom_html(title, subtitle, diag_notes, remedial_qs, day_num)
-                out_path = OUTPUT_DIR / f"TOEIC_Day{day_num:02d}_Agent_Remedial.html"
-                out_path.write_text(html_str, encoding="utf-8")
-                send_html_report(bot_token, chat_id, str(out_path))
-                return out_path
+            out = _handle_wrong_report(profile, day_num, session, q_nums, words, bot_token, chat_id, send_remedial_file)
+            if out is not None or not send_remedial_file:
+                return out
 
     # Pattern 2: Topic drill or Weakness diagnostic request
     topic_query = re.sub(
@@ -615,7 +697,26 @@ def parse_and_handle_message(
 
 
 def process_pending_telegram_updates(send_remedial_file: bool = True, poll_timeout: int = 0) -> int:
-    """Fetch new Telegram messages sent to @Toeic_practice_bot and process them."""
+    """
+    Fetch new Telegram messages sent to @Toeic_practice_bot and process them.
+    An exclusive file lock guarantees the long-polling daemon and the scheduled dispatcher never
+    consume (and answer) the same update twice.
+    """
+    import fcntl
+
+    lock_path = PROJECT_DIR / ".remote_agent.lock"
+    with open(lock_path, "w") as lock_fh:
+        try:
+            fcntl.flock(lock_fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            return 0
+        try:
+            return _process_updates_locked(send_remedial_file, poll_timeout)
+        finally:
+            fcntl.flock(lock_fh, fcntl.LOCK_UN)
+
+
+def _process_updates_locked(send_remedial_file: bool, poll_timeout: int) -> int:
     load_dotenv(PROJECT_DIR / ".env")
     bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
     chat_id = os.environ.get("TELEGRAM_CHAT_ID", "").strip()
@@ -656,7 +757,10 @@ def process_pending_telegram_updates(send_remedial_file: bool = True, poll_timeo
         if text.startswith("/start "):
             text = text[7:].strip()
 
-        parse_and_handle_message(text, profile, bot_token, chat_id, send_remedial_file=send_remedial_file)
+        try:
+            parse_and_handle_message(text, profile, bot_token, chat_id, send_remedial_file=send_remedial_file)
+        except Exception as exc:  # one bad message must never block the queue
+            print(f"[Remote Agent] failed to handle message {text[:40]!r}: {exc}", file=sys.stderr)
         processed += 1
 
     return processed

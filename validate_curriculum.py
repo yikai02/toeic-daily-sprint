@@ -22,6 +22,38 @@ def questions(day):
     )
 
 
+def validate_860_banks():
+    """Consistency checks for the 860+ question / cloze banks."""
+    import re
+
+    from toeic_860_bank import CLOZE_PASSAGES_BANK, EXTRA_860_LEXICON, GRAMMAR_MODULES_DB, QUESTIONS_860_BANK
+
+    errs = []
+    cloze_qs = [(p["title"], q) for p in CLOZE_PASSAGES_BANK for q in p["questions"]]
+    all_qs = [("860bank", q) for q in QUESTIONS_860_BANK] + cloze_qs
+    for where, q in all_qs:
+        tag = f"{where}: {q['question'][:45]}"
+        if q["answer"] not in q["options"]:
+            errs.append(f"{tag} answer not in options")
+        if set(q.get("option_details", {})) != {"A", "B", "C", "D"}:
+            errs.append(f"{tag} missing option_details")
+        m = re.search(r"【正解確認】\(([A-D])\)", q.get("analysis", ""))
+        if m and m.group(1) != q["answer"]:
+            errs.append(f"{tag} analysis cites ({m.group(1)}) but answer is {q['answer']}")
+        for letter, w in q["options"].items():
+            if w not in EXTRA_860_LEXICON and w.lower() not in EXTRA_860_LEXICON:
+                errs.append(f"{tag} option '{w}' has no lexicon entry")
+        if len(set(q["options"].values())) != 4:
+            errs.append(f"{tag} duplicate options")
+    for p in CLOZE_PASSAGES_BANK:
+        for i in range(1, 5):
+            if f"___[{i}]___" not in p["content"]:
+                errs.append(f"cloze '{p['title'][:30]}' missing blank {i}")
+    if len(GRAMMAR_MODULES_DB) < 10:
+        errs.append("GRAMMAR_MODULES_DB incomplete")
+    return errs
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--min-morning", type=int, default=20)
@@ -120,6 +152,8 @@ def main():
                 errors.append(
                     f"Day {n} {sess_name}: expected 43 interactive MC question grids, got {h_doc.count('class=\"options-grid\"')}"
                 )
+
+    errors.extend(validate_860_banks())
 
     print(
         "\n".join(errors)

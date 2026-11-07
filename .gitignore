@@ -5,3 +5,5 @@ __pycache__/
 .venv/
 reports/*.html
 scratch/
+reports/manifests/
+.remote_agent.lock

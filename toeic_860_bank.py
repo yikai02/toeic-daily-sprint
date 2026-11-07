@@ -590,7 +590,7 @@ CLOZE_PASSAGES_BANK = [
             "As we enter the final stage of negotiating the ___[1]___ of Apex Robotics, all members of the auditing committee are reminded to maintain strict confidentiality. "
             "Please be extremely ___[2]___ when discussing financial valuations in public venues, and refrain from leaving printed spreadsheets on conference tables.\n\n"
             "During yesterday's preliminary review, our analysts noticed a minor ___[3]___ between the vendor's tax filings and their warehouse collateral records. "
-            "We have asked their accounting team to submit the missing documentation ___ [4]___ our legal advisors can finalize the termination and liability clauses before Monday."
+            "We have asked their accounting team to submit the missing documentation ___[4]___ our legal advisors can finalize the termination and liability clauses before Monday."
         ),
         "questions": [
             {
@@ -780,7 +780,7 @@ CLOZE_PASSAGES_BANK = [
         "text_type": "Event Operations Notice (Part 6 段落填空)",
         "content": (
             "Thank you for purchasing tickets to the Starlight Symphony performance at the Bayside Amphitheater. "
-            "Weather ___[1]___, the orchestra will perform the entire two-hour program on the open-air stage overlooking the marina, followed by areception for VIP pass holders.\n\n"
+            "Weather ___[1]___, the orchestra will perform the entire two-hour program on the open-air stage overlooking the marina, followed by a reception for VIP pass holders.\n\n"
             "___[2]___ severe inclement weather or coastal gale warnings on the evening of the concert, the performance will be relocated to the indoor Philharmonic Hall two blocks east. "
             "Should a schedule or venue change occur, ticket holders will be notified via text message; ___[3]___, the remainder of the weekend festival itinerary will proceed as planned. "
             "Please note that all ticket prices are ___[4]___ of municipal entertainment taxes and shuttle service fees."
@@ -1330,23 +1330,37 @@ EXTRA_860_LEXICON.update({
 })
 
 
+def _remap_letters(text: str, a: str, b: str) -> str:
+    """Swap every `(a)` <-> `(b)` option-letter reference inside explanatory text."""
+    if not text:
+        return text
+    def _sub(m):
+        L = m.group(1)
+        return f"({b})" if L == a else (f"({a})" if L == b else m.group(0))
+    return re.sub(r"\(([A-D])\)", _sub, text)
+
+
 def build_4option_details(q: dict, target_ans_letter: str = None) -> dict:
     """
-    Deterministically rotate options so the correct answer is at `target_ans_letter` (if provided)
-    and generate comprehensive Traditional Chinese `option_details` for (A)(B)(C)(D).
+    Rotate options so the correct answer sits at `target_ans_letter` (keeping every `(X)` letter
+    reference inside `analysis` / `rule_ref` consistent with the new positions) and generate
+    Traditional Chinese `option_details` for (A)(B)(C)(D).
     """
     opts = dict(q.get("options", {}))
     orig_ans = q.get("answer", "A")
-    if target_ans_letter and target_ans_letter in ("A", "B", "C", "D") and target_ans_letter != orig_ans:
+    if target_ans_letter in _LETTERS_SET and target_ans_letter != orig_ans:
         opts[orig_ans], opts[target_ans_letter] = opts[target_ans_letter], opts[orig_ans]
         q["options"] = opts
         q["answer"] = target_ans_letter
+        for key in ("analysis", "rule_ref", "trap_point"):
+            if q.get(key):
+                q[key] = _remap_letters(q[key], orig_ans, target_ans_letter)
 
-    ans = q.get("answer", "A")
+    ans = q["answer"]
     correct_word = opts.get(ans, "").strip()
-    c_pos, c_zh, c_note = EXTRA_860_LEXICON.get(
+    _, c_zh, _ = EXTRA_860_LEXICON.get(
         correct_word,
-        EXTRA_860_LEXICON.get(correct_word.lower(), ("核心考點詞彙", "符合本題句構與商務語意之最佳解", "契合前後文語法槽位與搭配詞要求"))
+        EXTRA_860_LEXICON.get(correct_word.lower(), ("核心考點詞彙", "符合本題句構與商務語意之最佳解", ""))
     )
 
     details = {}
@@ -1364,10 +1378,15 @@ def build_4option_details(q: dict, target_ans_letter: str = None) -> dict:
         else:
             details[letter] = (
                 f"【✗ 錯誤干擾】詞性：{pos}｜字義：「{zh}」。"
-                f"錯誤原因：{note}，代入本題空格後與正解「{correct_word}（{zh if letter == ans else c_zh}）」之語法功能或上下文語意衝突，故排除。"
+                f"用法提醒：{note}。"
+                f"錯誤原因：本題空格需要「{correct_word}（{c_zh}）」，"
+                f"而 ({letter}) {w} 的詞性、語意或搭配限制與上下文不符，代入後句意或文法不通，故排除。"
             )
     q["option_details"] = details
     return q
+
+
+_LETTERS_SET = ("A", "B", "C", "D")
 
 
 # Pre-enrich all QUESTIONS_860_BANK and CLOZE_PASSAGES_BANK with balanced A/B/C/D keys and 4-option breakdowns

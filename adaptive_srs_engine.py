@@ -55,6 +55,15 @@ PROJECT_DIR = Path(__file__).resolve().parent
 PROFILE_PATH = PROJECT_DIR / "user_weakness_profile.json"
 
 
+def _normalize_counter_keys(counter: dict) -> dict:
+    """Merge legacy un-normalised keys (e.g. 'Provided that') into their normalised form."""
+    merged: Dict[str, int] = {}
+    for k, v in counter.items():
+        nk = normalize_key(k)
+        merged[nk] = merged.get(nk, 0) + int(v)
+    return merged
+
+
 def load_weakness_profile() -> dict:
     if PROFILE_PATH.exists():
         try:
@@ -65,6 +74,7 @@ def load_weakness_profile() -> dict:
             data.setdefault("weak_categories", {})
             data.setdefault("weak_rules", {})
             data.setdefault("word_srs", {})
+            data["weak_words"] = _normalize_counter_keys(data["weak_words"])
             return data
         except Exception:
             pass
@@ -102,10 +112,11 @@ def compute_word_priority(entry: dict, profile: dict) -> Tuple[float, int, float
 
     # Match exact word or 5-char stem in weak_words
     err_count = int(weak_words.get(norm_w, 0))
-    if err_count == 0 and len(norm_w) >= 5:
-        prefix = norm_w[:5]
+    if err_count == 0 and len(norm_w) >= 6:
+        # Word-family match (e.g. negligent / negligence): shared 6-char stem, both words >= 6 chars
+        stem = norm_w[:6]
         for kw, cnt in weak_words.items():
-            if kw.startswith(prefix) or prefix.startswith(kw[:5]):
+            if len(kw) >= 6 and kw[:6] == stem:
                 err_count = max(err_count, int(cnt))
 
     srs_info = word_srs.get(norm_w, {})
@@ -225,7 +236,7 @@ def select_part1_vocabulary(
         if remaining_needed > 0:
             freq_pool = [c for c in top_window if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
             pool_cap = min(len(freq_pool), 48)
-            for i in range(remaining_needed):
+            for i in range(remaining_needed if pool_cap else 0):
                 pick = freq_pool[(s_idx * 3 + i * 5) % pool_cap]
                 nk = pick.get("norm_key") or normalize_key(pick["word"])
                 if nk not in seen_norms:
@@ -267,6 +278,7 @@ def select_part3_mc_questions(
     part1_vocab: List[dict],
     profile: dict,
     target_count: int = 25,
+    exclude_stems: set = None,
 ) -> List[dict]:
     """
     Build Part 3 (單字與文法單句選擇題 — 25 題, numbered 1..25):
@@ -283,7 +295,7 @@ def select_part3_mc_questions(
     day_data = DAYS_DATA.get(day_num, DAYS_DATA[1])
 
     selected: List[dict] = []
-    seen_stems = set()
+    seen_stems = set(exclude_stems or ())
 
     def _add_q(raw_q: dict, source_label: str = "") -> bool:
         stem = raw_q.get("question", "").strip()
@@ -298,17 +310,29 @@ def select_part3_mc_questions(
         seen_stems.add(stem)
         return True
 
-    # 1. If user has weak_words in profile, pull up to 4 targeted remedial questions first
+    # 1. Weakness injection: pull questions whose ANSWER is one of the user's most-missed words,
+    #    searching the whole pool (860 bank, cloze bank, 25-day curriculum). More errors => more questions.
     weak_words = profile.get("weak_words", {})
     if weak_words:
-        sorted_weak = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
-        weak_targets = {w for w, _ in sorted_weak[:8]}
-        for q860 in QUESTIONS_860_BANK:
-            opts_lower = {v.lower() for v in q860.get("options", {}).values()}
-            if opts_lower & weak_targets:
-                _add_q(q860, q860.get("rule_ref", "🔥 錯題弱點演算法加權複習"))
-                if len(selected) >= 4:
-                    break
+        pool = list(QUESTIONS_860_BANK)
+        for pas in CLOZE_PASSAGES_BANK:
+            pool.extend(pas.get("questions", []))
+        for dd in range(1, 26):
+            pool.extend(DAYS_DATA[dd]["morning"]["part5"])
+            pool.extend(DAYS_DATA[dd]["afternoon"]["spaced_traps"])
+        by_answer: Dict[str, List[dict]] = {}
+        for q in pool:
+            by_answer.setdefault(normalize_key(q["options"].get(q.get("answer", ""), "")), []).append(q)
+        max_weak_q = 8
+        ranked = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
+        for w, cnt in ranked:
+            cands = by_answer.get(w, [])
+            # rotate so the same weak word is practised with a different sentence each session
+            for k in range(min(len(cands), 1 + (1 if cnt >= 2 else 0))):
+                cand = cands[(s_idx + k) % len(cands)]
+                _add_q(cand, cand.get("rule_ref", "🔥 錯題弱點演算法加權複習"))
+            if len(selected) >= max_weak_q:
+                break
 
     # 2. Add 8 questions from `QUESTIONS_860_BANK` rotated by s_idx (prioritizing matches with today's Part 1 vocab)
     p1_words_lower = {normalize_key(v["word"]) for v in part1_vocab}
@@ -437,10 +461,15 @@ def build_session_payload(day_num: int, session: str = "morning") -> dict:
 
     part1_vocab = select_part1_vocabulary(day_num, session, vocab_db, profile, target_count=16)
     part2_grammar = select_part2_grammar(day_num, session, profile)
-    part3_mc = select_part3_mc_questions(day_num, session, part1_vocab, profile, target_count=25)
+    PART3_COUNT = 25
     part4_cloze, next_qid = select_part4_cloze_passages(
-        day_num, session, profile, start_q_id=len(part3_mc) + 1, passage_count=3
+        day_num, session, profile, start_q_id=PART3_COUNT + 1, passage_count=3
     )
+    cloze_stems = {cq["question"].strip() for pas in part4_cloze for cq in pas.get("questions", [])}
+    part3_mc = select_part3_mc_questions(
+        day_num, session, part1_vocab, profile, target_count=PART3_COUNT, exclude_stems=cloze_stems
+    )
+    assert len(part3_mc) == PART3_COUNT, f"Part 3 produced {len(part3_mc)} questions"
     part5_reading, end_qid = select_part5_reading_passages(
         day_num, session, start_q_id=next_qid
     )
@@ -490,20 +519,53 @@ def build_session_payload(day_num: int, session: str = "morning") -> dict:
 
 def get_all_session_questions_flat(day_num: int, session: str = "morning") -> List[dict]:
     """
-    Returns all 43 interactive questions (`1..43`) across Part 3 (MC), Part 4 (Cloze),
-    and Part 5 (Reading) in order, used by `remote_agent_coach.py` when diagnosing
-    user-reported wrong question numbers (`錯題回報 Day04 morning: 3, 18, 29, 40`).
+    Returns all 43 interactive questions (`1..43`) across Part 3 (MC), Part 4 (Cloze) and Part 5
+    (Reading) in order. Prefers the saved manifest of what was actually sent; falls back to a
+    deterministic rebuild when no manifest exists.
     """
-    payload = build_session_payload(day_num, session)
+    manifest = load_session_manifest(day_num, session)
+    if manifest:
+        return manifest
+    return _flatten_payload(build_session_payload(day_num, session))
+
+
+def _flatten_payload(payload: dict) -> List[dict]:
     all_qs = list(payload["part3_mc_questions"])
     for pas in payload["part4_cloze_passages"]:
         for cq in pas.get("questions", []):
-            cq_copy = copy.deepcopy(cq)
-            cq_copy["section_type"] = f"第四部分：填空選擇題 ({pas.get('title', '')})"
-            all_qs.append(cq_copy)
+            c = copy.deepcopy(cq)
+            c["section_type"] = f"第四部分：填空選擇題 ({pas.get('title', '')})"
+            all_qs.append(c)
     for pas in payload["part5_reading_passages"]:
         for rq in pas.get("questions", []):
-            rq_copy = copy.deepcopy(rq)
-            rq_copy["section_type"] = f"第五部分：閱讀測驗 ({pas.get('title', '')})"
-            all_qs.append(rq_copy)
+            r = copy.deepcopy(rq)
+            r["section_type"] = f"第五部分：閱讀測驗 ({pas.get('title', '')})"
+            all_qs.append(r)
     return all_qs
+
+
+MANIFEST_DIR = PROJECT_DIR / "reports" / "manifests"
+
+
+def save_session_manifest(payload: dict) -> Path:
+    """
+    Persist the exact question list that was sent for (day, session). The Remote Agent uses it to
+    map reported question numbers back to the real questions even after the weakness profile
+    (and therefore tomorrow's selection) has changed.
+    """
+    MANIFEST_DIR.mkdir(parents=True, exist_ok=True)
+    sess = "morning" if str(payload["session"]).lower().startswith("m") else "afternoon"
+    path = MANIFEST_DIR / f"Day{int(payload['day']):02d}_{sess}.json"
+    path.write_text(json.dumps(_flatten_payload(payload), ensure_ascii=False), encoding="utf-8")
+    return path
+
+
+def load_session_manifest(day_num: int, session: str) -> List[dict]:
+    sess = "morning" if session.lower().startswith("m") else "afternoon"
+    path = MANIFEST_DIR / f"Day{int(day_num):02d}_{sess}.json"
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return []
