@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 """Telegram dispatcher: sends the HTML report as a document only (no extra text).
 
-Credentials come ONLY from environment variables (GitHub Secrets in CI) or a
-local, git-ignored .env file. Nothing sensitive is hardcoded.
+Includes cloud-shared idempotency state via Telegram Bot metadata
+(getMyShortDescription / setMyShortDescription) so that multiple triggers
+(Mac LaunchAgent workflow_dispatch, local fallback, or delayed GitHub Actions
+cron schedule) never send duplicate files on the same day.
 """
 
 import os
 import time
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import requests
 
 ENV_PATH = Path(__file__).parent / ".env"
+TZ = ZoneInfo("Asia/Taipei")
 
 
 def load_env() -> dict:
@@ -34,6 +39,72 @@ def get_credentials():
 
 def _redact(text: str, token: str) -> str:
     return text.replace(token, "***") if token else text
+
+
+def _session_tag_prefix(session: str, today_str: str) -> str:
+    prefix = "MORNING_SENT" if session.lower() == "morning" else "AFTERNOON_SENT"
+    return f"{prefix}:{today_str}"
+
+
+def get_bot_short_description(token: str) -> str:
+    """Fetches the bot's cloud short_description (silent metadata, zero chat messages)."""
+    if not token:
+        return ""
+    url = f"https://api.telegram.org/bot{token}/getMyShortDescription"
+    try:
+        resp = requests.get(url, timeout=8)
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("ok"):
+                return str((data.get("result") or {}).get("short_description", "")).strip()
+    except requests.RequestException as e:
+        print(f"Warning: getMyShortDescription failed (non-blocking): {_redact(str(e), token)}")
+    return ""
+
+
+def check_already_sent_today(token: str, today_str: str, session: str) -> bool:
+    """Checks Telegram Bot cloud state to see if today's morning/afternoon practice was already sent."""
+    if not token:
+        return False
+    desc = get_bot_short_description(token)
+    tag_prefix = _session_tag_prefix(session, today_str)
+    return tag_prefix in desc
+
+
+def mark_session_sent_today(token: str, today_str: str, session: str) -> bool:
+    """Records in Telegram Bot cloud metadata that today's session has been dispatched."""
+    if not token:
+        return False
+    cur_desc = get_bot_short_description(token)
+    other_session = "afternoon" if session.lower() == "morning" else "morning"
+    other_prefix = _session_tag_prefix(other_session, today_str)
+
+    preserved_other = ""
+    for part in cur_desc.split("|"):
+        part = part.strip()
+        if part.startswith(other_prefix):
+            preserved_other = part
+
+    now_hm = datetime.now(TZ).strftime("%H:%M:%S")
+    this_tag = f"{_session_tag_prefix(session, today_str)} {now_hm}"
+    if session.lower() == "morning":
+        new_desc = f"{this_tag} | {preserved_other}" if preserved_other else this_tag
+    else:
+        new_desc = f"{preserved_other} | {this_tag}" if preserved_other else this_tag
+
+    url = f"https://api.telegram.org/bot{token}/setMyShortDescription"
+    try:
+        resp = requests.post(
+            url,
+            json={"short_description": new_desc[:120]},
+            timeout=8,
+        )
+        if resp.status_code == 200 and resp.json().get("ok"):
+            print(f"🔒 Recorded cloud idempotency state: {new_desc[:120]}")
+            return True
+    except requests.RequestException as e:
+        print(f"Warning: setMyShortDescription failed: {_redact(str(e), token)}")
+    return False
 
 
 def send_telegram_document(token: str, chat_id: str, file_path: str, caption: str = "",

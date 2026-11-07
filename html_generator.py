@@ -241,6 +241,38 @@ INTERACTIVE_SCRIPT = """
 """
 
 
+def _render_option_details_html(q: dict) -> str:
+    """Renders the detailed per-option breakdown (meaning, POS, why right/wrong)."""
+    opt_details = q.get("option_details")
+    if not opt_details or not isinstance(opt_details, dict):
+        return ""
+    opts = q.get("options", {})
+    ans = q.get("answer", "A")
+    rows_html = ""
+    for letter in ("A", "B", "C", "D"):
+        detail_text = opt_details.get(letter, "")
+        if not detail_text:
+            continue
+        opt_word = opts.get(letter, "")
+        is_ans = (letter == ans)
+        row_cls = "opt-bd-row opt-bd-correct" if is_ans else "opt-bd-row opt-bd-wrong"
+        badge_txt = f"✓ ({letter}) {html.escape(opt_word)}" if is_ans else f"✗ ({letter}) {html.escape(opt_word)}"
+        rows_html += f"""
+        <div class="{row_cls}">
+            <div class="opt-bd-head">{badge_txt}</div>
+            <div class="opt-bd-desc">{html.escape(detail_text)}</div>
+        </div>
+        """
+    if not rows_html:
+        return ""
+    return f"""
+    <div class="opt-breakdown-box">
+        <div class="opt-breakdown-title">📋 各選項詞性、意思與正誤詳解：</div>
+        {rows_html}
+    </div>
+    """
+
+
 def render_day_html(day_data: dict, session: str = "morning") -> str:
     day = day_data.get("day", 1)
     date_str = day_data.get("date", "")
@@ -249,7 +281,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
     topic = day_data.get("topic", "")
 
     is_morning = (session.lower() == "morning")
-    session_title = "☀️ 早間晨報 (Morning Boost) — 實戰 20 題" if is_morning else "🌙 盤後特訓 (Afternoon Review & Drill) — 實戰 20 題"
+    session_title = "☀️ 上午練習 — 實戰 20 題" if is_morning else "🌤️ 下午練習 — 實戰 20 題"
     badge_color = "#2563eb" if is_morning else "#7c3aed"
 
     if is_morning:
@@ -293,6 +325,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             sec = q.get("target_seconds", 15)
             opts = q.get("options", {})
             ans = q.get("answer", "A")
+            opt_bd_html = _render_option_details_html(q)
             p5_questions_html += f"""
             <div class="question-block" id="q-block-{qid}">
                 <div class="q-header">
@@ -310,12 +343,13 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                 <!-- 專屬單題防雷按鈕 -->
                 <details class="spoiler-card">
                     <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看第 {qid} 題答案與解析</span>
+                        <span>🛡️ 點擊查看第 {qid} 題答案與深度解析</span>
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({ans})</b></div>
-                        <div class="ans-analysis">💡 <b>視覺秒殺詳解：</b>{html.escape(q['analysis'])}</div>
+                        <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
+                        <div class="ans-analysis">💡 <b>句構與核心解析：</b>{html.escape(q['analysis'])}</div>
+                        {opt_bd_html}
                         <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
                     </div>
                 </details>
@@ -337,7 +371,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         <div class="sticky-control-bar" id="live-score-bar">
             <div class="bar-top-row">
                 <div class="score-stats">
-                    <span>📝 作答進度: <b id="score-progress">0 / {len(part5)}</b></span>
+                    <span>📝 上午練習進度: <b id="score-progress">0 / {len(part5)}</b></span>
                     <span class="score-pct-badge" id="score-pct">0% 正確</span>
                 </div>
                 <div class="bar-actions">
@@ -359,7 +393,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         <div id="final-summary-card" class="summary-card" style="display: none;">
             <div class="summary-icon">🎉</div>
-            <h3 class="summary-title">本日 Part 5 實戰校正完成！</h3>
+            <h3 class="summary-title">本日上午練習（實戰 20 題）完成！</h3>
             <div class="summary-score">最終成績：<b id="final-score-text">0 / {len(part5)} (0%)</b></div>
             <div class="summary-tip">保持這個視覺秒殺語感，11/29 金色證書（860+）勢在必得！</div>
         </div>
@@ -407,10 +441,11 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         for idx, t in enumerate(traps, 1):
             opts = t.get("options", {})
             ans = t.get("answer", "A")
+            opt_bd_html = _render_option_details_html(t)
             traps_q_html += f"""
             <div class="question-block" id="q-block-{idx}">
                 <div class="q-header">
-                    <span class="q-tag">第 {idx} 題 / 共 {total_aft_q} 題 (陷阱題)</span>
+                    <span class="q-tag">第 {idx} 題 / 共 {total_aft_q} 題 (進階陷阱題)</span>
                     <span class="q-time timer-badge" onclick="startTimer(this, 20)" title="點擊啟動倒數">⏱️ 限時 20 秒 ▶</span>
                 </div>
                 <div class="q-text">{html.escape(t['question'])}</div>
@@ -424,13 +459,14 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                 <!-- 專屬陷阱題防雷按鈕 -->
                 <details class="spoiler-card">
                     <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看第 {idx} 題答案與解析</span>
+                        <span>🛡️ 點擊查看第 {idx} 題答案與深度解析</span>
                         <span class="tap-hint">防雷揭曉</span>
                     </summary>
                     <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({ans})</b></div>
+                        <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
                         <div class="trap-point">⚠️ <b>命題陷阱點：</b>{html.escape(t.get('trap_point', ''))}</div>
-                        <div class="ans-analysis">💡 <b>解析：</b>{html.escape(t['analysis'])}</div>
+                        <div class="ans-analysis">💡 <b>句構與核心解析：</b>{html.escape(t['analysis'])}</div>
+                        {opt_bd_html}
                         <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(t.get('translation', ''))}</div>
                     </div>
                 </details>
@@ -454,6 +490,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             for pq in pas.get("questions", []):
                 opts = pq.get("options", {})
                 ans = pq.get("answer", "A")
+                opt_bd_html = _render_option_details_html(pq)
                 p7_sections_html += f"""
                 <div class="question-block" id="q-block-{global_q_idx}">
                     <div class="q-header">
@@ -470,13 +507,14 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
                     <!-- 專屬 Part 7 防漏看雷達按鈕 -->
                     <details class="spoiler-card">
                         <summary class="spoiler-summary">
-                            <span>🔍 點擊查看第 {global_q_idx} 題答案與防漏看雷達</span>
+                            <span>🔍 點擊查看第 {global_q_idx} 題答案與深度解析</span>
                             <span class="tap-hint">防雷揭曉</span>
                         </summary>
                         <div class="spoiler-body">
-                            <div class="ans-badge"><b>正解：({ans})</b></div>
+                            <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
                             <div class="radar-box">{html.escape(pq.get('radar', ''))}</div>
                             <div class="ans-analysis">💡 <b>詳解：</b>{html.escape(pq['analysis'])}</div>
+                            {opt_bd_html}
                         </div>
                     </details>
                 </div>
@@ -485,7 +523,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         body_content = f"""
         <section class="section-container">
-            <div class="section-title">🧠 早間記憶快篩 ({len(recall)} 題語塊速查)</div>
+            <div class="section-title">🧠 上午重點記憶快篩 ({len(recall)} 題語塊速查)</div>
             {recall_html}
         </section>
 
@@ -493,7 +531,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         <div class="sticky-control-bar" id="live-score-bar">
             <div class="bar-top-row">
                 <div class="score-stats">
-                    <span>📝 盤後進度: <b id="score-progress">0 / {total_aft_q}</b></span>
+                    <span>📝 下午練習進度: <b id="score-progress">0 / {total_aft_q}</b></span>
                     <span class="score-pct-badge" id="score-pct">0% 正確</span>
                 </div>
                 <div class="bar-actions">
@@ -509,7 +547,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         </div>
 
         <section class="section-container">
-            <div class="section-title">⚡ Part 5/6 易錯陷阱特訓 (第 1 ～ {len(traps)} 題 / 共 {total_aft_q} 題)</div>
+            <div class="section-title">⚡ Part 5/6 易錯陷阱練習 (第 1 ～ {len(traps)} 題 / 共 {total_aft_q} 題)</div>
             {traps_q_html}
         </section>
 
@@ -520,7 +558,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         <div id="final-summary-card" class="summary-card" style="display: none;">
             <div class="summary-icon">🏆</div>
-            <h3 class="summary-title">本日盤後實戰 20 題特訓全數完成！</h3>
+            <h3 class="summary-title">本日下午練習（實戰 20 題）全數完成！</h3>
             <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_aft_q} (0%)</b></div>
             <div class="summary-tip">防漏看雷達已完全校正，今日核心弱點清零成功！</div>
         </div>
@@ -1076,6 +1114,64 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             font-weight: 700;
             margin-bottom: 8px;
             line-height: 1.6;
+        }}
+
+        /* Per-Option Detailed Breakdown Box */
+        .opt-breakdown-box {{
+            background: rgba(148, 163, 184, 0.08);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 10px 0;
+        }}
+
+        .opt-breakdown-title {{
+            font-size: 14.5px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }}
+
+        .opt-bd-row {{
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 14.5px;
+            line-height: 1.55;
+            border-left: 3.5px solid #94a3b8;
+            background: var(--card-bg);
+        }}
+
+        .opt-bd-row:last-child {{
+            margin-bottom: 0;
+        }}
+
+        .opt-bd-correct {{
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.08);
+        }}
+
+        .opt-bd-wrong {{
+            border-left-color: #ef4444;
+        }}
+
+        .opt-bd-head {{
+            font-weight: 800;
+            font-size: 14.5px;
+            margin-bottom: 2px;
+        }}
+
+        .opt-bd-correct .opt-bd-head {{
+            color: #059669;
+        }}
+
+        .opt-bd-wrong .opt-bd-head {{
+            color: #dc2626;
+        }}
+
+        .opt-bd-desc {{
+            color: var(--text-main);
+            font-size: 14px;
         }}
 
         /* Part 7 Micro-Reading Box */
