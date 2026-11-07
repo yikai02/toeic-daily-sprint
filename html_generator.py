@@ -1,31 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-HTML Generator for TOEIC 25-Day Sprint.
-
-Generates standalone, mobile-optimized HTML reports.
-Features:
-- Large readable typography (16px+ body, 24px hero, 19px chunk titles, 17px questions)
-- Interactive Tap-to-Answer with instant visual feedback (Green for correct, Red for wrong)
-- Sticky Live Score & Progress Bar with one-click Expand/Collapse/Reset
-- Clickable 15-second Countdown Timers for Part 5 reflex training
-- Dedicated Anti-spoiler <details> accordions directly beneath each question
-- Part 7 Fine-Print Radar Highlights for conditional clauses and asterisks
-- Consecutive numbering (Questions 1 to 20) across all daily sessions
-- Zero external dependencies, 100% offline-ready, responsive dark mode support
+HTML Generator for TOEIC 25-Day Golden Certificate (860+) Sprint (`html_generator.py`)
+--------------------------------------------------------------------------------------
+Generates standalone, mobile-optimized interactive HTML practice files for both
+`☀️ 上午練習` and `🌤️ 下午練習`, structured into 5 comprehensive parts + Live Analytics:
+  - 第一部分：單字表詳細介紹 (16 deduplicated vocabulary items with TOEIC frequency tier & SRS priority)
+  - 第二部分：文法詳細介紹 (Visual Anchor + 2 Deep-Dive 860+ Grammar Modules with ✅ vs ❌ comparisons)
+  - 第三部分：選擇題練習 — 單字與文法 (25 complex multi-clause MC questions, Q1..Q25)
+  - 第四部分：填空選擇題 — 段落克漏字 (3 passages × 4 blanks = 12 Cloze MC questions, Q26..Q37)
+  - 第五部分：閱讀測驗 — 商務長文閱讀 (2 long-form passages = 6 Reading MC questions, Q38..Q43)
+  - 📊 實戰統計與弱點分析儀表板 + 🤖 遠端 AI Agent 演算法連動中心
 """
 
 import html
 import re
+from typing import Dict, List
+
+from adaptive_srs_engine import build_session_payload
 
 INTERACTIVE_SCRIPT = """
-    <!-- Interactive Quiz Engine & Live Stats -->
+    <!-- Interactive 5-Part Quiz Engine, Live Sub-Score Analytics & Remote Agent Bridge -->
     <script>
     let totalAnswered = 0;
     let correctCount = 0;
     let wrongOnlyMode = false;
     const day = document.body.dataset.day || '1';
-    const session = document.body.dataset.session || 'm';
-    const STORAGE_KEY = `toeic_sprint_d${day}_${session}`;
+    const session = document.body.dataset.session || 'morning';
+    const STORAGE_KEY = `toeic_860_v2_d${day}_${session}`;
 
     document.addEventListener('DOMContentLoaded', () => {
         updateScoreBar();
@@ -69,7 +70,7 @@ INTERACTIVE_SCRIPT = """
         saveProgress();
     });
 
-    // When user manually opens spoiler details without clicking an option, show correct answer
+    // When user manually opens spoiler details without clicking an option, highlight correct answer
     document.addEventListener('toggle', (e) => {
         if (e.target.tagName && e.target.tagName.toLowerCase() === 'details' && e.target.open) {
             const qBlock = e.target.closest('.question-block');
@@ -84,6 +85,30 @@ INTERACTIVE_SCRIPT = """
         }
     }, true);
 
+    function computeSubPartStats(partName) {
+        const blocks = document.querySelectorAll(`.question-block[data-part="${partName}"]`);
+        let ans = 0;
+        let corr = 0;
+        blocks.forEach(b => {
+            if (b.classList.contains('has-correct')) {
+                ans++;
+                corr++;
+            } else if (b.classList.contains('has-wrong')) {
+                ans++;
+            }
+        });
+        return { total: blocks.length, answered: ans, correct: corr };
+    }
+
+    function estimateToeicBand(pct, answeredCount) {
+        if (answeredCount === 0) return '尚未作答 (目標 860–990 金色證書)';
+        if (pct >= 92) return `約 930–990 分 🏆 滿分金色證書水準 (${pct}%)`;
+        if (pct >= 85) return `約 865–925 分 🥇 穩拿 860+ 金色證書 (${pct}%)`;
+        if (pct >= 75) return `約 785–855 分 🎯 距離金色證書僅差臨門一腳 (${pct}%)`;
+        if (pct >= 65) return `約 680–780 分 ⚡ 建議點擊下方 Agent 強化錯題 (${pct}%)`;
+        return `約 550–675 分 🔥 建議回傳錯題由遠端 Agent 啟動高頻加權複習 (${pct}%)`;
+    }
+
     function updateScoreBar() {
         const progEl = document.getElementById('score-progress');
         const pctEl = document.getElementById('score-pct');
@@ -97,6 +122,47 @@ INTERACTIVE_SCRIPT = """
         progEl.innerText = `${totalAnswered} / ${total}`;
         pctEl.innerText = `${pct}% 正確 (${correctCount} 題對)`;
         if (fillEl) fillEl.style.width = `${fillPct}%`;
+
+        // Update Live Analytics Dashboard if present
+        const statOverall = document.getElementById('stat-overall-score');
+        const statBand = document.getElementById('stat-toeic-band');
+        if (statOverall) {
+            statOverall.innerText = `${correctCount} / ${totalAnswered} 題正確 (總題數 ${total} 題 · 正確率 ${pct}%)`;
+        }
+        if (statBand) {
+            statBand.innerText = estimateToeicBand(pct, totalAnswered);
+        }
+
+        ['part3', 'part4', 'part5'].forEach(pKey => {
+            const st = computeSubPartStats(pKey);
+            const txtEl = document.getElementById(`stat-${pKey}-text`);
+            const barEl = document.getElementById(`stat-${pKey}-bar`);
+            if (txtEl && st.total > 0) {
+                const subPct = st.answered > 0 ? Math.round((st.correct / st.answered) * 100) : 0;
+                txtEl.innerText = `${st.correct} / ${st.answered} 對 (共 ${st.total} 題 · 正確率 ${subPct}%)`;
+                if (barEl) barEl.style.width = `${subPct}%`;
+            }
+        });
+
+        // Update Triggered Weakness List
+        const weakBox = document.getElementById('live-weakness-list');
+        if (weakBox) {
+            const wrongBlocks = document.querySelectorAll('.question-block.has-wrong');
+            if (wrongBlocks.length === 0) {
+                weakBox.innerHTML = totalAnswered > 0
+                    ? '<span style="color:#059669;font-weight:700;">🎉 目前作答全數正確，尚無觸發任何弱點標籤！</span>'
+                    : '<span style="color:var(--text-sub);">尚未產生錯題。開始作答後，系統將即時捕捉您答錯的單字與文法規則並顯示於此。</span>';
+            } else {
+                const items = [];
+                wrongBlocks.forEach(wb => {
+                    const qnum = (wb.id || '').replace('q-block-', '');
+                    const wWord = wb.getAttribute('data-word') || '';
+                    const wRule = wb.getAttribute('data-rule') || '';
+                    items.push(`<div class="weak-tag-item">❌ <b>第 ${qnum} 題</b>：正解字彙 <code>${wWord}</code> ｜ 考點：${wRule}</div>`);
+                });
+                weakBox.innerHTML = items.join('');
+            }
+        }
 
         const card = document.getElementById('final-summary-card');
         if (card && totalAnswered === total && total > 0) {
@@ -211,7 +277,7 @@ INTERACTIVE_SCRIPT = """
         } catch(e) {}
     }
 
-    // 15-second countdown timer with urgent visual cues
+    // Countdown timer with urgent visual cues
     function startTimer(el, seconds) {
         if (el.dataset.running === 'true') return;
         el.dataset.running = 'true';
@@ -251,7 +317,7 @@ INTERACTIVE_SCRIPT = """
         if (wrongIds.length > 0) {
             cmdText = `錯題回報 Day${dNum} ${sessLabel}: ${wrongIds.join(', ')}`;
         } else {
-            const manual = prompt('目前頁面上尚無答錯標記，您可直接輸入想回報的題號（如 3, 8, 15）或想加練的主題（如 假設語氣）：', '3, 8, 15');
+            const manual = prompt('目前頁面上尚無答錯標記，您可直接輸入想回報的題號（1~43，如 3, 18, 29, 40）或想加練的主題（如 段落填空、假設語氣）：', '3, 18, 29');
             if (!manual) return;
             cmdText = /^[0-9,\\s，、]+$/.test(manual)
                 ? `錯題回報 Day${dNum} ${sessLabel}: ${manual}`
@@ -268,6 +334,19 @@ INTERACTIVE_SCRIPT = """
 
     function requestAgentTopicDrill(topic) {
         const cmdText = `加練 ${topic}`;
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(cmdText);
+            }
+        } catch(e) {}
+        const tgUrl = `https://t.me/Toeic_practice_bot?text=${encodeURIComponent(cmdText)}`;
+        window.open(tgUrl, '_blank');
+    }
+
+    function sendNewVocabToAgent() {
+        const input = prompt('📥 請輸入您想新增至單字庫的單字（格式：單字 : 中文意思與搭配，多筆可用分號或換行分隔，重複單字將自動去重）：', 'scrutinize : 仔細審查；徹底檢驗');
+        if (!input) return;
+        const cmdText = `新增單字 ${input}`;
         try {
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(cmdText);
@@ -312,346 +391,403 @@ def _render_option_details_html(q: dict) -> str:
     """
 
 
+def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
+    cards_html = ""
+    for idx, v in enumerate(vocab_list, 1):
+        word = v.get("word", "")
+        pos = v.get("pos", "")
+        meaning = v.get("meaning", "")
+        colloc = v.get("collocations", "")
+        trap = v.get("trap_note", "")
+        example = v.get("example", "")
+        freq_stars = v.get("freq_stars", "⭐⭐⭐ 超高頻必考")
+        src_badge = v.get("source_badge", "📘 核心單字")
+        pri_reason = v.get("priority_reason", "⚡ 多益高頻核心")
+        pri_score = v.get("priority_score", 8.5)
+        err_cnt = int(v.get("error_count", 0))
+
+        border_style = "border-left: 5px solid #dc2626;" if err_cnt > 0 else (
+            "border-left: 5px solid #2563eb;" if int(v.get("freq_tier", 2)) == 3 else "border-left: 5px solid #7c3aed;"
+        )
+        trap_html = f'<div class="alert-box">⚠️ <b>考點與易混淆陷阱：</b>{html.escape(trap)}</div>' if trap else ""
+        ex_html = f'<div class="vocab-example">📖 <b>商務實戰例句：</b>{html.escape(example)}</div>' if example else ""
+
+        cards_html += f"""
+        <div class="chunk-card" style="{border_style}">
+            <div class="vocab-badge-row">
+                <span class="chunk-num">單字 #{idx}</span>
+                <span class="freq-badge">{html.escape(freq_stars)}</span>
+                <span class="src-badge">{html.escape(src_badge)}</span>
+                <span class="srs-score-badge" title="演算法優先級權重">權重 P={pri_score}</span>
+            </div>
+            <div class="chunk-header" style="margin-top:6px;">
+                <span class="chunk-title">{html.escape(word)}</span>
+                <span class="pos-badge">{html.escape(pos)}</span>
+            </div>
+            <div class="chunk-meaning">🇹🇼 <b>核心字義：</b>{html.escape(meaning)}</div>
+            <div class="chunk-scenario">💼 <b>必考搭配與同義替換：</b>{html.escape(colloc)}</div>
+            {ex_html}
+            {trap_html}
+            <div class="srs-reason-line">🤖 <b>排程演算法說明：</b>{html.escape(pri_reason)}</div>
+        </div>
+        """
+
+    total_db = srs_stats.get("total_unique_vocab", 252)
+    t3 = srs_stats.get("tier3_ultra_freq", 118)
+    return f"""
+    <section class="section-container" id="sec-part1">
+        <div class="section-title">📚 第一部分：單字表詳細介紹（本場排程 {len(vocab_list)} 字 ／ 總庫 {total_db} 字已去重）</div>
+        <div class="part-intro-banner">
+            💡 <b>智慧單字排程說明：</b>系統已將您上傳之 <code>860_antigravity.md</code> 單字與既有課程單字完成<b>自動去重合併（共 {total_db} 個不重複核心單字，含 {t3} 個短小超高頻核心字）</b>。越短、越常考的多益高頻字以及您曾答錯的單字，演算法會自動提高出現頻率！
+        </div>
+        {cards_html}
+    </section>
+    """
+
+
+def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
+    anchor_html = ""
+    if anchor and anchor.get("title"):
+        anchor_html = f"""
+        <div class="anchor-card">
+            <div class="anchor-badge">⚡ 本日視覺秒殺錨點 (Visual Anchor)</div>
+            <h3 class="anchor-title">{html.escape(anchor.get('title', ''))}</h3>
+            <p class="anchor-rule">🔹 {html.escape(anchor.get('rule_1', ''))}</p>
+            <p class="anchor-rule">🔹 {html.escape(anchor.get('rule_2', ''))}</p>
+            <div class="golden-banner">🏆 {html.escape(anchor.get('golden_rule', ''))}</div>
+        </div>
+        """
+
+    mods_html = ""
+    for m_idx, mod in enumerate(grammar_mods, 1):
+        pts_html = ""
+        for pt in mod.get("points", []):
+            pts_html += f"""
+            <div class="grammar-point-box">
+                <div class="gp-label">📌 {html.escape(pt.get('label', ''))}</div>
+                <div class="gp-detail">{html.escape(pt.get('detail', ''))}</div>
+                <div class="gp-compare">
+                    <div class="gp-correct">{html.escape(pt.get('correct_ex', ''))}</div>
+                    <div class="gp-wrong">{html.escape(pt.get('wrong_ex', ''))}</div>
+                </div>
+            </div>
+            """
+        mods_html += f"""
+        <div class="grammar-mod-card">
+            <div class="gm-header">
+                <span class="gm-cat">{html.escape(mod.get('category', '860+ 核心文法模組'))}</span>
+                <span class="gm-id">Module #{m_idx}</span>
+            </div>
+            <h3 class="gm-title">{html.escape(mod.get('title', ''))}</h3>
+            <div class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(mod.get('core_formula', ''))}</div>
+            {pts_html}
+        </div>
+        """
+
+    return f"""
+    <section class="section-container" id="sec-part2">
+        <div class="section-title">📐 第二部分：文法詳細介紹（微觀訊號 · 一山不容二虎 · 假設語氣 · 易混淆辨析）</div>
+        {anchor_html}
+        {mods_html}
+    </section>
+    """
+
+
+def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label: str, default_sec: int = 15) -> str:
+    qid = q.get("id", 1)
+    sec = q.get("target_seconds", default_sec)
+    opts = q.get("options", {})
+    ans = q.get("answer", "A")
+    ans_word = opts.get(ans, "")
+    rule_ref = q.get("rule_ref") or q.get("trap_point") or q.get("radar") or "多益 860+ 核心句構與商務搭配"
+    opt_bd_html = _render_option_details_html(q)
+    trans_html = (
+        f'<div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q["translation"])}</div>'
+        if q.get("translation")
+        else ""
+    )
+
+    return f"""
+    <div class="question-block" id="q-block-{qid}" data-part="{part_key}" data-word="{html.escape(ans_word)}" data-rule="{html.escape(rule_ref)}">
+        <div class="q-header">
+            <span class="q-tag">第 {qid} 題 / 共 {total_q} 題 · {html.escape(badge_label)}</span>
+            <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ 限時 {sec} 秒 ▶</span>
+        </div>
+        <div class="q-text">{html.escape(q.get('question', ''))}</div>
+        <div class="options-grid" data-answer="{ans}">
+            <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
+        </div>
+
+        <details class="spoiler-card">
+            <summary class="spoiler-summary">
+                <span>🛡️ 點擊查看第 {qid} 題答案、規則定位與四選項詳解</span>
+                <span class="tap-hint">詳解揭曉</span>
+            </summary>
+            <div class="spoiler-body">
+                <div class="ans-badge"><b>正解：({ans}) {html.escape(ans_word)}</b></div>
+                <div class="trap-point">🎯 <b>對應考點／弱點規則：</b>{html.escape(rule_ref)}</div>
+                <div class="ans-analysis">💡 <b>秒殺句構與上下文解析：</b>{html.escape(q.get('analysis', ''))}</div>
+                {opt_bd_html}
+                {trans_html}
+            </div>
+        </details>
+    </div>
+    """
+
+
 def render_day_html(day_data: dict, session: str = "morning") -> str:
-    day = day_data.get("day", 1)
+    day = int(day_data.get("day", 1))
     date_str = day_data.get("date", "")
     phase = day_data.get("phase", 1)
     phase_name = day_data.get("phase_name", "")
     topic = day_data.get("topic", "")
 
-    is_morning = (session.lower() == "morning")
-    session_title = "☀️ 上午練習 — 實戰 20 題" if is_morning else "🌤️ 下午練習 — 實戰 20 題"
+    is_morning = session.lower().startswith("m")
+    payload = build_session_payload(day, "morning" if is_morning else "afternoon")
+
+    part1_vocab = payload["part1_vocab"]
+    part2_grammar = payload["part2_grammar"]
+    part3_mc = payload["part3_mc_questions"]
+    part4_cloze = payload["part4_cloze_passages"]
+    part5_reading = payload["part5_reading_passages"]
+    counts = payload["counts"]
+    srs_stats = payload["srs_stats"]
+    total_q = counts["total_questions"]
+
+    session_label = "☀️ 上午練習" if is_morning else "🌤️ 下午練習"
+    session_title = f"{session_label} — 五大模組全方位特訓（實戰 {total_q} 題）"
     badge_color = "#2563eb" if is_morning else "#7c3aed"
 
-    if is_morning:
-        m_data = day_data.get("morning", {})
-        chunks = m_data.get("chunks", [])
-        anchor = m_data.get("visual_anchor", {})
-        part5 = m_data.get("part5", [])
+    anchor = day_data.get("morning", {}).get("visual_anchor", {})
 
-        # Build Chunks HTML
-        chunks_html = ""
-        for idx, c in enumerate(chunks, 1):
-            alert_html = f'<div class="alert-box">⚠️ {html.escape(c["alert"])}</div>' if c.get("alert") else ""
-            chunks_html += f"""
-            <div class="chunk-card">
-                <div class="chunk-header">
-                    <span class="chunk-num">#{idx}</span>
-                    <span class="chunk-title">{html.escape(c['chunk'])}</span>
-                </div>
-                <div class="chunk-meaning">{html.escape(c['meaning'])}</div>
-                <div class="chunk-scenario">💼 <b>商務微情境：</b>{html.escape(c['scenario'])}</div>
-                <div class="chunk-para">🔄 <b>必考替換：</b><code>{html.escape(c['paraphrase'])}</code></div>
-                {alert_html}
-            </div>
-            """
+    # 1. Part 1 HTML (Vocabulary Detailed Guide)
+    part1_html = _render_part1_vocab_html(part1_vocab, srs_stats)
 
-        # Build Anchor HTML
-        anchor_html = f"""
-        <div class="anchor-card">
-            <div class="anchor-badge">⚡ 無公式視覺錨點</div>
-            <h3 class="anchor-title">{html.escape(anchor.get('title', ''))}</h3>
-            <p class="anchor-rule">{html.escape(anchor.get('rule_1', ''))}</p>
-            <p class="anchor-rule">{html.escape(anchor.get('rule_2', ''))}</p>
-            <div class="golden-banner">{html.escape(anchor.get('golden_rule', ''))}</div>
+    # 2. Part 2 HTML (Grammar Detailed Guide)
+    part2_html = _render_part2_grammar_html(anchor, part2_grammar)
+
+    # 3. Part 3 HTML (25 Single-Sentence Vocabulary & Grammar Multiple-Choice Questions)
+    p3_q_html = ""
+    for q in part3_mc:
+        p3_q_html += _render_question_card_html(q, total_q, "part3", "第三部分：單字與文法選擇題", default_sec=15)
+
+    part3_html = f"""
+    <section class="section-container" id="sec-part3">
+        <div class="section-title">⚡ 第三部分：選擇題練習 — 單字與文法實戰（第 1 ～ {len(part3_mc)} 題，共 {len(part3_mc)} 題）</div>
+        <div class="part-intro-banner">
+            🎯 <b>命題演算法說明：</b>本區共 <b>{len(part3_mc)} 題高複雜度多子句單選題</b>，優先涵蓋全單字庫核心字彙、高頻短字及您曾答錯的弱點規則，每題均附 <code>(A)(B)(C)(D)</code> 四個選項之詞性、字義與正誤原因詳解。
+        </div>
+        {p3_q_html}
+    </section>
+    """
+
+    # 4. Part 4 HTML (3 Cloze Passages × 4 Blanks = 12 Cloze Multiple-Choice Questions)
+    cloze_start = len(part3_mc) + 1
+    cloze_end = cloze_start + counts["part4_cloze"] - 1
+    p4_blocks_html = ""
+    for p_idx, pas in enumerate(part4_cloze, 1):
+        raw_text = html.escape(pas.get("content", "")).replace("\n", "<br>")
+        # Highlight 【第 XX 題 (空格 X)】 markers in the Cloze passage
+        formatted_body = re.sub(
+            r"(【第\s*\d+\s*題\s*\(空格\s*\d+\)】)",
+            r'<span class="cloze-blank-marker">\1</span>',
+            raw_text,
+        )
+        p4_blocks_html += f"""
+        <div class="p7-doc" style="border-left-color: #d97706;">
+            <div class="p7-doc-type" style="color: #d97706;">🧩 第四部分：克漏字段落填空（篇章 {p_idx} / 共 {len(part4_cloze)} 篇）· {html.escape(pas.get('text_type', 'Part 6 Passage'))}</div>
+            <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
+            <div class="p7-doc-body">{formatted_body}</div>
         </div>
         """
+        for cq in pas.get("questions", []):
+            b_num = cq.get("blank_num", 1)
+            p4_blocks_html += _render_question_card_html(
+                cq,
+                total_q,
+                "part4",
+                f"第四部分：填空選擇題 (篇章 {p_idx} · 空格 {b_num})",
+                default_sec=20,
+            )
 
-        # Build Part 5 Questions (With interactive selection & per-question spoiler card)
-        p5_questions_html = ""
-        for q in part5:
-            qid = q.get("id", 1)
-            sec = q.get("target_seconds", 15)
-            opts = q.get("options", {})
-            ans = q.get("answer", "A")
-            opt_bd_html = _render_option_details_html(q)
-            p5_questions_html += f"""
-            <div class="question-block" id="q-block-{qid}">
-                <div class="q-header">
-                    <span class="q-tag">第 {qid} 題 / 共 {len(part5)} 題</span>
-                    <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ 限時 {sec} 秒 ▶</span>
-                </div>
-                <div class="q-text">{html.escape(q['question'])}</div>
-                <div class="options-grid" data-answer="{ans}">
-                    <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
-                </div>
-
-                <!-- 專屬單題防雷按鈕 -->
-                <details class="spoiler-card">
-                    <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看第 {qid} 題答案與深度解析</span>
-                        <span class="tap-hint">防雷揭曉</span>
-                    </summary>
-                    <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
-                        <div class="ans-analysis">💡 <b>句構與核心解析：</b>{html.escape(q['analysis'])}</div>
-                        {opt_bd_html}
-                        <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
-                    </div>
-                </details>
-            </div>
-            """
-
-        body_content = f"""
-        <section class="section-container">
-            <div class="section-title">📦 今日核心語塊 (3-Word Chunks)</div>
-            {chunks_html}
-        </section>
-
-        <section class="section-container">
-            <div class="section-title">🎯 視覺秒殺錨點</div>
-            {anchor_html}
-        </section>
-
-        <!-- Sticky Progress Toolbar -->
-        <div class="sticky-control-bar" id="live-score-bar">
-            <div class="bar-top-row">
-                <div class="score-stats">
-                    <span>📝 上午練習進度: <b id="score-progress">0 / {len(part5)}</b></span>
-                    <span class="score-pct-badge" id="score-pct">0% 正確</span>
-                </div>
-                <div class="bar-actions">
-                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
-                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
-                    <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
-                    <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
-                    <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
-                </div>
-            </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
-            </div>
+    part4_html = f"""
+    <section class="section-container" id="sec-part4">
+        <div class="section-title">🧩 第四部分：填空選擇題 — 段落克漏字實戰（第 {cloze_start} ～ {cloze_end} 題，共 {counts['part4_cloze']} 題）</div>
+        <div class="part-intro-banner">
+            💡 <b>克漏字弱點突破特訓：</b>本區包含 <b>{len(part4_cloze)} 篇完整商務文本、共 {counts['part4_cloze']} 題段落填空選擇題（超過 10 題高強度要求）</b>，專門訓練前後文語意連貫、轉折副詞（<code>nonetheless / thereby / namely</code>）與微觀訊號搭配！
         </div>
+        {p4_blocks_html}
+    </section>
+    """
 
-        <section class="section-container">
-            <div class="section-title">⚡ Part 5 實戰校正題 (第 1 ～ {len(part5)} 題，共 {len(part5)} 題)</div>
-            {p5_questions_html}
-        </section>
-
-        <div id="final-summary-card" class="summary-card" style="display: none;">
-            <div class="summary-icon">🎉</div>
-            <h3 class="summary-title">本日上午練習（實戰 20 題）完成！</h3>
-            <div class="summary-score">最終成績：<b id="final-score-text">0 / {len(part5)} (0%)</b></div>
-            <div class="summary-tip">保持這個視覺秒殺語感，11/29 金色證書（860+）勢在必得！</div>
-            <div style="margin-top: 12px;">
-                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
-            </div>
+    # 5. Part 5 HTML (2 Long-Form Reading Passages = 6 Multiple-Choice Questions)
+    read_start = cloze_end + 1
+    read_end = total_q
+    p5_blocks_html = ""
+    for r_idx, pas in enumerate(part5_reading, 1):
+        raw_body = html.escape(pas.get("content", "")).replace("\n", "<br>")
+        formatted_body = re.sub(
+            r"(\*[^\n<]+)",
+            r'<div class="fine-print-highlight">\1</div>',
+            raw_body,
+        )
+        p5_blocks_html += f"""
+        <div class="p7-doc">
+            <div class="p7-doc-type">📄 第五部分：商務長文閱讀（文本 {r_idx} / 共 {len(part5_reading)} 篇）· {html.escape(pas.get('text_type', 'Business Document'))}</div>
+            <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
+            <div class="p7-doc-body">{formatted_body}</div>
         </div>
-
-        <section class="section-container">
-            <div class="section-title">🤖 遠端 Agent 智慧弱點追蹤與隨選加練</div>
-            <div class="chunk-card" style="border-left: 4px solid #0f766e;">
-                <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">📲 與 @Toeic_practice_bot 遠端 Agent 即時連動</div>
-                <div style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 12px;">
-                    作答完畢後點擊下方按鈕，即可將本場答錯題號傳送給遠端 Agent，立即為您動態生成<b>「同觀念不同句型」的靶向弱點加練 HTML 卷</b>，並自動納入下午練習追蹤：
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:7px 12px;" onclick="sendWrongToRemoteAgent()">🤖 回傳本場錯題給遠端 Agent</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('分詞構句與減化子句')">⚡ 加練：分詞與減化子句</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('假設語氣與倒裝')">⚡ 加練：假設語氣與倒裝</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('連接詞與介系詞')">⚡ 加練：連介詞秒殺</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('高頻詞性槽位')">⚡ 加練：詞性槽位辨析</button>
-                </div>
-            </div>
-        </section>
         """
+        for rq in pas.get("questions", []):
+            p5_blocks_html += _render_question_card_html(
+                rq,
+                total_q,
+                "part5",
+                f"第五部分：閱讀測驗 (文本 {r_idx})",
+                default_sec=35,
+            )
 
+    part5_html = f"""
+    <section class="section-container" id="sec-part5">
+        <div class="section-title">📑 第五部分：閱讀測驗 — 多篇商務長文實戰（第 {read_start} ～ {read_end} 題，共 {counts['part5_reading']} 題）</div>
+        <div class="part-intro-banner">
+            🔍 <b>長文防漏看雷達：</b>鎖定星號註腳（<code>*</code>）、但書條件（<code>provided that / subject to</code>）與跨段同義字替換，每題皆附四選項正誤詳解。
+        </div>
+        {p5_blocks_html}
+    </section>
+    """
+
+    # 6. Live Statistics & Algorithmic Remote AI Agent Dashboard
+    top_weak_words = srs_stats.get("top_weak_words", [])
+    if top_weak_words:
+        weak_history_badges = " ".join(
+            f'<span class="hist-weak-pill">{html.escape(w)} (錯 {c} 次)</span>'
+            for w, c in top_weak_words
+        )
     else:
-        # Afternoon Session
-        a_data = day_data.get("afternoon", {})
-        recall = a_data.get("quick_recall", [])
-        traps = a_data.get("spaced_traps", [])
-        p7 = a_data.get("part7", {})
+        weak_history_badges = '<span style="color:var(--text-sub);font-size:13.5px;">目前尚無歷史累計錯題紀錄；回報錯題後，演算法將自動調升該單字與規則之每日出現權重！</span>'
 
-        # Quick Recall (Warm-up)
-        recall_html = ""
-        for idx, r in enumerate(recall, 1):
-            recall_html += f"""
-            <div class="recall-item">
-                <div class="recall-prompt"><b>{idx}.</b> {html.escape(r['prompt'])}</div>
-                <div class="recall-clue">💡 線索：{html.escape(r['clue'])}</div>
-                <details class="spoiler-card" style="margin-top: 10px;">
-                    <summary class="spoiler-summary" style="padding: 10px 14px; font-size: 15px;">
-                        <span>🛡️ 點擊查看第 {idx} 題正解</span>
-                        <span class="tap-hint">揭曉</span>
-                    </summary>
-                    <div class="spoiler-body" style="padding: 12px 14px;">
-                        <div class="ans-badge" style="margin-bottom: 0;">👉 正解：<b>{html.escape(r['answer'])}</b></div>
-                    </div>
-                </details>
+    stats_and_agent_html = f"""
+    <section class="section-container" id="sec-analytics">
+        <div class="section-title">📊 實戰統計儀表板 ＆ 🤖 遠端 AI Agent 演算法弱點中心</div>
+        <div class="analytics-card">
+            <div class="analytics-title">📈 本場即時作答統計與多益分數落點預測</div>
+            <div class="stat-main-row">
+                <div>🎯 <b>本場總體表現：</b><span id="stat-overall-score">0 / 0 題正確 (總題數 {total_q} 題 · 正確率 0%)</span></div>
+                <div style="margin-top:4px;">🏆 <b>動態落點預估：</b><span id="stat-toeic-band" style="color:var(--primary);font-weight:800;">尚未作答 (目標 860–990 金色證書)</span></div>
             </div>
-            """
 
-        passages = p7.get("passages")
-        if not passages:
-            passages = [{
-                "text_type": p7.get("text_type", "Business Document"),
-                "title": p7.get("title", ""),
-                "content": p7.get("content", ""),
-                "questions": p7.get("questions", [])
-            }]
-        total_p7_q = sum(len(p.get("questions", [])) for p in passages)
-        total_aft_q = len(traps) + total_p7_q
-
-        # Spaced Traps (Questions 1 to len(traps))
-        traps_q_html = ""
-        for idx, t in enumerate(traps, 1):
-            opts = t.get("options", {})
-            ans = t.get("answer", "A")
-            opt_bd_html = _render_option_details_html(t)
-            traps_q_html += f"""
-            <div class="question-block" id="q-block-{idx}">
-                <div class="q-header">
-                    <span class="q-tag">第 {idx} 題 / 共 {total_aft_q} 題 (進階陷阱題)</span>
-                    <span class="q-time timer-badge" onclick="startTimer(this, 20)" title="點擊啟動倒數">⏱️ 限時 20 秒 ▶</span>
-                </div>
-                <div class="q-text">{html.escape(t['question'])}</div>
-                <div class="options-grid" data-answer="{ans}">
-                    <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
-                    <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
-                </div>
-
-                <!-- 專屬陷阱題防雷按鈕 -->
-                <details class="spoiler-card">
-                    <summary class="spoiler-summary">
-                        <span>🛡️ 點擊查看第 {idx} 題答案與深度解析</span>
-                        <span class="tap-hint">防雷揭曉</span>
-                    </summary>
-                    <div class="spoiler-body">
-                        <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
-                        <div class="trap-point">⚠️ <b>命題陷阱點：</b>{html.escape(t.get('trap_point', ''))}</div>
-                        <div class="ans-analysis">💡 <b>句構與核心解析：</b>{html.escape(t['analysis'])}</div>
-                        {opt_bd_html}
-                        <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(t.get('translation', ''))}</div>
+            <div class="sub-stat-grid">
+                <div class="sub-stat-item">
+                    <div class="sub-stat-head">
+                        <span>⚡ 第三部分：單字與文法 ({counts['part3_mc']} 題)</span>
+                        <b id="stat-part3-text">0 / 0 對 (0%)</b>
                     </div>
-                </details>
-            </div>
-            """
-
-        p7_sections_html = ""
-        global_q_idx = len(traps) + 1
-        for p_idx, pas in enumerate(passages, 1):
-            raw_body = html.escape(pas.get("content", "")).replace("\n", "<br>")
-            # Emphasize fine-print clauses starting with asterisk (*)
-            p_body = re.sub(r'(\*[^\n<]+)', r'<div class="fine-print-highlight">\1</div>', raw_body)
-            p7_doc_label = f" (文本 {p_idx})" if len(passages) > 1 else ""
-            p7_sections_html += f"""
-            <div class="p7-doc">
-                <div class="p7-doc-type">📄 {html.escape(pas.get('text_type', 'Business Document'))}{p7_doc_label}</div>
-                <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
-                <div class="p7-doc-body">{p_body}</div>
-            </div>
-            """
-            for pq in pas.get("questions", []):
-                opts = pq.get("options", {})
-                ans = pq.get("answer", "A")
-                opt_bd_html = _render_option_details_html(pq)
-                p7_sections_html += f"""
-                <div class="question-block" id="q-block-{global_q_idx}">
-                    <div class="q-header">
-                        <span class="q-tag">第 {global_q_idx} 題 / 共 {total_aft_q} 題 (Part 7)</span>
-                    </div>
-                    <div class="q-text">{html.escape(pq['question'])}</div>
-                    <div class="options-grid" data-answer="{ans}">
-                        <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
-                        <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
-                        <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
-                        <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
-                    </div>
-
-                    <!-- 專屬 Part 7 防漏看雷達按鈕 -->
-                    <details class="spoiler-card">
-                        <summary class="spoiler-summary">
-                            <span>🔍 點擊查看第 {global_q_idx} 題答案與深度解析</span>
-                            <span class="tap-hint">防雷揭曉</span>
-                        </summary>
-                        <div class="spoiler-body">
-                            <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
-                            <div class="radar-box">{html.escape(pq.get('radar', ''))}</div>
-                            <div class="ans-analysis">💡 <b>詳解：</b>{html.escape(pq['analysis'])}</div>
-                            {opt_bd_html}
-                        </div>
-                    </details>
+                    <div class="progress-track"><div class="progress-fill" id="stat-part3-bar" style="width:0%;"></div></div>
                 </div>
-                """
-                global_q_idx += 1
-
-        body_content = f"""
-        <section class="section-container">
-            <div class="section-title">🧠 上午重點記憶快篩 ({len(recall)} 題語塊速查)</div>
-            {recall_html}
-        </section>
-
-        <!-- Sticky Progress Toolbar -->
-        <div class="sticky-control-bar" id="live-score-bar">
-            <div class="bar-top-row">
-                <div class="score-stats">
-                    <span>📝 下午練習進度: <b id="score-progress">0 / {total_aft_q}</b></span>
-                    <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                <div class="sub-stat-item">
+                    <div class="sub-stat-head">
+                        <span>🧩 第四部分：段落填空選擇題 ({counts['part4_cloze']} 題)</span>
+                        <b id="stat-part4-text">0 / 0 對 (0%)</b>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="stat-part4-bar" style="width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);"></div></div>
                 </div>
-                <div class="bar-actions">
-                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
-                    <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
-                    <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
-                    <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
-                    <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <div class="sub-stat-item">
+                    <div class="sub-stat-head">
+                        <span>📑 第五部分：商務長文閱讀 ({counts['part5_reading']} 題)</span>
+                        <b id="stat-part5-text">0 / 0 對 (0%)</b>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" id="stat-part5-bar" style="width:0%;background:linear-gradient(90deg,#2563eb,#6366f1);"></div></div>
                 </div>
             </div>
-            <div class="progress-track">
-                <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
+
+            <div class="weakness-radar-panel">
+                <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">🩺 本場即時偵測之錯題單字與文法弱點：</div>
+                <div id="live-weakness-list" style="font-size:13.5px;line-height:1.6;">
+                    <span style="color:var(--text-sub);">尚未產生錯題。開始作答後，系統將即時捕捉您答錯的單字與文法規則並顯示於此。</span>
+                </div>
+            </div>
+
+            <div class="weakness-radar-panel" style="margin-top:10px;background:rgba(37,99,235,0.06);">
+                <div style="font-weight:800;font-size:14px;margin-bottom:4px;">🧠 遠端 Agent 演算法記憶庫（SM-2 間隔重複 ＋ 頻率與錯題指數加權）：</div>
+                <div style="font-size:13px;color:var(--text-sub);margin-bottom:6px;">
+                    已去重總單字數：<b>{srs_stats['total_unique_vocab']} 字</b>（含 ⭐⭐⭐ 超高頻短字 <b>{srs_stats['tier3_ultra_freq']} 字</b>、⭐⭐ 商務核心 <b>{srs_stats['tier2_high_freq']} 字</b>、⭐ 860+ 進階 <b>{srs_stats['tier1_advanced_860']} 字</b>）｜已追蹤個人弱點字：<b>{srs_stats['tracked_weak_words']} 字</b>
+                </div>
+                <div>{weak_history_badges}</div>
+            </div>
+
+            <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
+                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵回傳本場錯題給遠端 Agent（演算法加權＋生成專屬特訓卷）</button>
+                <button type="button" class="action-btn-sm" style="background:#1d4ed8;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendNewVocabToAgent()">📥 傳送新單字給遠端 Agent（自動去重擴充題庫）</button>
+                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('微觀訊號與介系詞搭配')">⚡ 加練：微觀訊號 (Signals 1-4)</button>
+                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('一山不容二虎與分詞構句')">⚡ 加練：一山不容二虎與分詞</button>
+                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('重要性假設語氣與條件句')">⚡ 加練：假設語氣與條件句</button>
+                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('段落填空克漏字特訓')">⚡ 加練：第四部分段落填空</button>
             </div>
         </div>
+    </section>
+    """
 
-        <section class="section-container">
-            <div class="section-title">⚡ Part 5/6 易錯陷阱練習 (第 1 ～ {len(traps)} 題 / 共 {total_aft_q} 題)</div>
-            {traps_q_html}
-        </section>
+    body_content = f"""
+    <!-- Quick Section Jump Pills -->
+    <div class="quick-nav-bar">
+        <a href="#sec-part1" class="qnav-pill">1️⃣ 單字表 ({counts['vocab_items']})</a>
+        <a href="#sec-part2" class="qnav-pill">2️⃣ 文法詳解 ({counts['grammar_modules']})</a>
+        <a href="#sec-part3" class="qnav-pill">3️⃣ 單字文法題 ({counts['part3_mc']})</a>
+        <a href="#sec-part4" class="qnav-pill">4️⃣ 填空選擇題 ({counts['part4_cloze']})</a>
+        <a href="#sec-part5" class="qnav-pill">5️⃣ 閱讀測驗 ({counts['part5_reading']})</a>
+        <a href="#sec-analytics" class="qnav-pill">📊 統計與Agent</a>
+    </div>
 
-        <section class="section-container">
-            <div class="section-title">📑 Part 7 細節抓漏雙篇微閱讀 (第 {len(traps)+1} ～ {total_aft_q} 題 / 共 {total_aft_q} 題)</div>
-            {p7_sections_html}
-        </section>
+    {part1_html}
+    {part2_html}
 
-        <div id="final-summary-card" class="summary-card" style="display: none;">
-            <div class="summary-icon">🏆</div>
-            <h3 class="summary-title">本日下午練習（實戰 20 題）全數完成！</h3>
-            <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_aft_q} (0%)</b></div>
-            <div class="summary-tip">防漏看雷達已完全校正，今日核心弱點清零成功！</div>
-            <div style="margin-top: 12px;">
-                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
+    <!-- Sticky Progress Toolbar -->
+    <div class="sticky-control-bar" id="live-score-bar">
+        <div class="bar-top-row">
+            <div class="score-stats">
+                <span>📝 {session_label}進度: <b id="score-progress">0 / {total_q}</b></span>
+                <span class="score-pct-badge" id="score-pct">0% 正確</span>
+            </div>
+            <div class="bar-actions">
+                <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
+                <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
+                <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
+                <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
             </div>
         </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
+        </div>
+    </div>
 
-        <section class="section-container">
-            <div class="section-title">🤖 遠端 Agent 智慧弱點追蹤與隨選加練</div>
-            <div class="chunk-card" style="border-left: 4px solid #0f766e;">
-                <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">📲 與 @Toeic_practice_bot 遠端 Agent 即時連動</div>
-                <div style="font-size: 13.5px; color: var(--text-sub); margin-bottom: 12px;">
-                    作答完畢後點擊下方按鈕，即可將本場答錯題號傳送給遠端 Agent，立即為您動態生成<b>「同觀念不同句型」的靶向弱點加練 HTML 卷</b>：
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                    <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:7px 12px;" onclick="sendWrongToRemoteAgent()">🤖 回傳本場錯題給遠端 Agent</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('分詞構句與減化子句')">⚡ 加練：分詞與減化子句</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('假設語氣與倒裝')">⚡ 加練：假設語氣與倒裝</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('連接詞與介系詞')">⚡ 加練：連介詞秒殺</button>
-                    <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('高頻詞性槽位')">⚡ 加練：詞性槽位辨析</button>
-                </div>
-            </div>
-        </section>
-        """
+    {part3_html}
+    {part4_html}
+    {part5_html}
 
-    # Assemble Full Responsive HTML Page
+    <div id="final-summary-card" class="summary-card" style="display: none;">
+        <div class="summary-icon">🏆</div>
+        <h3 class="summary-title">本日{session_label}（五大模組 · 實戰 {total_q} 題）全數完成！</h3>
+        <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_q} (0%)</b></div>
+        <div class="summary-tip">點擊下方按鈕將本場錯題回傳給遠端 AI Agent，演算法將自動調升弱點單字與文法規則之複習頻率！</div>
+        <div style="margin-top: 12px;">
+            <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
+        </div>
+    </div>
+
+    {stats_and_agent_html}
+    """
+
     full_html = f"""<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day {day} {session_title} - 多益金色特訓</title>
+    <title>Day {day} {session_label} - 多益 860+ 五合一特訓</title>
     <style>
         :root {{
             --primary: {badge_color};
@@ -689,18 +825,17 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             font-size: 16px;
             line-height: 1.65;
             padding: 16px 14px 48px 14px;
-            max-width: 540px;
+            max-width: 580px;
             margin: 0 auto;
         }}
 
-        /* Header Card */
         .hero-banner {{
             background: linear-gradient(135deg, {badge_color}, #1d4ed8);
             color: #ffffff;
             padding: 22px 18px;
             border-radius: 18px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }}
 
         .hero-top {{
@@ -721,19 +856,48 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .hero-title {{
-            font-size: 23px;
+            font-size: 21px;
             font-weight: 800;
             letter-spacing: -0.3px;
             margin-bottom: 6px;
         }}
 
         .hero-topic {{
-            font-size: 15px;
+            font-size: 14.5px;
             opacity: 0.98;
             line-height: 1.5;
         }}
 
-        /* Sticky Control Toolbar */
+        .quick-nav-bar {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 18px;
+        }}
+
+        .qnav-pill {{
+            text-decoration: none;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 12.5px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 999px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }}
+
+        .part-intro-banner {{
+            background: rgba(37, 99, 235, 0.08);
+            border-left: 4px solid var(--primary);
+            padding: 10px 12px;
+            border-radius: 0 10px 10px 0;
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 14px;
+            line-height: 1.55;
+        }}
+
         .sticky-control-bar {{
             position: sticky;
             top: 10px;
@@ -755,6 +919,8 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            flex-wrap: wrap;
+            gap: 6px;
         }}
 
         .score-stats {{
@@ -777,7 +943,8 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         .bar-actions {{
             display: flex;
-            gap: 6px;
+            gap: 5px;
+            flex-wrap: wrap;
         }}
 
         .action-btn-sm {{
@@ -791,10 +958,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             cursor: pointer;
             font-family: inherit;
             transition: all 0.15s ease;
-        }}
-
-        .action-btn-sm:active {{
-            transform: scale(0.94);
         }}
 
         .action-btn-sm.btn-active {{
@@ -819,44 +982,79 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }}
 
-        /* Section Container */
         .section-container {{
-            margin-bottom: 26px;
+            margin-bottom: 28px;
         }}
 
         .section-title {{
             font-size: 18px;
             font-weight: 800;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             color: var(--text-main);
+            line-height: 1.4;
         }}
 
-        /* Chunk Cards */
         .chunk-card {{
             background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            padding: 16px;
+            padding: 15px;
             margin-bottom: 12px;
             box-shadow: 0 3px 8px rgba(0,0,0,0.04);
         }}
 
-        .chunk-header {{
+        .vocab-badge-row {{
             display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
         }}
 
         .chunk-num {{
             background: rgba(37, 99, 235, 0.15);
             color: var(--primary);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
-            padding: 3px 8px;
+            padding: 2px 7px;
             border-radius: 6px;
+        }}
+
+        .freq-badge {{
+            background: rgba(217, 119, 6, 0.15);
+            color: #b45309;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }}
+
+        .src-badge {{
+            background: rgba(16, 185, 129, 0.14);
+            color: #047857;
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 6px;
+        }}
+
+        .srs-score-badge {{
+            margin-left: auto;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-sub);
+            background: rgba(148, 163, 184, 0.15);
+            padding: 2px 7px;
+            border-radius: 6px;
+        }}
+
+        .chunk-header {{
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
         }}
 
         .chunk-title {{
@@ -865,56 +1063,64 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             color: var(--primary);
         }}
 
+        .pos-badge {{
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-sub);
+        }}
+
         .chunk-meaning {{
-            font-size: 16.5px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }}
 
         .chunk-scenario {{
-            font-size: 15px;
+            font-size: 14.5px;
             color: var(--text-main);
             margin-bottom: 6px;
             line-height: 1.55;
             background: rgba(148, 163, 184, 0.08);
-            padding: 9px 12px;
+            padding: 8px 11px;
             border-radius: 8px;
         }}
 
-        .chunk-para {{
+        .vocab-example {{
             font-size: 14px;
             color: var(--text-sub);
             margin-top: 6px;
+            line-height: 1.5;
+            padding-left: 8px;
+            border-left: 3px solid #94a3b8;
         }}
 
-        .chunk-para code {{
-            background: rgba(5, 150, 105, 0.12);
-            color: #059669;
-            padding: 3px 6px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 13.5px;
+        .srs-reason-line {{
+            font-size: 12.5px;
+            color: var(--text-sub);
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px dashed var(--border-color);
         }}
 
         .alert-box {{
             background: rgba(220, 38, 38, 0.1);
             color: #b91c1c;
-            padding: 8px 12px;
+            padding: 8px 11px;
             border-radius: 8px;
             font-size: 13.5px;
             font-weight: 700;
-            margin-top: 8px;
+            margin-top: 7px;
+            line-height: 1.5;
         }}
 
-        /* Visual Anchor Card */
+        /* Grammar Module Cards */
         .anchor-card {{
             background: var(--card-bg);
             border: 2px solid var(--accent-gold);
             border-radius: 16px;
-            padding: 18px 16px;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.08);
+            padding: 16px;
+            margin-bottom: 14px;
         }}
 
         .anchor-badge {{
@@ -925,34 +1131,141 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             font-weight: 800;
             padding: 3px 8px;
             border-radius: 6px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
+            margin-bottom: 6px;
         }}
 
         .anchor-title {{
-            font-size: 19px;
+            font-size: 18px;
             font-weight: 800;
             color: var(--accent-gold);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }}
 
         .anchor-rule {{
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-main);
-            margin-bottom: 8px;
-            line-height: 1.6;
+            margin-bottom: 6px;
         }}
 
         .golden-banner {{
             background: rgba(217, 119, 6, 0.15);
             border-left: 4px solid var(--accent-gold);
-            padding: 11px 14px;
-            margin-top: 12px;
-            font-size: 16px;
+            padding: 9px 12px;
+            margin-top: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            border-radius: 0 8px 8px 0;
+        }}
+
+        .grammar-mod-card {{
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 15px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+        }}
+
+        .gm-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }}
+
+        .gm-cat {{
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.12);
+            padding: 3px 8px;
+            border-radius: 6px;
+        }}
+
+        .gm-id {{
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+        }}
+
+        .gm-title {{
+            font-size: 17.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }}
+
+        .gm-formula {{
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 9px 12px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14.5px;
+            margin-bottom: 12px;
+            line-height: 1.55;
+        }}
+
+        .grammar-point-box {{
+            background: rgba(148, 163, 184, 0.07);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 11px 12px;
+            margin-bottom: 10px;
+        }}
+
+        .gp-label {{
+            font-size: 15px;
             font-weight: 800;
             color: var(--text-main);
-            border-radius: 0 8px 8px 0;
-            line-height: 1.5;
+            margin-bottom: 4px;
+        }}
+
+        .gp-detail {{
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.55;
+        }}
+
+        .gp-compare {{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 13.5px;
+        }}
+
+        .gp-correct {{
+            color: #047857;
+            background: rgba(16, 185, 129, 0.12);
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }}
+
+        .gp-wrong {{
+            color: #b91c1c;
+            background: rgba(239, 68, 68, 0.1);
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }}
+
+        .cloze-blank-marker {{
+            background: rgba(217, 119, 6, 0.22);
+            color: #b45309;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 5px;
+            border-bottom: 2px solid #d97706;
+        }}
+
+        @media (prefers-color-scheme: dark) {{
+            .gp-correct {{ color: #6ee7b7; }}
+            .gp-wrong {{ color: #fca5a5; }}
+            .cloze-blank-marker {{ color: #fcd34d; }}
+            .freq-badge {{ color: #fcd34d; }}
+            .src-badge {{ color: #6ee7b7; }}
+            .alert-box {{ color: #fca5a5; }}
         }}
 
         /* Question Blocks */
@@ -963,7 +1276,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             padding: 16px;
             margin-bottom: 16px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-            transition: border-color 0.2s ease;
         }}
 
         .q-header {{
@@ -971,10 +1283,12 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 6px;
         }}
 
         .q-tag {{
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 800;
             background: rgba(37, 99, 235, 0.15);
             color: var(--primary);
@@ -983,56 +1297,23 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .q-time {{
-            font-size: 13px;
+            font-size: 12.5px;
             color: var(--text-sub);
             font-weight: 700;
             background: rgba(100, 116, 139, 0.1);
             padding: 3px 8px;
             border-radius: 6px;
+            cursor: pointer;
             user-select: none;
         }}
 
-        .timer-badge {{
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }}
-
-        .timer-badge:active {{
-            transform: scale(0.92);
-        }}
-
-        .timer-running {{
-            background: rgba(220, 38, 38, 0.15) !important;
-            color: #dc2626 !important;
-            font-weight: 800;
-            animation: pulse 1s infinite;
-        }}
-
-        .timer-urgent {{
-            background: rgba(220, 38, 38, 0.28) !important;
-            color: #b91c1c !important;
-            font-weight: 800;
-            animation: urgent-pulse 0.5s infinite;
-        }}
-
-        @keyframes pulse {{
-            0%, 100% {{ opacity: 1; }}
-            50% {{ opacity: 0.6; }}
-        }}
-
-        @keyframes urgent-pulse {{
-            0%, 100% {{ transform: scale(1); opacity: 1; }}
-            50% {{ transform: scale(1.04); opacity: 0.7; }}
-        }}
-
         .q-text {{
-            font-size: 17px;
+            font-size: 16.5px;
             font-weight: 700;
             line-height: 1.6;
             margin-bottom: 14px;
         }}
 
-        /* Interactive Options Grid */
         .options-grid {{
             display: grid;
             grid-template-columns: 1fr;
@@ -1053,14 +1334,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             color: var(--text-main);
             line-height: 1.45;
             cursor: pointer;
-            transition: all 0.15s ease;
-            outline: none;
             font-family: inherit;
-            -webkit-appearance: none;
-        }}
-
-        .opt-btn:active {{
-            transform: scale(0.985);
         }}
 
         .opt-letter {{
@@ -1073,7 +1347,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             flex: 1;
         }}
 
-        /* Correct / Wrong Tap Feedback */
         .opt-btn.opt-correct {{
             background: #ecfdf5 !important;
             border-color: #10b981 !important;
@@ -1107,9 +1380,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         @media (prefers-color-scheme: dark) {{
-            .opt-btn {{
-                background: rgba(255, 255, 255, 0.04);
-            }}
             .opt-btn.opt-correct {{
                 background: #064e3b !important;
                 border-color: #10b981 !important;
@@ -1122,7 +1392,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             }}
         }}
 
-        /* Per-Question Anti-Spoiler Accordion */
         .spoiler-card {{
             background: var(--card-bg);
             border: 2px dashed #64748b;
@@ -1132,9 +1401,9 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
         }}
 
         .spoiler-summary {{
-            padding: 12px 14px;
+            padding: 11px 14px;
             font-weight: 800;
-            font-size: 15.5px;
+            font-size: 15px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -1165,39 +1434,28 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             margin-bottom: 6px;
         }}
 
+        .trap-point {{
+            font-size: 14.5px;
+            color: #d97706;
+            margin-bottom: 6px;
+            line-height: 1.5;
+            font-weight: 700;
+        }}
+
         .ans-analysis {{
-            font-size: 15.5px;
+            font-size: 15px;
             color: var(--text-main);
             margin-bottom: 6px;
             line-height: 1.6;
         }}
 
         .ans-trans {{
-            font-size: 14.5px;
+            font-size: 14px;
             color: var(--text-sub);
             line-height: 1.5;
+            margin-top: 6px;
         }}
 
-        .trap-point {{
-            font-size: 15px;
-            color: #d97706;
-            margin-bottom: 6px;
-            line-height: 1.5;
-            font-weight: 600;
-        }}
-
-        .radar-box {{
-            background: rgba(217, 119, 6, 0.14);
-            color: #92400e;
-            padding: 11px 13px;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.6;
-        }}
-
-        /* Per-Option Detailed Breakdown Box */
         .opt-breakdown-box {{
             background: rgba(148, 163, 184, 0.08);
             border: 1px solid var(--border-color);
@@ -1217,14 +1475,10 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             padding: 8px 10px;
             border-radius: 8px;
             margin-bottom: 6px;
-            font-size: 14.5px;
+            font-size: 14px;
             line-height: 1.55;
             border-left: 3.5px solid #94a3b8;
             background: var(--card-bg);
-        }}
-
-        .opt-bd-row:last-child {{
-            margin-bottom: 0;
         }}
 
         .opt-bd-correct {{
@@ -1238,55 +1492,41 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
 
         .opt-bd-head {{
             font-weight: 800;
-            font-size: 14.5px;
+            font-size: 14px;
             margin-bottom: 2px;
         }}
 
-        .opt-bd-correct .opt-bd-head {{
-            color: #059669;
-        }}
+        .opt-bd-correct .opt-bd-head {{ color: #059669; }}
+        .opt-bd-wrong .opt-bd-head {{ color: #dc2626; }}
 
-        .opt-bd-wrong .opt-bd-head {{
-            color: #dc2626;
-        }}
-
-        .opt-bd-desc {{
-            color: var(--text-main);
-            font-size: 14px;
-        }}
-
-        /* Part 7 Micro-Reading Box */
         .p7-doc {{
             background: var(--card-bg);
             border-left: 5px solid var(--primary);
             border-radius: 0 14px 14px 0;
             padding: 16px;
-            margin-bottom: 18px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
             border-top: 1px solid var(--border-color);
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
         }}
 
         .p7-doc-type {{
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 800;
             color: var(--primary);
-            text-transform: uppercase;
             margin-bottom: 6px;
         }}
 
         .p7-doc-title {{
-            font-size: 18px;
+            font-size: 17.5px;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }}
 
         .p7-doc-body {{
-            font-size: 16px;
+            font-size: 15.5px;
             color: var(--text-main);
             line-height: 1.75;
-            white-space: normal;
         }}
 
         .fine-print-highlight {{
@@ -1296,32 +1536,73 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             margin: 8px 0;
             border-radius: 0 6px 6px 0;
             font-weight: 600;
-            color: var(--text-main);
         }}
 
-        /* Quick Recall */
-        .recall-item {{
+        /* Analytics & Remote Agent Dashboard */
+        .analytics-card {{
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
+            border: 2px solid #0f766e;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 14px rgba(15, 118, 110, 0.08);
+        }}
+
+        .analytics-title {{
+            font-size: 17px;
+            font-weight: 800;
+            color: #0f766e;
+            margin-bottom: 10px;
+        }}
+
+        .stat-main-row {{
+            background: rgba(15, 118, 110, 0.07);
+            padding: 10px 12px;
+            border-radius: 10px;
+            font-size: 14.5px;
             margin-bottom: 12px;
         }}
 
-        .recall-prompt {{
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            line-height: 1.5;
+        .sub-stat-grid {{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 14px;
         }}
 
-        .recall-clue {{
-            font-size: 14px;
-            color: var(--text-sub);
-            margin-bottom: 6px;
+        .sub-stat-head {{
+            display: flex;
+            justify-content: space-between;
+            font-size: 13.5px;
+            margin-bottom: 4px;
         }}
 
-        /* Summary Celebration Card */
+        .weakness-radar-panel {{
+            background: rgba(220, 38, 38, 0.06);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }}
+
+        .weak-tag-item {{
+            padding: 4px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }}
+
+        .weak-tag-item:last-child {{
+            border-bottom: none;
+        }}
+
+        .hist-weak-pill {{
+            display: inline-block;
+            background: rgba(220, 38, 38, 0.12);
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            margin: 2px 4px 2px 0;
+        }}
+
         .summary-card {{
             background: linear-gradient(135deg, #059669, #0d9488);
             color: #ffffff;
@@ -1329,33 +1610,8 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             border-radius: 16px;
             margin: 24px 0;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(5, 150, 105, 0.25);
         }}
 
-        .summary-icon {{
-            font-size: 32px;
-            margin-bottom: 6px;
-        }}
-
-        .summary-title {{
-            font-size: 20px;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }}
-
-        .summary-score {{
-            font-size: 16px;
-            opacity: 0.95;
-            margin-bottom: 10px;
-        }}
-
-        .summary-tip {{
-            font-size: 14px;
-            opacity: 0.9;
-            line-height: 1.5;
-        }}
-
-        /* Footer */
         .footer {{
             text-align: center;
             font-size: 13px;
@@ -1364,19 +1620,6 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
             padding-top: 14px;
             border-top: 1px solid var(--border-color);
             line-height: 1.6;
-        }}
-
-        @media print {{
-            .sticky-control-bar, .timer-badge, .tap-hint, .bar-actions {{
-                display: none !important;
-            }}
-            details.spoiler-card {{
-                border: 1px solid #cbd5e1 !important;
-                display: block !important;
-            }}
-            .spoiler-body {{
-                display: block !important;
-            }}
         }}
     </style>
 </head>
@@ -1393,7 +1636,7 @@ def render_day_html(day_data: dict, session: str = "morning") -> str:
     {body_content}
 
     <footer class="footer">
-        多益 860+ 金色證書特訓 · 考前 25 天專屬 AI 衝刺教練<br>
+        多益 860+ 金色證書特訓 · 五大模組全方位升級 ＆ 遠端 AI Agent 演算法弱點追蹤<br>
         持之以恆，語感秒殺，金色必達！
     </footer>
 """

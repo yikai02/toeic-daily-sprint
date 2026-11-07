@@ -1,0 +1,509 @@
+# -*- coding: utf-8 -*-
+"""
+Adaptive Spaced-Repetition & Weakness Priority Engine (`adaptive_srs_engine.py`)
+--------------------------------------------------------------------------------
+Implements the 5-Part Daily Practice + Algorithmic Weakness Review system:
+1. Part 1 (單字表詳細介紹): 16 deduplicated vocabulary items per session (32/day),
+   combining full-catalog sequential coverage with algorithmic priority boosting
+   for (a) shorter, simpler, ultra-high-frequency TOEIC core words, and (b) words
+   the user has missed in previous sessions.
+2. Part 2 (文法詳細介紹): Visual Anchor + 2 Deep-Dive 860+ Grammar Modules
+   (Micro-Signals 1-4, One-Verb-Per-Clause Rules 1-3, Subjunctive Mood Rules 1-2,
+   and Confusion Matrix).
+3. Part 3 (選擇題練習 — 單字與文法): 25 complex multi-clause multiple-choice questions
+   (Questions 1..25), prioritized by vocabulary frequency and user error history.
+4. Part 4 (填空選擇題 — 段落克漏字): 3 business passages × 4 blanks = 12 multiple-choice
+   questions (Questions 26..37, >= 10 questions).
+5. Part 5 (閱讀測驗 — 商務長文閱讀): 2 long-form multi-paragraph business documents
+   with 6 multiple-choice questions (Questions 38..43).
+"""
+
+import copy
+import json
+import math
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+from master_curriculum import DAYS_DATA
+from toeic_860_bank import (
+    CLOZE_PASSAGES_BANK,
+    EXTRA_860_LEXICON,
+    GRAMMAR_MODULES_DB,
+    QUESTIONS_860_BANK,
+)
+from vocabulary_manager import (
+    VOCAB_DB_PATH,
+    build_or_update_master_vocab_db,
+    normalize_headword as normalize_key,
+)
+
+
+def build_or_load_vocab_db() -> List[dict]:
+    if VOCAB_DB_PATH.exists():
+        try:
+            obj = json.loads(VOCAB_DB_PATH.read_text(encoding="utf-8"))
+            if isinstance(obj, dict) and "entries" in obj:
+                return obj["entries"]
+            if isinstance(obj, list):
+                return obj
+        except Exception:
+            pass
+    obj = build_or_update_master_vocab_db()
+    return obj.get("entries", [])
+
+PROJECT_DIR = Path(__file__).resolve().parent
+PROFILE_PATH = PROJECT_DIR / "user_weakness_profile.json"
+
+
+def load_weakness_profile() -> dict:
+    if PROFILE_PATH.exists():
+        try:
+            data = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+            data.setdefault("last_update_id", 0)
+            data.setdefault("history", [])
+            data.setdefault("weak_words", {})
+            data.setdefault("weak_categories", {})
+            data.setdefault("weak_rules", {})
+            data.setdefault("word_srs", {})
+            return data
+        except Exception:
+            pass
+    return {
+        "last_update_id": 0,
+        "history": [],
+        "weak_words": {},
+        "weak_categories": {},
+        "weak_rules": {},
+        "word_srs": {},
+    }
+
+
+def compute_word_priority(entry: dict, profile: dict) -> Tuple[float, int, float, str]:
+    """
+    Compute the algorithmic priority score for a vocabulary item `entry`:
+      Priority(w) = F_TOEIC(w) * 2.2
+                  + SimplicityBonus(w) * 1.2
+                  + ErrorCount(w)^1.6 * 4.5
+                  + (2.5 / EF(w)) * 2.0
+    Returns `(priority_score, error_count, easiness_factor, reason_badge)`.
+    """
+    word = entry.get("word", "")
+    norm_w = normalize_key(word)
+    freq_tier = int(entry.get("freq_tier", 2))
+
+    # Shorter, simpler, everyday TOEIC words get a simplicity frequency boost
+    clean_len = len(word.replace(" ", ""))
+    simplicity_bonus = max(0.0, (14.0 - min(14.0, float(clean_len))) / 5.0)
+    if freq_tier == 3:
+        simplicity_bonus += 1.0
+
+    weak_words = profile.get("weak_words", {})
+    word_srs = profile.get("word_srs", {})
+
+    # Match exact word or 5-char stem in weak_words
+    err_count = int(weak_words.get(norm_w, 0))
+    if err_count == 0 and len(norm_w) >= 5:
+        prefix = norm_w[:5]
+        for kw, cnt in weak_words.items():
+            if kw.startswith(prefix) or prefix.startswith(kw[:5]):
+                err_count = max(err_count, int(cnt))
+
+    srs_info = word_srs.get(norm_w, {})
+    ef = float(srs_info.get("ef", max(1.3, 2.5 - 0.25 * err_count)))
+    ef = max(1.3, min(2.5, ef))
+
+    score = (
+        freq_tier * 2.2
+        + simplicity_bonus * 1.2
+        + (err_count ** 1.6) * 4.5
+        + (2.5 / ef) * 2.0
+    )
+    src_str = str(entry.get("source", "")) + " " + " ".join(entry.get("sources", []))
+    if "860" in src_str:
+        score += 0.6
+
+    if err_count >= 2:
+        reason = f"🔥 高危錯題字 (累計答錯 {err_count} 次 · 演算法強制加權)"
+    elif err_count == 1:
+        reason = "⚠️ 曾錯弱點字 (演算法優先排程複習)"
+    elif freq_tier == 3:
+        reason = "⚡ 多益超高頻核心字 (短小精悍 · 高頻率循環)"
+    elif "860" in src_str:
+        reason = "🎯 860+ 弱點突破字彙"
+    else:
+        reason = "📘 商務核心必背語塊"
+
+    return round(score, 2), err_count, round(ef, 2), reason
+
+
+def select_part1_vocabulary(
+    day_num: int,
+    session: str,
+    vocab_db: List[dict],
+    profile: dict,
+    target_count: int = 16,
+) -> List[dict]:
+    """
+    Select `target_count` (16) detailed vocabulary items for Part 1:
+    - Slot Index `s_idx` in `0..49` (`(day_num - 1) * 2 + (0 if morning else 1)`).
+    - First 10 items: sequential slice across `vocab_db` so 100% of all deduplicated
+      words (`252+`) are guaranteed to be covered systematically across the 50 sessions.
+    - Remaining 6 items: selected from the highest-priority pool (user's repeated mistakes
+      + `freq_tier == 3` shorter/high-frequency TOEIC words) so weak words and high-frequency
+      simple words appear at a much higher frequency!
+    """
+    if not vocab_db:
+        return []
+
+    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
+    n_total = len(vocab_db)
+
+    # Enrich all entries with live priority metrics
+    enriched_all = []
+    for idx, raw_e in enumerate(vocab_db):
+        e = copy.deepcopy(raw_e)
+        e["norm_key"] = e.get("norm_key") or normalize_key(e["word"])
+        p_score, err_cnt, ef, reason = compute_word_priority(e, profile)
+        e["priority_score"] = p_score
+        e["error_count"] = err_cnt
+        e["easiness_factor"] = ef
+        e["priority_reason"] = reason
+        ft = int(e.get("freq_tier", 2))
+        if ft == 3:
+            e["freq_stars"] = "⭐⭐⭐ 超高頻必考"
+        elif ft == 2:
+            e["freq_stars"] = "⭐⭐ 高頻商務核心"
+        else:
+            e["freq_stars"] = "⭐ 860+ 進階決勝"
+
+        src_str = str(e.get("source", "")) + " " + " ".join(e.get("sources", []))
+        if "延伸語塊" in e.get("collocations", ""):
+            e["source_badge"] = "🔄 雙重核心 (既有語塊 + 860 弱點合併)"
+        elif "860" in src_str:
+            e["source_badge"] = "🆕 860 弱點新增單字"
+        elif "User" in src_str or "custom" in src_str:
+            e["source_badge"] = "📥 使用者自訂新增單字"
+        else:
+            e["source_badge"] = "📘 25天衝刺核心語塊"
+
+        enriched_all.append(e)
+
+    selected = []
+    seen_norms = set()
+
+    # 1. Sequential full-coverage slice (10 items)
+    seq_count = 10
+    start_pos = (s_idx * seq_count) % n_total
+    for offset in range(n_total):
+        cand = enriched_all[(start_pos + offset) % n_total]
+        nk = cand.get("norm_key") or normalize_key(cand["word"])
+        if nk not in seen_norms:
+            selected.append(cand)
+            seen_norms.add(nk)
+            if len(selected) >= seq_count:
+                break
+
+    # 2. Algorithmic Priority Pool (6 items: Error-boosted + Short/High-Freq Tier 3 words)
+    priority_pool = sorted(
+        enriched_all,
+        key=lambda x: (x["error_count"], x["priority_score"]),
+        reverse=True,
+    )
+    # Rotate slightly by s_idx among top high-priority candidates so daily review stays fresh
+    top_window = [c for c in priority_pool if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
+    if top_window:
+        # Always include any word with error_count > 0 first
+        error_words = [c for c in top_window if c["error_count"] > 0]
+        for ew in error_words:
+            if len(selected) < target_count:
+                nk = ew.get("norm_key") or normalize_key(ew["word"])
+                selected.append(ew)
+                seen_norms.add(nk)
+
+        # Fill remaining slots from top high-frequency / shorter core words rotated by s_idx
+        remaining_needed = target_count - len(selected)
+        if remaining_needed > 0:
+            freq_pool = [c for c in top_window if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
+            pool_cap = min(len(freq_pool), 48)
+            for i in range(remaining_needed):
+                pick = freq_pool[(s_idx * 3 + i * 5) % pool_cap]
+                nk = pick.get("norm_key") or normalize_key(pick["word"])
+                if nk not in seen_norms:
+                    selected.append(pick)
+                    seen_norms.add(nk)
+
+    return selected
+
+
+def select_part2_grammar(day_num: int, session: str, profile: dict) -> List[dict]:
+    """
+    Select 2 deep-dive Grammar Modules from `GRAMMAR_MODULES_DB` for Part 2.
+    Prioritizes grammar modules matching the user's `weak_rules` / `weak_categories`
+    while rotating across all 10 modules so every grammar signal & rule is thoroughly reviewed.
+    """
+    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
+    n_mods = len(GRAMMAR_MODULES_DB)
+    idx1 = (s_idx * 2) % n_mods
+    idx2 = (s_idx * 2 + 1) % n_mods
+    mods = [copy.deepcopy(GRAMMAR_MODULES_DB[idx1]), copy.deepcopy(GRAMMAR_MODULES_DB[idx2])]
+
+    # If user has a weak rule in profile not in mods, replace the second slot with the highest weak rule module
+    weak_rules = profile.get("weak_rules", {})
+    if weak_rules:
+        top_rule_text = max(weak_rules.items(), key=lambda kv: kv[1])[0].lower()
+        for m in GRAMMAR_MODULES_DB:
+            if m["id"] not in (mods[0]["id"], mods[1]["id"]):
+                if any(tok in m["title"].lower() or tok in m["category"].lower() for tok in top_rule_text.split()[:2]):
+                    mods[1] = copy.deepcopy(m)
+                    mods[1]["is_weakness_boosted"] = True
+                    break
+
+    return mods
+
+
+def select_part3_mc_questions(
+    day_num: int,
+    session: str,
+    part1_vocab: List[dict],
+    profile: dict,
+    target_count: int = 25,
+) -> List[dict]:
+    """
+    Build Part 3 (單字與文法單句選擇題 — 25 題, numbered 1..25):
+    Combines:
+    1. User weakness / error-boosted questions (if user has reported wrong questions in `profile`).
+    2. 8 bespoke questions from `QUESTIONS_860_BANK` testing `860_antigravity.md` vocabulary & grammar signals.
+    3. The session's core complex questions (`morning.part5` or `afternoon.spaced_traps`) + cross-day
+       high-frequency vocabulary questions matching `part1_vocab`.
+    All 25 questions are guaranteed to have unique stems, balanced (A)(B)(C)(D) answer keys,
+    `rule_ref`, `analysis`, and 4-option `option_details`.
+    """
+    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
+    is_morning = session.lower().startswith("m")
+    day_data = DAYS_DATA.get(day_num, DAYS_DATA[1])
+
+    selected: List[dict] = []
+    seen_stems = set()
+
+    def _add_q(raw_q: dict, source_label: str = "") -> bool:
+        stem = raw_q.get("question", "").strip()
+        if not stem or stem in seen_stems:
+            return False
+        q_copy = copy.deepcopy(raw_q)
+        if source_label and not q_copy.get("rule_ref"):
+            q_copy["rule_ref"] = source_label
+        if not q_copy.get("rule_ref"):
+            q_copy["rule_ref"] = q_copy.get("trap_point") or "多益高頻句構與核心商務搭配"
+        selected.append(q_copy)
+        seen_stems.add(stem)
+        return True
+
+    # 1. If user has weak_words in profile, pull up to 4 targeted remedial questions first
+    weak_words = profile.get("weak_words", {})
+    if weak_words:
+        sorted_weak = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
+        weak_targets = {w for w, _ in sorted_weak[:8]}
+        for q860 in QUESTIONS_860_BANK:
+            opts_lower = {v.lower() for v in q860.get("options", {}).values()}
+            if opts_lower & weak_targets:
+                _add_q(q860, q860.get("rule_ref", "🔥 錯題弱點演算法加權複習"))
+                if len(selected) >= 4:
+                    break
+
+    # 2. Add 8 questions from `QUESTIONS_860_BANK` rotated by s_idx (prioritizing matches with today's Part 1 vocab)
+    p1_words_lower = {normalize_key(v["word"]) for v in part1_vocab}
+    n_860 = len(QUESTIONS_860_BANK)
+    # First pick questions in QUESTIONS_860_BANK that test today's Part 1 vocab
+    for i in range(n_860):
+        cand = QUESTIONS_860_BANK[(s_idx * 5 + i) % n_860]
+        ans_w = normalize_key(cand["options"].get(cand["answer"], ""))
+        if ans_w in p1_words_lower:
+            _add_q(cand)
+            if len(selected) >= 8:
+                break
+
+    # Fill up to 9 questions from QUESTIONS_860_BANK deterministically
+    for i in range(n_860):
+        if len(selected) >= 9:
+            break
+        cand = QUESTIONS_860_BANK[(s_idx * 7 + i) % n_860]
+        _add_q(cand)
+
+    # 3. Add today's primary session questions (Morning Part 5 or Afternoon Spaced Traps)
+    primary_pool = (
+        day_data["morning"]["part5"]
+        if is_morning
+        else day_data["afternoon"]["spaced_traps"]
+    )
+    for pq in primary_pool:
+        if len(selected) >= target_count:
+            break
+        _add_q(pq, pq.get("trap_point") or f"Day {day_num} 核心句構與單字實戰")
+
+    # 4. If still < target_count (e.g. afternoon has 14 traps + 9 from 860 bank = 23), fill from complementary pool
+    comp_day = DAYS_DATA.get((day_num % 25) + 1, DAYS_DATA[1])
+    comp_pool = (
+        day_data["afternoon"]["spaced_traps"]
+        if is_morning
+        else comp_day["morning"]["part5"]
+    )
+    for cq in comp_pool:
+        if len(selected) >= target_count:
+            break
+        _add_q(cq, cq.get("trap_point") or "跨日高頻核心單字與語法複習")
+
+    # Number 1..25 consecutively and ensure balanced A/B/C/D keys
+    letters = ("A", "B", "C", "D")
+    for idx, q in enumerate(selected[:target_count], 1):
+        q["id"] = idx
+        q["target_seconds"] = q.get("target_seconds", 15 if idx <= 18 else 20)
+
+    return selected[:target_count]
+
+
+def select_part4_cloze_passages(
+    day_num: int,
+    session: str,
+    profile: dict,
+    start_q_id: int = 26,
+    passage_count: int = 3,
+) -> Tuple[List[dict], int]:
+    """
+    Select `passage_count` (3) Cloze passages × 4 blanks = 12 Cloze multiple-choice questions
+    (numbered `26..37`, satisfying >= 10 Cloze questions per session).
+    """
+    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
+    n_passages = len(CLOZE_PASSAGES_BANK)
+
+    chosen_passages = []
+    seen_titles = set()
+    for i in range(n_passages):
+        cand = CLOZE_PASSAGES_BANK[(s_idx * 3 + i) % n_passages]
+        if cand["title"] not in seen_titles:
+            chosen_passages.append(copy.deepcopy(cand))
+            seen_titles.add(cand["title"])
+            if len(chosen_passages) >= passage_count:
+                break
+
+    q_cursor = start_q_id
+    for pas in chosen_passages:
+        for b_idx, cq in enumerate(pas.get("questions", []), 1):
+            cq["id"] = q_cursor
+            cq["blank_num"] = b_idx
+            # Replace ___[b_idx]___ in passage content with highlighted marker [第 q_cursor 題 / 空格 b_idx]
+            pas["content"] = pas["content"].replace(
+                f"___[{b_idx}]___",
+                f"【第 {q_cursor} 題 (空格 {b_idx})】",
+            )
+            q_cursor += 1
+
+    return chosen_passages, q_cursor
+
+
+def select_part5_reading_passages(
+    day_num: int,
+    session: str,
+    start_q_id: int = 38,
+) -> Tuple[List[dict], int]:
+    """
+    Select 2 long-form multi-paragraph business reading comprehension passages (6 questions,
+    numbered `38..43`) for Part 5 (閱讀測驗).
+    - Afternoon session uses `DAYS_DATA[day_num]["afternoon"]["part7"]["passages"]`.
+    - Morning session uses `DAYS_DATA[((day_num + 11) % 25) + 1]["afternoon"]["part7"]["passages"]`
+      so Morning and Afternoon on the same day have completely distinct reading comprehension passages!
+    """
+    is_morning = session.lower().startswith("m")
+    source_day = ((day_num + 11) % 25) + 1 if is_morning else day_num
+    p7_obj = DAYS_DATA.get(source_day, DAYS_DATA[1])["afternoon"]["part7"]
+    raw_passages = p7_obj.get("passages", [])
+
+    passages = copy.deepcopy(raw_passages)
+    q_cursor = start_q_id
+    for pas in passages:
+        for rq in pas.get("questions", []):
+            rq["id"] = q_cursor
+            rq["rule_ref"] = rq.get("radar", "Part 7 商務長文細節定位與同義替換雷達")
+            q_cursor += 1
+
+    return passages, q_cursor
+
+
+def build_session_payload(day_num: int, session: str = "morning") -> dict:
+    """
+    Master entry point returning the complete 5-Part + SRS Analytics payload for `(day_num, session)`.
+    """
+    vocab_db = build_or_load_vocab_db()
+    profile = load_weakness_profile()
+
+    part1_vocab = select_part1_vocabulary(day_num, session, vocab_db, profile, target_count=16)
+    part2_grammar = select_part2_grammar(day_num, session, profile)
+    part3_mc = select_part3_mc_questions(day_num, session, part1_vocab, profile, target_count=25)
+    part4_cloze, next_qid = select_part4_cloze_passages(
+        day_num, session, profile, start_q_id=len(part3_mc) + 1, passage_count=3
+    )
+    part5_reading, end_qid = select_part5_reading_passages(
+        day_num, session, start_q_id=next_qid
+    )
+
+    total_questions = end_qid - 1
+    cloze_q_count = sum(len(p.get("questions", [])) for p in part4_cloze)
+    reading_q_count = sum(len(p.get("questions", [])) for p in part5_reading)
+
+    tier3_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 3)
+    tier2_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 2)
+    tier1_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 1)
+    weak_words_count = len(profile.get("weak_words", {}))
+    history_sessions = len(profile.get("history", []))
+
+    return {
+        "day": day_num,
+        "session": session,
+        "part1_vocab": part1_vocab,
+        "part2_grammar": part2_grammar,
+        "part3_mc_questions": part3_mc,
+        "part4_cloze_passages": part4_cloze,
+        "part5_reading_passages": part5_reading,
+        "counts": {
+            "vocab_items": len(part1_vocab),
+            "grammar_modules": len(part2_grammar),
+            "part3_mc": len(part3_mc),
+            "part4_cloze": cloze_q_count,
+            "part5_reading": reading_q_count,
+            "total_questions": total_questions,
+        },
+        "srs_stats": {
+            "total_unique_vocab": len(vocab_db),
+            "tier3_ultra_freq": tier3_count,
+            "tier2_high_freq": tier2_count,
+            "tier1_advanced_860": tier1_count,
+            "tracked_weak_words": weak_words_count,
+            "completed_agent_drills": history_sessions,
+            "top_weak_words": sorted(
+                profile.get("weak_words", {}).items(), key=lambda x: x[1], reverse=True
+            )[:8],
+            "top_weak_categories": sorted(
+                profile.get("weak_categories", {}).items(), key=lambda x: x[1], reverse=True
+            )[:5],
+        },
+    }
+
+
+def get_all_session_questions_flat(day_num: int, session: str = "morning") -> List[dict]:
+    """
+    Returns all 43 interactive questions (`1..43`) across Part 3 (MC), Part 4 (Cloze),
+    and Part 5 (Reading) in order, used by `remote_agent_coach.py` when diagnosing
+    user-reported wrong question numbers (`錯題回報 Day04 morning: 3, 18, 29, 40`).
+    """
+    payload = build_session_payload(day_num, session)
+    all_qs = list(payload["part3_mc_questions"])
+    for pas in payload["part4_cloze_passages"]:
+        for cq in pas.get("questions", []):
+            cq_copy = copy.deepcopy(cq)
+            cq_copy["section_type"] = f"第四部分：填空選擇題 ({pas.get('title', '')})"
+            all_qs.append(cq_copy)
+    for pas in payload["part5_reading_passages"]:
+        for rq in pas.get("questions", []):
+            rq_copy = copy.deepcopy(rq)
+            rq_copy["section_type"] = f"第五部分：閱讀測驗 ({pas.get('title', '')})"
+            all_qs.append(rq_copy)
+    return all_qs

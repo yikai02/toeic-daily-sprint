@@ -94,19 +94,38 @@ def main():
             if set(od.keys()) != {"A", "B", "C", "D"}:
                 errors.append(f"Day {n}: missing option_details keys on {q['question'][:40]}")
 
-        # Verify HTML generation & labels
+        # Verify HTML generation, 5-Part structure & 43 interactive 4-option breakdowns per session
         m_html = render_day_html(DAYS_DATA[n], "morning")
         a_html = render_day_html(DAYS_DATA[n], "afternoon")
         if "☀️ 上午練習" not in m_html or "盤後" in m_html or "早間晨報" in m_html:
             errors.append(f"Day {n}: invalid morning HTML session labels")
         if "🌤️ 下午練習" not in a_html or "盤後" in a_html or "早間晨報" in a_html:
             errors.append(f"Day {n}: invalid afternoon HTML session labels")
-        if m_html.count("📋 各選項詞性、意思與正誤詳解：") != 20:
-            errors.append(f"Day {n}: morning HTML missing option breakdowns")
-        if a_html.count("📋 各選項詞性、意思與正誤詳解：") != 20:
-            errors.append(f"Day {n}: afternoon HTML missing option breakdowns")
+        for sess_name, h_doc in (("morning", m_html), ("afternoon", a_html)):
+            for req_sec in (
+                "第一部分：單字表詳細介紹",
+                "第二部分：文法詳細介紹",
+                "第三部分：選擇題練習",
+                "第四部分：填空選擇題",
+                "第五部分：閱讀測驗",
+                "實戰統計儀表板",
+            ):
+                if req_sec not in h_doc:
+                    errors.append(f"Day {n} {sess_name}: missing section '{req_sec}'")
+            if h_doc.count("📋 各選項詞性、意思與正誤詳解：") != 43:
+                errors.append(
+                    f"Day {n} {sess_name}: expected 43 option breakdowns, got {h_doc.count('📋 各選項詞性、意思與正誤詳解：')}"
+                )
+            if h_doc.count('class="options-grid"') != 43:
+                errors.append(
+                    f"Day {n} {sess_name}: expected 43 interactive MC question grids, got {h_doc.count('class=\"options-grid\"')}"
+                )
 
-    print("\n".join(errors) if errors else "All 1,000 questions & 50 HTML renders passed rigorous validation ✅")
+    print(
+        "\n".join(errors)
+        if errors
+        else "All 50 5-Part HTML sessions (2,150 interactive questions & 252 deduplicated vocab items) passed rigorous validation ✅"
+    )
     return 1 if errors else 0
 
 

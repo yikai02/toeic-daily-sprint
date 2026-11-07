@@ -2,19 +2,26 @@
 """
 TOEIC Remote Agent Coach (`remote_agent_coach.py`)
 --------------------------------------------------
-Provides interactive AI-driven weakness tracking and on-demand custom HTML drill generation
+Provides interactive AI-driven weakness tracking, Spaced-Repetition (SM-2 + Frequency + Error Boost)
+algorithmic scheduling, custom vocabulary ingestion, and on-demand HTML drill generation
 via Telegram (@Toeic_practice_bot):
 1. Listens for user messages in Telegram:
-   - Wrong question reports: e.g. `錯題回報 Day04 morning: 3, 8, 15` or `錯題 3, 8, 15`
-   - Custom topic drills: e.g. `加練 分詞構句`, `加練 假設語氣`, `加練 介系詞`, `加練 詞性`
+   - Wrong question reports across all 43 session questions (Part 3 MC 1..25, Part 4 Cloze 26..37, Part 5 Reading 38..43):
+     e.g. `錯題回報 Day04 morning: 3, 18, 29, 40` or `錯題 3, 18, 29`
+   - New vocabulary ingestion (with automatic deduplication):
+     e.g. `新增單字 scrutinize : 仔細審查；徹底檢驗`
+   - Custom topic drills:
+     e.g. `加練 微觀訊號`, `加練 一山不容二虎`, `加練 假設語氣`, `加練 段落填空`
    - Weakness summary / diagnostic drill: e.g. `弱點` or `診斷`
-2. Updates persistent `user_weakness_profile.json` so daily Afternoon Practice automatically
-   incorporates targeted review of the user's morning mistakes.
+2. Updates persistent `user_weakness_profile.json` (including SM-2 Easiness Factor `EF`,
+   `weak_words`, `weak_rules`, and `weak_categories`) so future daily sessions automatically
+   boost the review frequency of missed words and grammar rules.
 3. Generates standalone mobile-optimized interactive HTML drill files (`sendDocument` only,
    zero plain text messages) and dispatches them immediately to Telegram.
 """
 
 import argparse
+import copy
 import datetime
 import html
 import json
@@ -28,9 +35,12 @@ from typing import Dict, List, Optional, Tuple
 import requests
 from dotenv import load_dotenv
 
+from adaptive_srs_engine import get_all_session_questions_flat
 from html_generator import INTERACTIVE_SCRIPT, _render_option_details_html
 from master_curriculum import DAYS_DATA
 from telegram_sender import send_telegram_document as send_html_report
+from toeic_860_bank import CLOZE_PASSAGES_BANK, QUESTIONS_860_BANK
+from vocabulary_manager import import_custom_vocab_lines, normalize_headword
 
 PROJECT_DIR = Path(__file__).resolve().parent
 PROFILE_PATH = PROJECT_DIR / "user_weakness_profile.json"
@@ -51,7 +61,14 @@ def get_current_sprint_day() -> int:
 def load_weakness_profile() -> dict:
     if PROFILE_PATH.exists():
         try:
-            return json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+            data = json.loads(PROFILE_PATH.read_text(encoding="utf-8"))
+            data.setdefault("last_update_id", 0)
+            data.setdefault("history", [])
+            data.setdefault("weak_words", {})
+            data.setdefault("weak_categories", {})
+            data.setdefault("weak_rules", {})
+            data.setdefault("word_srs", {})
+            return data
         except Exception:
             pass
     return {
@@ -59,6 +76,8 @@ def load_weakness_profile() -> dict:
         "history": [],
         "weak_words": {},
         "weak_categories": {},
+        "weak_rules": {},
+        "word_srs": {},
     }
 
 
@@ -70,131 +89,145 @@ def save_weakness_profile(profile: dict) -> None:
 
 
 def classify_question_category(q: dict) -> str:
-    text = (q.get("analysis", "") + " " + q.get("trap_point", "")).lower()
-    if any(k in text for k in ["假設", "倒裝", "should", "had ", "were "]):
-        return "假設語氣與倒裝結構"
-    if any(k in text for k in ["分詞", "減化", "v-ing", "v-ed", "主動", "被動"]):
-        return "分詞構句與減化子句"
-    if any(k in text for k in ["連接詞", "介系詞", "owing to", "despite", "although", "whereas", "prior to"]):
-        return "連接詞 vs. 介系詞辨析"
-    if any(k in text for k in ["副詞", "形容詞", "名詞", "詞性", "夾心"]):
-        return "高頻詞性槽位秒殺"
-    return "高階商務字彙與固定搭配"
+    rule_ref = q.get("rule_ref", "")
+    text = (rule_ref + " " + q.get("analysis", "") + " " + q.get("trap_point", "")).lower()
+    if any(k in text for k in ["微觀訊號", "signals", "critical of", "advise against", "with a view to"]):
+        return "微觀訊號秒殺法則 (Signals 1-4)"
+    if any(k in text for k in ["一山不容二虎", "分詞", "減化", "v-ing", "v-ed", "permitting", "thereby"]):
+        return "一山不容二虎：真動詞 vs. 分詞構句"
+    if any(k in text for k in ["假設", "倒裝", "should", "imperative", "vital", "provided that", "as far as"]):
+        return "重要性假設語氣與條件句辨析"
+    if any(k in text for k in ["連接詞", "介系詞", "owing to", "despite", "although", "whereas", "in the event"]):
+        return "連接詞 vs. 介系詞與轉折副詞辨析"
+    if any(k in text for k in ["副詞", "形容詞", "名詞", "詞性", "夾心", "all +"]):
+        return "高頻詞性槽位與複數核心名詞秒殺"
+    return "860+ 高階商務單字與易混淆搭配"
 
 
 def get_session_questions(day_num: int, session: str) -> List[dict]:
-    day_data = DAYS_DATA.get(day_num, DAYS_DATA[1])
-    if session.lower().startswith("m"):
-        return day_data["morning"]["part5"]
-    traps = day_data["afternoon"]["spaced_traps"]
-    p7_passages = day_data["afternoon"]["part7"].get("passages", [])
-    p7_qs = [q for p in p7_passages for q in p.get("questions", [])]
-    return traps + p7_qs
+    """Return all 43 interactive questions (`1..43`) for `(day_num, session)`."""
+    return get_all_session_questions_flat(day_num, session)
 
 
 def find_similar_remedial_questions(
     missed_qs: List[dict],
     exclude_stems: set,
-    target_count: int = 12,
+    target_count: int = 15,
 ) -> List[dict]:
-    """Select complex multi-clause Part 5 / Trap questions targeting the same word families or grammar categories."""
+    """
+    Select complex multi-clause questions from `QUESTIONS_860_BANK`, `CLOZE_PASSAGES_BANK`,
+    and the 25-day curriculum targeting the exact words, word families, and grammar rules
+    the user missed, while excluding the exact stems already answered.
+    """
     target_words = set()
     target_categories = set()
+    target_rules = set()
     for mq in missed_qs:
         for w in mq.get("options", {}).values():
-            target_words.add(w.lower())
-            # Also match 5-char root prefix for word families
-            if len(w) >= 5:
-                target_words.add(w[:5].lower())
+            nw = normalize_headword(w)
+            target_words.add(nw)
+            if len(nw) >= 5:
+                target_words.add(nw[:5])
         target_categories.add(classify_question_category(mq))
+        if mq.get("rule_ref"):
+            target_rules.add(mq["rule_ref"][:12].lower())
 
     scored_candidates = []
     seen_stems = set(exclude_stems)
 
+    # Pool 1: QUESTIONS_860_BANK + CLOZE_PASSAGES_BANK questions
+    all_bank_qs = list(QUESTIONS_860_BANK)
+    for pas in CLOZE_PASSAGES_BANK:
+        for cq in pas.get("questions", []):
+            all_bank_qs.append(cq)
+
     for d in range(1, 26):
         day_obj = DAYS_DATA[d]
-        for q in day_obj["morning"]["part5"] + day_obj["afternoon"]["spaced_traps"]:
-            stem = q["question"].strip()
-            if stem in seen_stems:
-                continue
-            opts_lower = [v.lower() for v in q["options"].values()]
-            score = 0
-            # Check exact or root overlap
-            for ow in opts_lower:
-                if ow in target_words or (len(ow) >= 5 and ow[:5] in target_words):
-                    score += 5
-            if classify_question_category(q) in target_categories:
-                score += 2
-            if score > 0:
-                scored_candidates.append((score, d, q))
-                seen_stems.add(stem)
+        all_bank_qs.extend(day_obj["morning"]["part5"])
+        all_bank_qs.extend(day_obj["afternoon"]["spaced_traps"])
+
+    for idx, q in enumerate(all_bank_qs):
+        stem = q.get("question", "").strip()
+        if not stem or stem in seen_stems:
+            continue
+        opts_lower = [normalize_headword(v) for v in q.get("options", {}).values()]
+        score = 0
+        for ow in opts_lower:
+            if ow in target_words or (len(ow) >= 5 and ow[:5] in target_words):
+                score += 6
+        if classify_question_category(q) in target_categories:
+            score += 3
+        r_ref = q.get("rule_ref", "").lower()
+        if r_ref and any(tr in r_ref for tr in target_rules):
+            score += 5
+        if score > 0:
+            scored_candidates.append((score, idx, copy.deepcopy(q)))
+            seen_stems.add(stem)
 
     scored_candidates.sort(key=lambda x: x[0], reverse=True)
     selected = [item[2] for item in scored_candidates[:target_count]]
 
-    # If fewer than target_count, fill with high-difficulty traps
     if len(selected) < target_count:
-        for d in range(1, 26):
-            for q in DAYS_DATA[d]["afternoon"]["spaced_traps"]:
-                stem = q["question"].strip()
-                if stem not in seen_stems:
-                    selected.append(q)
-                    seen_stems.add(stem)
-                    if len(selected) >= target_count:
-                        break
-            if len(selected) >= target_count:
-                break
+        for q in QUESTIONS_860_BANK:
+            stem = q["question"].strip()
+            if stem not in seen_stems:
+                selected.append(copy.deepcopy(q))
+                seen_stems.add(stem)
+                if len(selected) >= target_count:
+                    break
 
     return selected
 
 
-def search_topic_questions(topic_query: str, target_count: int = 15) -> List[dict]:
-    """Search across all 850 Part 5 / Trap questions for a user-requested grammar or vocabulary topic."""
+def search_topic_questions(topic_query: str, target_count: int = 16) -> List[dict]:
+    """Search across `QUESTIONS_860_BANK`, `CLOZE_PASSAGES_BANK`, and all 850 curriculum questions."""
     keywords = [k.strip().lower() for k in re.split(r"[\s,，、/]+", topic_query) if k.strip()]
-    # Expand common topic aliases
     expanded = list(keywords)
     for kw in keywords:
-        if "分詞" in kw or "減化" in kw:
-            expanded.extend(["分詞", "減化", "v-ing", "v-ed", "while"])
+        if "微觀" in kw or "訊號" in kw or "signal" in kw:
+            expanded.extend(["微觀訊號", "signals", "critical", "advise", "with a view to"])
+        elif "一山" in kw or "分詞" in kw or "減化" in kw:
+            expanded.extend(["一山不容二虎", "分詞", "減化", "permitting", "thereby", "v-ing", "v-ed"])
         elif "假設" in kw or "倒裝" in kw or "條件" in kw:
-            expanded.extend(["假設", "倒裝", "條件", "should", "provided", "unless", "had"])
+            expanded.extend(["假設", "倒裝", "條件", "imperative", "should", "provided", "as far as"])
+        elif "填空" in kw or "克漏字" in kw or "part 6" in kw or "part6" in kw:
+            expanded.extend(["blank", "段落", "nonetheless", "thereby", "succession", "discrepancy"])
         elif "介系詞" in kw or "連接詞" in kw or "連介" in kw:
-            expanded.extend(["介系詞", "連接詞", "owing to", "despite", "although", "prior to", "whereas"])
+            expanded.extend(["介系詞", "連接詞", "owing to", "despite", "although", "in the event", "whereas"])
         elif "詞性" in kw or "副詞" in kw or "形容詞" in kw:
             expanded.extend(["副詞", "形容詞", "夾心", "名詞", "詞性"])
-        elif "代名詞" in kw:
-            expanded.extend(["代名詞", "another", "other", "others", "each other"])
+
+    all_pool = list(QUESTIONS_860_BANK)
+    for pas in CLOZE_PASSAGES_BANK:
+        for cq in pas.get("questions", []):
+            all_pool.append(cq)
+    for d in range(1, 26):
+        all_pool.extend(DAYS_DATA[d]["morning"]["part5"])
+        all_pool.extend(DAYS_DATA[d]["afternoon"]["spaced_traps"])
 
     scored = []
     seen_stems = set()
-    for d in range(1, 26):
-        day_obj = DAYS_DATA[d]
-        topic_str = day_obj.get("topic", "").lower()
-        for q in day_obj["morning"]["part5"] + day_obj["afternoon"]["spaced_traps"]:
-            stem = q["question"].strip()
-            if stem in seen_stems:
-                continue
-            haystack = " ".join([
-                topic_str,
-                stem.lower(),
-                q.get("analysis", "").lower(),
-                q.get("trap_point", "").lower(),
-                q.get("translation", "").lower(),
-                " ".join(q.get("options", {}).values()).lower(),
-            ])
-            score = sum(3 if kw in haystack else 0 for kw in expanded)
-            if score > 0:
-                scored.append((score, q))
-                seen_stems.add(stem)
+    for q in all_pool:
+        stem = q.get("question", "").strip()
+        if not stem or stem in seen_stems:
+            continue
+        haystack = " ".join([
+            stem.lower(),
+            q.get("rule_ref", "").lower(),
+            q.get("analysis", "").lower(),
+            q.get("trap_point", "").lower(),
+            q.get("translation", "").lower(),
+            " ".join(q.get("options", {}).values()).lower(),
+        ])
+        score = sum(4 if kw in haystack else 0 for kw in expanded)
+        if score > 0:
+            scored.append((score, copy.deepcopy(q)))
+            seen_stems.add(stem)
 
     scored.sort(key=lambda x: x[0], reverse=True)
     result = [item[1] for item in scored[:target_count]]
     if not result:
-        # Fallback to Day 24-25 comprehensive review questions
-        for d in (24, 25):
-            for q in DAYS_DATA[d]["morning"]["part5"]:
-                if len(result) < target_count:
-                    result.append(q)
+        result = [copy.deepcopy(q) for q in QUESTIONS_860_BANK[:target_count]]
     return result
 
 
@@ -209,20 +242,24 @@ def render_agent_custom_html(
     diag_html = ""
     if diagnostic_notes:
         cards = ""
-        for idx, note in enumerate(diagnostic_notes, 1):
+        for note in diagnostic_notes:
             cards += f"""
             <div class="chunk-card" style="border-left: 4px solid #dc2626;">
                 <div class="chunk-header">
                     <span class="chunk-num" style="background:#fee2e2;color:#b91c1c;">錯題 #{note['orig_id']}</span>
                     <span class="chunk-title">{html.escape(note['category'])}</span>
                 </div>
-                <div class="chunk-scenario" style="margin-top:6px;">📌 <b>原題正解：({html.escape(note['answer'])}) {html.escape(note['correct_word'])}</b></div>
-                <div class="chunk-para" style="margin-top:4px;">💡 <b>弱點診斷：</b>{html.escape(note['summary'])}</div>
+                <div style="font-size:14.5px;margin-top:6px;">📌 <b>原題正解：({html.escape(note['answer'])}) {html.escape(note['correct_word'])}</b></div>
+                <div style="font-size:14px;color:#d97706;font-weight:700;margin-top:4px;">🎯 <b>對應規則／弱點：</b>{html.escape(note.get('rule_ref', ''))}</div>
+                <div style="font-size:14px;margin-top:4px;">💡 <b>弱點診斷：</b>{html.escape(note['summary'])}</div>
+                <div style="font-size:12.5px;color:#0f766e;font-weight:700;margin-top:6px;padding-top:5px;border-top:1px dashed #cbd5e1;">
+                    📈 <b>SM-2 演算法更新：</b>該字彙累計答錯 <b>{note.get('err_count', 1)} 次</b> · 記憶難度因子調降為 <code>EF={note.get('ef', 2.2)}</code>（後續每日練習將自動強制加權出現！）
+                </div>
             </div>
             """
         diag_html = f"""
         <section class="section-container">
-            <div class="section-title">🩺 遠端 Agent 錯題基因診斷報告（共 {len(diagnostic_notes)} 題）</div>
+            <div class="section-title">🩺 遠端 AI Agent 錯題基因診斷 ＆ 演算法加權報告（共 {len(diagnostic_notes)} 題）</div>
             {cards}
         </section>
         """
@@ -232,12 +269,13 @@ def render_agent_custom_html(
     for idx, q in enumerate(questions, 1):
         opts = q.get("options", {})
         ans = q.get("answer", "A")
+        ans_word = opts.get(ans, "")
+        rule_ref = q.get("rule_ref") or classify_question_category(q)
         opt_bd_html = _render_option_details_html(q)
-        cat_label = classify_question_category(q)
         q_html += f"""
-        <div class="question-block" id="q-block-{idx}">
+        <div class="question-block" id="q-block-{idx}" data-part="part3" data-word="{html.escape(ans_word)}" data-rule="{html.escape(rule_ref)}">
             <div class="q-header">
-                <span class="q-tag">第 {idx} 題 / 共 {total_q} 題 ({html.escape(cat_label)})</span>
+                <span class="q-tag">第 {idx} 題 / 共 {total_q} 題 · {html.escape(rule_ref[:26])}</span>
                 <span class="q-time timer-badge" onclick="startTimer(this, 15)" title="點擊啟動倒數">⏱️ 限時 15 秒 ▶</span>
             </div>
             <div class="q-text">{html.escape(q['question'])}</div>
@@ -249,11 +287,12 @@ def render_agent_custom_html(
             </div>
             <details class="spoiler-card">
                 <summary class="spoiler-summary">
-                    <span>🔓 點擊查看第 {idx} 題答案與選項詳解</span>
-                    <span class="tap-hint">防雷展開</span>
+                    <span>🔓 點擊查看第 {idx} 題答案、規則定位與四選項詳解</span>
+                    <span class="tap-hint">詳解展開</span>
                 </summary>
                 <div class="spoiler-body">
-                    <div class="ans-badge"><b>正解：({ans}) {html.escape(opts.get(ans, ''))}</b></div>
+                    <div class="ans-badge"><b>正解：({ans}) {html.escape(ans_word)}</b></div>
+                    <div style="font-size:14px;color:#d97706;font-weight:700;">🎯 <b>對應考點與規則：</b>{html.escape(rule_ref)}</div>
                     <div class="ans-analysis">💡 <b>秒殺解析：</b>{html.escape(q.get('analysis', ''))}</div>
                     {opt_bd_html}
                     <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
@@ -296,7 +335,7 @@ def render_agent_custom_html(
             font-size: 16px;
             line-height: 1.65;
             padding: 16px 14px 48px 14px;
-            max-width: 540px;
+            max-width: 560px;
             margin: 0 auto;
         }}
         .hero-banner {{
@@ -316,11 +355,11 @@ def render_agent_custom_html(
             font-weight: 700;
             margin-bottom: 8px;
         }}
-        .hero-title {{ font-size: 22px; font-weight: 800; line-height: 1.35; margin-bottom: 6px; }}
+        .hero-title {{ font-size: 21px; font-weight: 800; line-height: 1.35; margin-bottom: 6px; }}
         .hero-sub {{ font-size: 14px; opacity: 0.92; }}
         .section-container {{ margin-bottom: 24px; }}
         .section-title {{
-            font-size: 18px; font-weight: 800; margin-bottom: 12px;
+            font-size: 17.5px; font-weight: 800; margin-bottom: 12px;
             padding-left: 10px; border-left: 4px solid var(--primary);
         }}
         .chunk-card, .question-block {{
@@ -330,7 +369,7 @@ def render_agent_custom_html(
             padding: 16px;
             margin-bottom: 14px;
         }}
-        .chunk-header {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }}
+        .chunk-header {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }}
         .chunk-num {{ padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 800; }}
         .chunk-title {{ font-size: 16px; font-weight: 800; }}
         .sticky-control-bar {{
@@ -349,13 +388,13 @@ def render_agent_custom_html(
         }}
         .progress-track {{ height: 6px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }}
         .progress-fill {{ height: 100%; background: var(--primary); transition: width 0.25s ease; }}
-        .q-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }}
-        .q-tag {{ font-size: 13px; font-weight: 700; color: var(--primary); }}
+        .q-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }}
+        .q-tag {{ font-size: 12.5px; font-weight: 700; color: var(--primary); }}
         .timer-badge {{
             background: #f1f5f9; color: #334155; padding: 4px 10px; border-radius: 99px;
             font-size: 12px; font-weight: 700; cursor: pointer; user-select: none;
         }}
-        .q-text {{ font-size: 17px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }}
+        .q-text {{ font-size: 16.5px; font-weight: 600; margin-bottom: 14px; line-height: 1.55; }}
         .options-grid {{ display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }}
         .opt-btn {{
             display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
@@ -389,7 +428,7 @@ def render_agent_custom_html(
 </head>
 <body data-day="{day_num}" data-session="agent">
     <div class="hero-banner">
-        <div class="hero-badge">🤖 Antigravity 遠端 Agent 客製化特訓</div>
+        <div class="hero-badge">🤖 Antigravity 遠端 AI Agent 智慧特訓</div>
         <h1 class="hero-title">{html.escape(title)}</h1>
         <div class="hero-sub">{html.escape(subtitle)}</div>
     </div>
@@ -415,7 +454,7 @@ def render_agent_custom_html(
     </div>
 
     <section class="section-container">
-        <div class="section-title">⚡ 遠端 Agent 靶向實戰題 (共 {total_q} 題)</div>
+        <div class="section-title">⚡ 遠端 Agent 靶向實戰選擇題 (共 {total_q} 題)</div>
         {q_html}
     </section>
 
@@ -438,8 +477,9 @@ def parse_and_handle_message(
 ) -> Optional[Path]:
     """
     Parse an incoming user message from Telegram and either:
-    - Record wrong questions + send a custom Remedial HTML file
-    - Generate & send a custom Topic Drill HTML file
+    1. Import new vocabulary (`新增單字 ...`) with automatic deduplication + send drill HTML
+    2. Record wrong questions (`1..43`) with SM-2 priority boosting + send custom Remedial HTML
+    3. Generate & send a custom Topic Drill HTML file
     """
     clean_text = text.strip()
     if not clean_text:
@@ -448,8 +488,24 @@ def parse_and_handle_message(
     default_day = get_current_sprint_day()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # Pattern 1: Wrong question report, e.g.:
-    # "錯題回報 Day04 morning: 3, 8, 15" or "錯題 3, 8, 15" or "Day4 M 2, 5"
+    # Pattern 0: Custom vocabulary ingestion ("新增單字 ...")
+    if clean_text.startswith("新增單字"):
+        raw_vocab = re.sub(r"^新增單字\s*[:：]?\s*", "", clean_text).replace("；", "\n").replace(";", "\n")
+        added_cnt, skipped_cnt, added_words = import_custom_vocab_lines(raw_vocab)
+        if send_remedial_file:
+            q_query = " ".join(added_words) if added_words else "prominent discrepancy imperative"
+            drill_qs = search_topic_questions(q_query, target_count=12)
+            title = f"📥 單字庫擴充完成：新增 {added_cnt} 字（跳過重複 {skipped_cnt} 字）"
+            subtitle = (
+                f"已自動去重並納入 SM-2 高頻排程：{', '.join(added_words) if added_words else '所有單字皆已在單字庫中，無須重複記憶！'}"
+            )
+            html_str = render_agent_custom_html(title, subtitle, [], drill_qs, default_day)
+            out_path = OUTPUT_DIR / "TOEIC_Agent_Vocab_Import.html"
+            out_path.write_text(html_str, encoding="utf-8")
+            send_html_report(bot_token, chat_id, str(out_path))
+            return out_path
+
+    # Pattern 1: Wrong question report across Questions 1..43
     day_match = re.search(r"day\s*0*(\d+)", clean_text, re.IGNORECASE)
     day_num = int(day_match.group(1)) if day_match else default_day
     day_num = max(1, min(25, day_num))
@@ -458,20 +514,23 @@ def parse_and_handle_message(
     if any(k in clean_text.lower() for k in ["afternoon", "下午", "陷阱"]):
         session = "afternoon"
 
-    # Extract question numbers if message is reporting wrong questions
     is_wrong_report = any(k in clean_text.lower() for k in ["錯題", "wrong", "答錯", "mistake"]) or bool(
         re.fullmatch(r"[\d\s,，、]+", clean_text)
     )
 
     if is_wrong_report:
-        # Remove "Day04" before extracting question IDs
         text_without_day = re.sub(r"day\s*0*\d+", "", clean_text, flags=re.IGNORECASE)
-        q_nums = [int(n) for n in re.findall(r"\b(\d{1,2})\b", text_without_day) if 1 <= int(n) <= 20]
+        q_nums = [int(n) for n in re.findall(r"\b(\d{1,2})\b", text_without_day) if 1 <= int(n) <= 45]
         if q_nums:
             session_qs = get_session_questions(day_num, session)
             missed_qs = []
             diag_notes = []
             exclude_stems = set()
+
+            profile.setdefault("weak_words", {})
+            profile.setdefault("weak_categories", {})
+            profile.setdefault("weak_rules", {})
+            profile.setdefault("word_srs", {})
 
             for qn in sorted(set(q_nums)):
                 if 1 <= qn <= len(session_qs):
@@ -480,17 +539,34 @@ def parse_and_handle_message(
                     exclude_stems.add(mq["question"].strip())
                     ans = mq["answer"]
                     c_word = mq["options"].get(ans, "")
+                    norm_w = normalize_headword(c_word)
                     cat = classify_question_category(mq)
+                    r_ref = mq.get("rule_ref") or mq.get("trap_point") or cat
+
+                    # Update SM-2 & error count
+                    new_err = profile["weak_words"].get(norm_w, 0) + 1
+                    profile["weak_words"][norm_w] = new_err
+                    profile["weak_categories"][cat] = profile["weak_categories"].get(cat, 0) + 1
+                    profile["weak_rules"][r_ref] = profile["weak_rules"].get(r_ref, 0) + 1
+
+                    srs_item = profile["word_srs"].get(norm_w, {"ef": 2.5, "errors": 0})
+                    new_ef = round(max(1.3, float(srs_item.get("ef", 2.5)) - 0.3), 2)
+                    profile["word_srs"][norm_w] = {
+                        "ef": new_ef,
+                        "errors": new_err,
+                        "last_missed": str(get_taipei_today()),
+                    }
+
                     diag_notes.append({
                         "orig_id": qn,
                         "category": cat,
+                        "rule_ref": r_ref,
                         "answer": ans,
                         "correct_word": c_word,
-                        "summary": mq.get("trap_point") or mq.get("analysis", "")[:110],
+                        "err_count": new_err,
+                        "ef": new_ef,
+                        "summary": mq.get("analysis", "")[:140],
                     })
-                    # Record into persistent profile
-                    profile["weak_words"][c_word] = profile["weak_words"].get(c_word, 0) + 1
-                    profile["weak_categories"][cat] = profile["weak_categories"].get(cat, 0) + 1
 
             profile["history"].append({
                 "date": str(get_taipei_today()),
@@ -502,10 +578,12 @@ def parse_and_handle_message(
             save_weakness_profile(profile)
 
             if send_remedial_file and missed_qs:
-                remedial_qs = find_similar_remedial_questions(missed_qs, exclude_stems, target_count=12)
+                remedial_qs = find_similar_remedial_questions(missed_qs, exclude_stems, target_count=15)
                 sess_zh = "上午練習" if session == "morning" else "下午練習"
-                title = f"Day {day_num:02d} {sess_zh} — 錯題靶向加練卷"
-                subtitle = f"針對您回報的第 {', '.join(map(str, sorted(set(q_nums))))} 題弱點，由遠端 Agent 動態生成 {len(remedial_qs)} 道同觀念變形長句實戰題"
+                title = f"Day {day_num:02d} {sess_zh} — 錯題基因診斷與演算法加練卷"
+                subtitle = (
+                    f"針對您回報的第 {', '.join(map(str, sorted(set(q_nums))))} 題弱點，已調升 SM-2 複習權重並精選 {len(remedial_qs)} 道同觀念變形實戰題"
+                )
                 html_str = render_agent_custom_html(title, subtitle, diag_notes, remedial_qs, day_num)
                 out_path = OUTPUT_DIR / f"TOEIC_Day{day_num:02d}_Agent_Remedial.html"
                 out_path.write_text(html_str, encoding="utf-8")
@@ -513,18 +591,22 @@ def parse_and_handle_message(
                 return out_path
 
     # Pattern 2: Topic drill or Weakness diagnostic request
-    topic_query = re.sub(r"^(加練|特訓|練習|弱點|診斷|drill|practice)\s*[:：]?\s*", "", clean_text, flags=re.IGNORECASE).strip()
+    topic_query = re.sub(
+        r"^(加練|特訓|練習|弱點|診斷|drill|practice)\s*[:：]?\s*",
+        "",
+        clean_text,
+        flags=re.IGNORECASE,
+    ).strip()
     if not topic_query or clean_text in ("弱點", "診斷", "狀態"):
-        # Build from accumulated weak categories/words
         top_cats = sorted(profile.get("weak_categories", {}).items(), key=lambda x: x[1], reverse=True)
-        topic_query = " ".join(c[0] for c in top_cats[:2]) if top_cats else "分詞 假設語氣 介系詞"
+        topic_query = " ".join(c[0] for c in top_cats[:2]) if top_cats else "微觀訊號 一山不容二虎 假設語氣"
 
     if send_remedial_file:
-        drill_qs = search_topic_questions(topic_query, target_count=15)
+        drill_qs = search_topic_questions(topic_query, target_count=16)
         title = f"遠端 Agent 隨選主題特訓：{topic_query[:18]}"
-        subtitle = f"依據您的指令「{clean_text[:28]}」從金色證書題庫精選 {len(drill_qs)} 道高複雜度多子句實戰題"
+        subtitle = f"依據您的指令「{clean_text[:28]}」從 860+ 金色證書題庫精選 {len(drill_qs)} 道高複雜度實戰選擇題"
         html_str = render_agent_custom_html(title, subtitle, [], drill_qs, default_day)
-        out_path = OUTPUT_DIR / f"TOEIC_Agent_Custom_Drill.html"
+        out_path = OUTPUT_DIR / "TOEIC_Agent_Custom_Drill.html"
         out_path.write_text(html_str, encoding="utf-8")
         send_html_report(bot_token, chat_id, str(out_path))
         return out_path
@@ -569,7 +651,7 @@ def process_pending_telegram_updates(send_remedial_file: bool = True, poll_timeo
             continue
 
         text = msg.get("text", "").strip()
-        if not text or text.startswith("/start") and len(text) <= 7:
+        if not text or (text.startswith("/start") and len(text) <= 7):
             continue
         if text.startswith("/start "):
             text = text[7:].strip()
