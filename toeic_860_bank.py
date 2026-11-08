@@ -204,6 +204,24 @@ EXTRA_860_LEXICON = {
 
 GRAMMAR_MODULES_DB = [
     {
+        "id": "G5-R1",
+        "category": "860+ 高頻特殊句型與代名詞結構",
+        "title": "Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)",
+        "formula": "✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V",
+        "explanation": "多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！",
+        "correct_example": "The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）",
+        "wrong_trap": "❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。"
+    },
+    {
+        "id": "G5-R2",
+        "category": "860+ 形容詞搭配詞與商務偏義精準辨析",
+        "title": "Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)",
+        "formula": "✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物",
+        "explanation": "多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。",
+        "correct_example": "Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）",
+        "wrong_trap": "❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。"
+    },
+    {
         "id": "G1-S1",
         "category": "微觀訊號秒殺法則",
         "title": "Signals 1：be critical of + N vs. criticize + O（形容詞與及物動詞之介系詞訊號）",
@@ -1284,6 +1302,94 @@ CLOZE_PASSAGES_BANK.extend([
 
 # Ensure all new distractors are in EXTRA_860_LEXICON
 EXTRA_860_LEXICON.update({
+
+    # --- Distractors and keywords from user weakness questions ---
+    "whether": ("從屬連接詞 (conj.)", "是否", "引導名詞子句作受詞或主詞，後接完整子句或 whether to-V，不與 best 連用"),
+    "whose": ("關係代名詞所有格 (pron.)", "誰的；其", "後方接無冠詞名詞作所有格修飾，不可引導不定詞片語"),
+    "what": ("疑問代名詞 / 複合關代 (pron.)", "什麼；所……的事物", "代名詞，後方及物動詞 advertise 已有受詞 the TV，缺受詞時才用 what"),
+    "how": ("疑問副詞 (adv.)", "如何；怎樣", "how best to + V（如何最妥善地做某事），引導不定詞片語作介系詞受詞"),
+    "variety": ("可數名詞 (n.)", "多樣化；種類", "常用於 a variety of + 複數名詞；不可置於冠詞 a 後修飾單數名詞 selection"),
+    "various": ("形容詞 (adj.)", "各式各樣的；不同的", "直接修飾複數可數名詞（various teas）；不可修飾單數集合名詞 selection"),
+    "varied": ("分詞形容詞 (adj.)", "多樣化的；形形色色的", "修飾單數集合名詞 selection / assortment（a varied selection of...）"),
+    "varying": ("現在分詞形容詞 (adj.)", "變化的；不同的", "強調動態變化中的程度（varying degrees / temperatures）"),
+    "other": ("形容詞 (adj.)", "其他的；別的", "形容詞，後接複數名詞（other enterprises）；不可單獨作代名詞主詞"),
+    "the other": ("代名詞 / 形容詞 (pron./adj.)", "兩者中的另一個；特定剩餘者", "指兩者中的「另一個」（one... the other）；或修飾單數名詞"),
+    "the others": ("代名詞 (pron.)", "（特定範圍全體中）其餘所有的人或物", "僅用於封閉母體的剩餘全體；本題母體未知開放，不可用 the others"),
+    "some others": ("不定代名詞 (pron.)", "另外一些（企業／人或物）", "開放性對比結構「Some ..., while others / some others ...」之正規用法"),
+    "object": ("可數名詞 / 動詞 (n./v.)", "物體、對象；反對", "作動詞搭配 object to；作名詞表具體物體"),
+    "objection": ("可數 / 不可數名詞 (n.)", "反對；異議；抗辯", "raise an objection to sth（對某事提出異議）"),
+    "objective": ("可數名詞 / 形容詞 (n./adj.)", "目標、宗旨；客觀的", "principal objective（主要目標／核心宗旨）；商務高頻搭配"),
+    "objectiveness": ("不可數名詞 (n.)", "客觀性；客觀存在", "抽象概念名詞，不可指行銷企劃的「目標」"),
+    "that": ("關係代名詞 (pron.)", "那個；關係代名詞", "關係代名詞 that 前方「絕對不可有介系詞」亦「不可有逗號」"),
+    "them": ("人稱代名詞受格 (pron.)", "他們", "代名詞無連接詞功能；若選 them 會造成 Comma Splice 之文法錯誤"),
+    "whom": ("關係代名詞受格 (pron.)", "誰（受格）", "先行詞為人（volunteers），介系詞 without 後接受格關代 whom"),
+    "which": ("關係代名詞 (pron.)", "哪一個；事物關係代名詞", "先行詞為人（volunteers），不可使用表事物的關代 which"),
+    "oppose": ("及物動詞 (v.)", "反對；對抗", "及物動詞直接接名詞受詞（oppose the project），絕不可加介系詞 to"),
+    "opposed": ("形容詞 (adj.)", "反對的；抗拒的", "固定搭配：be strongly opposed to + N / V-ing（強烈反對……），to 為介系詞"),
+    "opposing": ("現在分詞形容詞 (adj.)", "敵對的；相對立的", "修飾名詞（opposing teams / views）；不可用於 be opposing to"),
+    "opposition": ("不可數名詞 (n.)", "反對；阻力；在野黨", "in opposition to sth；are strongly 後需接形容詞作主詞補語"),
+    "informal": ("形容詞 (adj.)", "非正式的；隨便的", "informal meeting / discussions（非正式討論），語意不符"),
+    "informative": ("形容詞 (adj.)", "提供豐富資訊的；有益的", "修飾書報、演講或網站（an informative lecture / guide）"),
+    "informing": ("現在分詞 (V-ing)", "告知；通知", "及物動詞 inform 的現在分詞，後接人（informing clients）"),
+    "informed": ("分詞形容詞 (adj.)", "深思熟慮的；知情明智的", "必考搭配詞：make an informed decision（做出明智決定）"),
+    "absence": ("名詞 (n.)", "缺席；缺勤；缺乏", "固定搭配介系詞 from（absence from meetings），不可與 during 連用"),
+    "during": ("介系詞 (prep.)", "在……期間", "介系詞，後接時間長度（during the meeting），不可與 absence 直接搭配"),
+    "prolong": ("及物動詞 (v.)", "延長；拖長", "動詞原形，空格前為 been experiencing，後接名詞 droughts，需形容詞修飾"),
+    "prolonging": ("現在分詞 (V-ing)", "正在延長的", "主動分詞，乾旱是被拖長而非主動延長其他事物"),
+    "prolonged": ("過去分詞形容詞 (adj.)", "長期的；持久的；持續很久的", "修飾旱災、衰退或談判（prolonged droughts / negotiations）"),
+    "prolongs": ("動詞第三人稱單數 (v.)", "延長", "真動詞，不可置於名詞 droughts 前作修飾語"),
+    "rather than": ("連接詞 / 介系詞 (phr.)", "而不是；寧願……而不", "表偏好或選擇替代（A rather than B），無否定遞進強調語氣"),
+    "let alone": ("連接片語 (phr.)", "更不用說；何況", "專用於否定句或缺乏（lack / cannot）之後的遞進強調"),
+    "but for": ("介系詞片語 (phr.)", "若非；要不是 (=without)", "用於假設語氣主句（But for your help, we would have failed.）"),
+    "in contrast": ("轉折副詞 (phr.)", "相比之下；反之", "轉折副詞，後方須有逗號（In contrast, S + V），不可直接連接名詞片語"),
+    "outlined": ("形容詞 / 過去分詞 (adj./p.p.)", "概述的；畫出輪廓的", "as outlined in the proposal（如提案所述）"),
+    "upon request": ("介系詞片語 (phr.)", "根據要求；索取即給（備索）", "The catalog is available upon request（備索）"),
+    "compact": ("形容詞 / 可數名詞 (adj./n.)", "緊湊小巧的、精簡的；合約協定", "compact office layout / compact vehicle"),
+    "implement": ("及物動詞 / 可數名詞 (v./n.)", "實施；貫徹執行；器具", "implement new safety regulations（實施工安新規）"),
+    "directory": ("可數名詞 (n.)", "通訊錄；工商名錄；目錄", "corporate staff directory（企業員工通訊錄）"),
+    "omit": ("及物動詞 (v.)", "省略；遺漏；省去", "omit unnecessary details from the executive report"),
+    "narration": ("可數 / 不可數名詞 (n.)", "旁白；敘述；口述", "voice-over narration for the promotional video"),
+    "obliged": ("形容詞 (adj.)", "感激的；有義務的", "feel obliged to assist colleagues / be obliged to comply"),
+    "profound": ("形容詞 (adj.)", "深遠的；深刻的；巨大的", "have a profound impact on market demand"),
+    "manually": ("副詞 (adv.)", "手動地；人工操作地", "Customer applications must be processed manually"),
+    "conveyor": ("可數名詞 (n.)", "輸送帶；傳送設備", "baggage conveyor belt（行李輸送帶）"),
+    "hoist": ("及物動詞 / 可數名詞 (v./n.)", "吊起；升起；起重吊車", "hoist the shipping container onto the vessel"),
+    "utilize": ("及物動詞 (v.)", "善加利用；使用 (=make use of)", "fully utilize underperforming commercial assets"),
+    "shuttle": ("可數名詞 / 動詞 (n./v.)", "接駁車；穿梭往返", "complimentary airport shuttle service（免費機場接駁）"),
+    "harassment": ("不可數名詞 (n.)", "騷擾 (人資法規高頻詞)", "strict workplace harassment policy（反職場騷擾政策）"),
+    "accountable": ("形容詞 (adj.)", "應負責任的 (=responsible)", "be held accountable for project budget overruns"),
+    "optimal": ("形容詞 (adj.)", "最佳的；最優的；最適宜的", "achieve optimal efficiency during peak hours"),
+    "on-site": ("形容詞 / 副詞 (adj./adv.)", "現場的；實地的", "conduct an on-site inspection of the facility"),
+    "accommodation": ("可數 / 不可數名詞 (n.)", "住宿膳宿；適應調解", "provide premium hotel accommodations for clients"),
+    "endeavor": ("可數名詞 / 動詞 (n./v.)", "努力；竭力；事業嘗試", "support future commercial endeavors in foreign markets"),
+    "reimbursement": ("可數 / 不可數名詞 (n.)", "費用核銷；代墊款報銷", "submit receipts for travel expense reimbursement"),
+    "retrieve": ("及物動詞 (v.)", "取回；檢索 (資料)", "retrieve archived invoices from the cloud server"),
+    "errand": ("可數名詞 (n.)", "差事；公幹雜事", "run administrative errands for the department head"),
+    "acquaintance": ("可數 / 不可數名詞 (n.)", "熟人；認識的人；結識", "have a passing acquaintance with real estate"),
+    "amenity": ("可數名詞 (n.)", "便利設施；生活休閒設施", "luxury hotel amenities including a heated pool"),
+    "privilege": ("不可數 / 可數名詞 (n.)", "特權；殊榮；榮幸", "have the privilege of introducing our keynote speaker"),
+    "decisive": ("形容詞 (adj.)", "果斷的；決定性的", "take decisive action to curb inflation"),
+    "robust": ("形容詞 (adj.)", "強健的；穩固的；強勁的", "robust economic expansion / robust cybersecurity software"),
+    "tendency": ("可數名詞 (n.)", "傾向；趨勢 (=trend)", "display a tendency to overspend in the final quarter"),
+    "exclusion": ("不可數 / 可數名詞 (n.)", "排除；排斥在外；免責條款", "exclusion of liability outlined in the warranty"),
+    "repetition": ("不可數 / 可數名詞 (n.)", "重複；反覆；贅述", "avoid needless repetition in the business proposal"),
+    "conflict": ("名詞 / 動詞 (n./v.)", "衝突；牴觸；利益衝突", "conflict of interest（利益衝突）"),
+    "subject to": ("形容詞片語 (phr.)", "易受...影響；須經...核准", "The tour itinerary is subject to change without notice"),
+    "appraisal": ("可數 / 不可數名詞 (n.)", "評估；考核；估價", "annual employee performance appraisal（員工考評）"),
+    "appropriation": ("可數 / 不可數名詞 (n.)", "撥款；專款；挪用", "government appropriation for public transit"),
+    "aggregation": ("不可數名詞 (n.)", "聚合；集成；數據匯總", "automated data aggregation platform for market research"),
+    "appreciation": ("不可數名詞 (n.)", "升值；感謝；欣賞", "express sincere appreciation; currency appreciation"),
+    "exaggerated": ("形容詞 (adj.)", "誇大的；言過其實的", "investigate exaggerated advertising claims"),
+    "miscellaneous": ("形容詞 (adj.)", "雜項的；形形色色的", "allocate petty cash for miscellaneous office expenses"),
+    "disciplinary": ("形容詞 (adj.)", "紀律的；懲戒性的", "face severe disciplinary action for violating rules"),
+    "delegation": ("可數名詞 (n.)", "代表團；委派授權", "international trade delegation representing green energy"),
+    "proprietors": ("可數名詞複數 (n. pl.)", "業主；獨資經營者；地主", "small business proprietors affected by bottlenecks"),
+    "rectify": ("及物動詞 (v.)", "矯正；改正；補救 (=correct)", "promptly rectify the billing error on the final invoice"),
+    "arguably": ("副詞 (adv.)", "可以說；按理說；論證上", "arguably the most innovative financial platform"),
+    "logistics": ("恆為複數名詞 (n. pl.)", "物流；後勤運籌管理", "streamline global logistics management to cut costs"),
+    "via": ("介系詞 (prep.)", "經由；透過 (=by means of)", "official documents will be delivered via express courier"),
+    "arm": ("可數名詞 (n.)", "分支機構；業務部門", "the research arm of the multinational conglomerate"),
+    "suburb": ("可數名詞 (n.)", "郊區；市郊 (住宅區高頻)", "a quiet residential suburb located outside the city"),
     "complexity": ("不可數 / 可數名詞 (n.)", "複雜性；錯綜複雜的事物", "抽象名詞，指複雜程度，非建築園區"),
     "complexly": ("副詞 (adv.)", "複雜地", "修飾動詞或形容詞"),
     "scatters": ("第三人稱單數動詞 (v.)", "使散落；驅散", "主動語態真動詞"),
@@ -1328,6 +1434,102 @@ EXTRA_860_LEXICON.update({
     "submitted": ("過去式 / 過去分詞 (v./V-ed)", "已提交的；被呈報的", "過去分詞不可作句中核心複數名詞主詞"),
     "unanimous": ("形容詞 (adj.)", "全體一致同意的；無異議的（a unanimous vote / decision）", "董事會表決必考形容詞"),
 })
+
+
+
+# --- 10 Real User Weakness Questions & Target Signal Questions ---
+QUESTIONS_860_BANK.extend([
+    {
+        "question": "The members of the marketing department disagreed over ------- best to advertise the upcoming OLED flat-screen TV.",
+        "options": {"A": "whether", "B": "whose", "C": "what", "D": "how"},
+        "answer": "D",
+        "rule_ref": "860+ 高頻文法：疑問詞引導不定詞片語（how best to + V）",
+        "trap_point": "及物動詞 advertise 後已有受詞 the TV，缺受詞時才用 what；「how best to + V」表如何最妥善地做某事！",
+        "analysis": "【句構拆解與定位】空格位於介系詞 over 之後，後接副詞 best 與不定詞 to advertise the upcoming OLED flat-screen TV，整體作 over 的受詞片語。【核心考點與正解理由】及物動詞 advertise 後方已有完整名詞受詞 the TV，代名詞 what 必須作動詞受詞或主詞，故 (C) what 語法不符；「how best to + V」為多益固定進階句型，表「如何最妥善／有效率地做某事」，秒選 (D) how。【常見陷阱提醒】whether 後接不定詞時表示「是否要……（whether to do sth or not）」，不與 best 連用；whose 為所有格代名詞，不可引導不定詞片語。",
+        "translation": "行銷部門成員在如何最妥善地宣傳即將上市的 OLED 平面電視上意見分歧。"
+    },
+    {
+        "question": "Bar Italia Cafe now offers a ------- selection of high-quality teas in addition to its popular coffee-based beverages.",
+        "options": {"A": "variety", "B": "various", "C": "varied", "D": "varying"},
+        "answer": "C",
+        "rule_ref": "860+ 詞性與搭配：分詞形容詞修飾單數名詞（a varied selection of）",
+        "trap_point": "修飾單數集合名詞 selection 需用分詞形容詞 varied；various 直接接複數名詞，不可說 a various selection！",
+        "analysis": "【句構拆解與定位】空格位於不定冠詞 a 之後、單數名詞 selection 之前，需填入形容詞修飾單數名詞 selection。【核心考點與正解理由】多益高頻固定搭配：「a varied selection of + 複數名詞 / 不可數名詞」，指「多樣化的選品組合」，需用過去分詞轉化形容詞 (C) varied。various 意為「各式各樣的」，但它只能直接修飾複數名詞（various teas），絕對不可修飾單數名詞 selection（a various selection 為重大中式英文錯誤）。【常見陷阱提醒】(A) variety 為名詞，不可置於冠詞 a 後方直接修飾名詞 selection（需說 a variety of teas，而非 a variety selection）；(D) varying 表動態變化中的，語意不合。",
+        "translation": "義大利餐吧咖啡廳除了熱門的咖啡飲品外，現在還提供多樣化的頂級茶飲選擇。"
+    },
+    {
+        "question": "Some loss-making enterprises have been phased out from the market either by closedown or bankruptcy, while ------- have been merged or restructured.",
+        "options": {"A": "other", "B": "the other", "C": "the others", "D": "some others"},
+        "answer": "D",
+        "rule_ref": "860+ 代名詞結構：開放性母體對比（Some ..., while others / some others ...）",
+        "trap_point": "總數未知（開放母體）對比需用 some others 或 others；the others 僅用於特定封閉母體的剩餘全體！",
+        "analysis": "【句構拆解與定位】連接詞 while 引導對比子句，空格位於 while 後方作第二子句的主詞，後接複數動詞 have been merged or restructured。【核心考點與正解理由】前半句為「Some loss-making enterprises（部分虧損企業）」，因全球市場企業總數未知（開放性母體），對比結構必須使用「Some ..., while others / some others ...（一些……，而另外一些……）」，故正解為 (D) some others。【常見陷阱提醒】定冠詞 the 代表「特定限定剩餘全體」，the other 指兩者中的「另一個」，the others 指特定封閉群體中的「剩餘全部」，此處企業總數未定，不可加 the；(A) other 只能作形容詞修飾名詞（other enterprises），不能單獨作代名詞主詞。",
+        "translation": "部分虧損企業已透過停業或破產退出市場，而另外一些企業則進行了合併或重組。"
+    },
+    {
+        "question": "The CFO's suggestion was in collision with the principal ------- of the marketing campaign and thus denied by the board.",
+        "options": {"A": "object", "B": "objection", "C": "objective", "D": "objectiveness"},
+        "answer": "C",
+        "rule_ref": "860+ 商務名詞語意辨析：principal objective（首要目標／核心宗旨）",
+        "trap_point": "principal objective 為商務固定搭配詞；objection 意為反對異議，代入後邏輯牴觸！",
+        "analysis": "【句構拆解與定位】空格前有定冠詞 the 與形容詞 principal（主要的、首要的），後接介系詞片語 of the marketing campaign，空格需填入可數名詞作主幹。【核心考點與正解理由】「principal objective」或「primary objective」為多益商務合約與企劃最高頻搭配詞，表示「首要目標／核心主旨」，故選 (C) objective（名詞：目標）。【常見陷阱提醒】(A) object 表具體物品或對象；(B) objection 表「反對、異議」（raise an objection），若填入 objection 變成「與行銷活動的主要反對相撞」，語意矛盾不通；(D) objectiveness 為抽象客觀性，不可數且不合句意。",
+        "translation": "財務長的建議與行銷活動的主要目標相牴觸，因而遭到董事會否決。"
+    },
+    {
+        "question": "The organizers owe special thanks to the volunteers at the Pingtung Lantern Festival, without ------- the event could not have been such a huge success.",
+        "options": {"A": "that", "B": "them", "C": "whom", "D": "which"},
+        "answer": "C",
+        "rule_ref": "860+ 關係代名詞：介系詞後接指人關代受格（without whom）",
+        "trap_point": "選 them 會造成逗號連接兩獨立子句（Comma Splice）錯誤；先行詞為人，介系詞後必接受格 whom！",
+        "analysis": "【句構拆解與定位】逗號前為完整獨立子句（S: The organizers, V: owe...），逗號後亦為子句（S: the event, V: could not have been...），兩子句之間缺乏對等連接詞，空格處必須具備「連接詞 + 代名詞」之關係代名詞功能。【核心考點與正解理由】先行詞為人（the volunteers），介系詞 without 後方必須接關係代名詞受格 (C) whom，構成非限定關係子句。【常見陷阱提醒】(B) them 只是普通人稱代名詞，無連接詞功能，選 them 會造成嚴重的「逗號連接句（Comma Splice）」文法錯誤；(A) that 前面絕對不可有介系詞（without that 屬嚴重錯誤）；(D) which 先行詞只能為事物，不可指人。",
+        "translation": "主辦單位對屏東燈會的志工致上特別謝意，若沒有他們，這場活動不可能獲得如此巨大的成功。"
+    },
+    {
+        "question": "The results of the referendum indicate that the majority of the island nation's population are strongly ------- to the construction of another nuclear power plant.",
+        "options": {"A": "oppose", "B": "opposed", "C": "opposing", "D": "opposition"},
+        "answer": "B",
+        "rule_ref": "860+ 形容詞固定介系詞搭配：be opposed to + N（強烈反對……）",
+        "trap_point": "固定片語 be opposed to + N，to 為介系詞；主動 are opposing 則直接接受詞，不可加 to！",
+        "analysis": "【句構拆解與定位】that 子句主詞為 the majority of the island nation's population，動詞為 are，後接程度副詞 strongly 與介系詞片語 to the construction...，空格需填入形容詞作主詞補語。【核心考點與正解理由】多益必考被動形容詞固定搭配：「be opposed to + 名詞 / 動名詞」，表示「強烈反對某事」，其中的 to 是介系詞，故秒選形容詞 (B) opposed。【常見陷阱提醒】及物動詞 oppose 若以進行式主動呈現（are opposing），後方直接接名詞受詞，絕不可加介系詞 to；(A) oppose 為原形動詞不可接在 are strongly 之後；(D) opposition 為名詞，詞性不符。",
+        "translation": "公投結果顯示，該島國的大多數居民強烈反對興建另一座核電廠。"
+    },
+    {
+        "question": "First-time parents, wishing to make ------- decisions about maternity care, resort to Web-based instructions or guides which can be faulty and hazardous.",
+        "options": {"A": "informal", "B": "informative", "C": "informing", "D": "informed"},
+        "answer": "D",
+        "rule_ref": "860+ 形容詞語意搭配：make an informed decision（做出明智深思熟慮的決定）",
+        "trap_point": "make an informed decision 為商務決策必考搭配；informative 意為提供豐富資訊的，修飾書報而非決策！",
+        "analysis": "【句構拆解與定位】空格位於及物動詞 make 與複數名詞 decisions 之間，需填入形容詞修飾 decisions。【核心考點與正解理由】多益商務高頻搭配詞：「make an informed decision / choice」，意指「在充分掌握資訊後做出明智、深思熟慮的決定」，故選 (D) informed。【常見陷阱提醒】(B) informative 意為「提供豐富資訊的、長知識的」，專門用來修飾演講（an informative speech）、指南（an informative guide）或報告，不可用來修飾人所做的「決定」；(A) informal 意為非正式的，代入語意不合；(C) informing 為分詞，無此慣用搭配。",
+        "translation": "新手父母為了在孕產婦照護上做出明智決定，常訴諸網路指引，而這些指引可能充滿錯誤與危險。"
+    },
+    {
+        "question": "Before imposing disciplinary penalties, the management has demanded Gerald account for his repeated absences ------- the weekly meetings.",
+        "options": {"A": "from", "B": "during", "C": "for", "D": "with"},
+        "answer": "A",
+        "rule_ref": "860+ 名詞固定介系詞搭配：absence from + N（缺席某活動／場合）",
+        "trap_point": "名詞 absence 固定搭配介系詞 from；切勿受中文「在會議期間缺席」影響而誤選 during！",
+        "analysis": "【句構拆解與定位】空格位於名詞 absences 與名詞片語 the weekly meetings 之間，考名詞與介系詞的固定搭配。【核心考點與正解理由】名詞 absence（缺席）及形容詞 absent 恆與介系詞 from 搭配（absence from work / meetings 缺勤／缺席會議），故正解秒選 (A) from。【常見陷阱提醒】考生極易受中文「在每週會議期間缺席」影響而誤選 (B) during。during 是用來描述「在……時期內發生了某動作」，但修飾 absence 的固定介系詞只能是 from（表示脫離、不在現場），absence during 為嚴重搭配錯誤；(C) for 與 (D) with 皆無法與 absence 連用表缺席。",
+        "translation": "在施加懲戒處分前，管理階層要求傑拉德對其屢次缺席每週會議提出解釋。"
+    },
+    {
+        "question": "Over the past two months, the state of California has been experiencing ------- droughts that have tremendously damaged the agricultural sector.",
+        "options": {"A": "prolong", "B": "prolonging", "C": "prolonged", "D": "prolongs"},
+        "answer": "C",
+        "rule_ref": "860+ 分詞轉化形容詞：prolonged droughts（長期的／持續很久的乾旱）",
+        "trap_point": "乾旱是被拖長、持續長期的，需用過去分詞轉化形容詞 prolonged；prolonging 為主動分詞語意不通！",
+        "analysis": "【句構拆解與定位】主句動詞為 has been experiencing，後接名詞受詞 droughts，空格夾在動詞與名詞之間，需填入分詞形容詞修飾名詞 droughts。【核心考點與正解理由】prolonged 為多益 860+ 高頻分詞形容詞，意為「長期的、持久的、持續很久的（被拖長的）」，常修飾 prolonged droughts（長期乾旱）、prolonged negotiations（馬拉松式持久談判）、prolonged illness（長期慢性病），故選 (C) prolonged。【常見陷阱提醒】(B) prolonging 為主動現在分詞，乾旱並不會主動去延長其他事物；(A) prolong 為動詞原形，(D) prolongs 為第三人稱單數動詞，皆不可置於名詞前作定語修飾。",
+        "translation": "在過去兩個月中，加州一直遭受長期乾旱的侵襲，對農業部門造成了巨大損害。"
+    },
+    {
+        "question": "A majority of underdeveloped countries still lack infrastructure such as the power grids, ------- high-speed public transport which is a common sight in richer societies.",
+        "options": {"A": "rather than", "B": "let alone", "C": "but for", "D": "in contrast"},
+        "answer": "B",
+        "rule_ref": "860+ 否定遞進連接片語：let alone（更不用說、何況）",
+        "trap_point": "let alone 專門用於否定或缺乏（lack / cannot）句境後的遞進強調；rather than 表選擇偏好而非遞進！",
+        "analysis": "【句構拆解與定位】前文指出未開發國家「lack infrastructure（缺乏基礎建設如電網）」，空格後接更高級的建設「high-speed public transport（高速大眾運輸）」，語意為「連基本電網都缺乏，何況／更不用說高速大眾運輸了」。【核心考點與正解理由】「let alone」為多益高分必考片語，意為「更不用說、何況」，專門用於否定句或具有否定意涵的動詞（如 lack, fail, deny, scarcely）之後，引出程度更甚、更不可能達成的事物，完全契合前後邏輯遞進，故正解為 (B) let alone。【常見陷阱提醒】(A) rather than 意為「而不是、寧願……而不」，表偏好或取捨替代，無「連 A 都不行，何況 B」的否定加深語氣；(C) but for 意為「若非、要不是」，後接名詞用於虛擬語氣主句；(D) in contrast 為轉折副詞，後方需有獨立子句或加 with（in contrast to），不可直接作為對等連接片語。",
+        "translation": "多數低度開發國家依然缺乏電網等基礎建設，更不用說在富裕社會司空見慣的高速大眾運輸了。"
+    }
+])
 
 
 def _remap_letters(text: str, a: str, b: str) -> str:

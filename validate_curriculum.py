@@ -155,10 +155,12 @@ def main():
 
     errors.extend(validate_860_banks())
 
+    from adaptive_srs_engine import build_or_load_vocab_db
+    vocab_len = len(build_or_load_vocab_db())
     print(
         "\n".join(errors)
         if errors
-        else "All 50 5-Part HTML sessions (2,150 interactive questions & 252 deduplicated vocab items) passed rigorous validation ✅"
+        else f"All 50 5-Part HTML sessions (2,150 interactive questions & {vocab_len} deduplicated vocab items) passed rigorous validation ✅"
     )
     return 1 if errors else 0
 

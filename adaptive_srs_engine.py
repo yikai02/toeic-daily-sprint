@@ -224,13 +224,19 @@ def select_part1_vocabulary(
     # Rotate slightly by s_idx among top high-priority candidates so daily review stays fresh
     top_window = [c for c in priority_pool if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
     if top_window:
-        # Always include any word with error_count > 0 first
+        # Always include any word with error_count > 0 first, rotated by s_idx so all weak words are systematically reviewed across sessions
         error_words = [c for c in top_window if c["error_count"] > 0]
-        for ew in error_words:
-            if len(selected) < target_count:
+        n_ew = len(error_words)
+        if n_ew > 0:
+            ew_offset = (s_idx * 4) % n_ew
+            for i in range(n_ew):
+                if len(selected) >= target_count:
+                    break
+                ew = error_words[(ew_offset + i) % n_ew]
                 nk = ew.get("norm_key") or normalize_key(ew["word"])
-                selected.append(ew)
-                seen_norms.add(nk)
+                if nk not in seen_norms:
+                    selected.append(ew)
+                    seen_norms.add(nk)
 
         # Fill remaining slots from top high-frequency / shorter core words rotated by s_idx
         remaining_needed = target_count - len(selected)
@@ -259,13 +265,15 @@ def select_part2_grammar(day_num: int, session: str, profile: dict) -> List[dict
     idx2 = (s_idx * 2 + 1) % n_mods
     mods = [copy.deepcopy(GRAMMAR_MODULES_DB[idx1]), copy.deepcopy(GRAMMAR_MODULES_DB[idx2])]
 
-    # If user has a weak rule in profile not in mods, replace the second slot with the highest weak rule module
-    weak_rules = profile.get("weak_rules", {})
-    if weak_rules:
-        top_rule_text = max(weak_rules.items(), key=lambda kv: kv[1])[0].lower()
+    # If user has a weak rule or weak category in profile not in mods, replace the second slot with the highest weak grammar module
+    weak_candidates = {**profile.get("weak_categories", {}), **profile.get("weak_rules", {})}
+    if weak_candidates:
+        ranked_cats = sorted(weak_candidates.items(), key=lambda kv: kv[1], reverse=True)
+        top_rule_text = ranked_cats[s_idx % len(ranked_cats)][0].lower()
         for m in GRAMMAR_MODULES_DB:
             if m["id"] not in (mods[0]["id"], mods[1]["id"]):
-                if any(tok in m["title"].lower() or tok in m["category"].lower() for tok in top_rule_text.split()[:2]):
+                match_tokens = [tok for tok in re.split(r"[\s(/、)]+", top_rule_text) if len(tok) >= 2]
+                if any(tok in m["title"].lower() or tok in m["category"].lower() or tok in m["formula"].lower() for tok in match_tokens):
                     mods[1] = copy.deepcopy(m)
                     mods[1]["is_weakness_boosted"] = True
                     break
@@ -326,8 +334,15 @@ def select_part3_mc_questions(
             by_answer.setdefault(normalize_key(q["options"].get(q.get("answer", ""), "")), []).append(q)
         max_weak_q = 8
         ranked = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
-        for w, cnt in ranked:
+        n_ranked = len(ranked)
+        rank_offset = (s_idx * 3) % n_ranked if n_ranked else 0
+        for i in range(n_ranked):
+            w, cnt = ranked[(rank_offset + i) % n_ranked]
             cands = by_answer.get(w, [])
+            if not cands:
+                for q_item in pool:
+                    if w in normalize_key(q_item["question"]) or any(w in normalize_key(ov) for ov in q_item["options"].values()):
+                        cands.append(q_item)
             # rotate so the same weak word is practised with a different sentence each session
             for k in range(min(len(cands), 1 + (1 if cnt >= 2 else 0))):
                 cand = cands[(s_idx + k) % len(cands)]
