@@ -148,6 +148,31 @@ def compute_word_priority(entry: dict, profile: dict) -> Tuple[float, int, float
     return round(score, 2), err_count, round(ef, 2), reason
 
 
+def filter_high_impact_vocabulary(vocab_db: List[dict], profile: dict) -> List[dict]:
+    """
+    [21-Day High-Impact Filter]
+    Strictly filters out peripheral, low-yield, or trivial words (e.g. stapler, takeout, stroll down, along the coast).
+    Retains ONLY Tier 3 (Ultra-High Frequency Core), Tier 2 (High-Frequency Business),
+    and User Weakness words (~168 high-impact words).
+    """
+    trivial_words = {"along the coast", "stroll down", "takeout", "repaving", "stapler"}
+    high_impact = []
+    weak_keys = set(profile.get("weak_words", {}).keys())
+    for raw_e in vocab_db:
+        w_norm = normalize_key(raw_e["word"])
+        ft = int(raw_e.get("freq_tier", 2))
+        is_weak = w_norm in weak_keys or profile.get("weak_words", {}).get(w_norm, 0) > 0
+        is_user_or_860 = ("860" in str(raw_e.get("id", ""))) or ("USER" in str(raw_e.get("id", "")))
+
+        # Filter logic: eliminate trivial words unless specifically marked as user weakness
+        if w_norm in trivial_words and not is_weak:
+            continue
+        if ft >= 2 or is_weak or is_user_or_860:
+            high_impact.append(raw_e)
+
+    return high_impact if high_impact else vocab_db
+
+
 def select_part1_vocabulary(
     day_num: int,
     session: str,
@@ -157,6 +182,8 @@ def select_part1_vocabulary(
 ) -> List[dict]:
     """
     Select `target_count` (16) detailed vocabulary items for Part 1:
+    [21-Day High-Impact Sprint Mode]
+    - Filters out low-yield peripheral words, retaining only the most frequently tested core & weak words.
     - Ranked and sorted strictly by weight (Error Count & Priority Score) from highest to lowest.
     - Earlier days systematically send the highest-weighted items in the database first.
     - Inside each session, items are strictly presented in descending order of weight (Card #1 = highest weight).
@@ -164,14 +191,17 @@ def select_part1_vocabulary(
     if not vocab_db:
         return []
 
+    # Apply 21-Day High-Impact Filter
+    filtered_db = filter_high_impact_vocabulary(vocab_db, profile)
+
     is_morning = session.lower().startswith("m")
     day_offset = (day_num - 5) if day_num >= 5 else (day_num - 1)
     s_idx = max(0, day_offset) * 2 + (0 if is_morning else 1)
-    n_total = len(vocab_db)
+    n_total = len(filtered_db)
 
     # Enrich all entries with live priority metrics
     enriched_all = []
-    for idx, raw_e in enumerate(vocab_db):
+    for idx, raw_e in enumerate(filtered_db):
         e = copy.deepcopy(raw_e)
         e["norm_key"] = e.get("norm_key") or normalize_key(e["word"])
         p_score, err_cnt, ef, reason = compute_word_priority(e, profile)
@@ -199,10 +229,10 @@ def select_part1_vocabulary(
 
         enriched_all.append(e)
 
-    # Sort entire database strictly by weight (error_count, priority_score) descending!
+    # Sort entire database strictly by priority_score descending!
     sorted_all = sorted(
         enriched_all,
-        key=lambda x: (x["error_count"], x["priority_score"]),
+        key=lambda x: x["priority_score"],
         reverse=True,
     )
 
@@ -216,7 +246,7 @@ def select_part1_vocabulary(
             break
 
     # Guarantee items inside this session are strictly ordered from highest weight to lowest weight
-    selected.sort(key=lambda x: (x["error_count"], x["priority_score"]), reverse=True)
+    selected.sort(key=lambda x: x["priority_score"], reverse=True)
     return selected
 
 
@@ -462,9 +492,10 @@ def build_session_payload(day_num: int, session: str = "morning") -> dict:
     cloze_q_count = sum(len(p.get("questions", [])) for p in part4_cloze)
     reading_q_count = sum(len(p.get("questions", [])) for p in part5_reading)
 
-    tier3_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 3)
-    tier2_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 2)
-    tier1_count = sum(1 for v in vocab_db if int(v.get("freq_tier", 2)) == 1)
+    high_impact_db = filter_high_impact_vocabulary(vocab_db, profile)
+    tier3_count = sum(1 for v in high_impact_db if int(v.get("freq_tier", 2)) == 3)
+    tier2_count = sum(1 for v in high_impact_db if int(v.get("freq_tier", 2)) == 2)
+    tier1_count = sum(1 for v in high_impact_db if int(v.get("freq_tier", 2)) == 1)
     weak_words_count = len(profile.get("weak_words", {}))
     history_sessions = len(profile.get("history", []))
 
@@ -485,7 +516,7 @@ def build_session_payload(day_num: int, session: str = "morning") -> dict:
             "total_questions": total_questions,
         },
         "srs_stats": {
-            "total_unique_vocab": len(vocab_db),
+            "total_unique_vocab": len(high_impact_db),
             "tier3_ultra_freq": tier3_count,
             "tier2_high_freq": tier2_count,
             "tier1_advanced_860": tier1_count,

@@ -473,13 +473,12 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
         </div>
         """
 
-    total_db = srs_stats.get("total_unique_vocab", 306)
-    t3 = srs_stats.get("tier3_ultra_freq", 118)
+    total_db = srs_stats.get("total_unique_vocab", 168)
     return f"""
     <section class="section-container" id="sec-part1">
-        <div class="section-title">📚 第一部分：單字表詳細介紹（本場排程 {len(vocab_list)} 字 ／ 總庫 {total_db} 字已去重）</div>
+        <div class="section-title">📚 第一部分：單字表詳細介紹（⚡ 21天高頻衝刺 · 本場排程 {len(vocab_list)} 字 ／ 精準核心庫 {total_db} 字）</div>
         <div class="part-intro-banner">
-            💡 <b>智慧單字排程說明：</b>系統已將您上傳之 <code>860_antigravity.md</code> 與實戰弱點單字完成<b>自動去重合併（共 {total_db} 個不重複核心單字）</b>。系統依據權重由高排到低呈現，優先複習弱點詞彙與超高頻商務核心字！
+            🎯 <b>21天倒數高頻衝刺模式：</b>已全面過濾邊緣生僻詞彙！本期練習嚴選<b>多益最常考超高頻核心單字（Tier 3）與您的實戰弱點單字</b>，依權重由高排到低呈現，將寶貴時間 100% 聚焦於真正能突破 860+ 金色證書的必考關鍵題！
         </div>
         {cards_html}
     </section>
