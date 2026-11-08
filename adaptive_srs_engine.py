@@ -157,17 +157,16 @@ def select_part1_vocabulary(
 ) -> List[dict]:
     """
     Select `target_count` (16) detailed vocabulary items for Part 1:
-    - Slot Index `s_idx` in `0..49` (`(day_num - 1) * 2 + (0 if morning else 1)`).
-    - First 10 items: sequential slice across `vocab_db` so 100% of all deduplicated
-      words (`252+`) are guaranteed to be covered systematically across the 50 sessions.
-    - Remaining 6 items: selected from the highest-priority pool (user's repeated mistakes
-      + `freq_tier == 3` shorter/high-frequency TOEIC words) so weak words and high-frequency
-      simple words appear at a much higher frequency!
+    - Ranked and sorted strictly by weight (Error Count & Priority Score) from highest to lowest.
+    - Earlier days systematically send the highest-weighted items in the database first.
+    - Inside each session, items are strictly presented in descending order of weight (Card #1 = highest weight).
     """
     if not vocab_db:
         return []
 
-    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
+    is_morning = session.lower().startswith("m")
+    day_offset = (day_num - 5) if day_num >= 5 else (day_num - 1)
+    s_idx = max(0, day_offset) * 2 + (0 if is_morning else 1)
     n_total = len(vocab_db)
 
     # Enrich all entries with live priority metrics
@@ -193,63 +192,31 @@ def select_part1_vocabulary(
             e["source_badge"] = "🔄 雙重核心 (既有語塊 + 860 弱點合併)"
         elif "860" in src_str:
             e["source_badge"] = "🆕 860 弱點新增單字"
-        elif "User" in src_str or "custom" in src_str:
-            e["source_badge"] = "📥 使用者自訂新增單字"
+        elif "User" in src_str or "custom" in src_str or "使用者" in src_str:
+            e["source_badge"] = "🔥 使用者回報弱點"
         else:
             e["source_badge"] = "📘 25天衝刺核心語塊"
 
         enriched_all.append(e)
 
-    selected = []
-    seen_norms = set()
-
-    # 1. Sequential full-coverage slice (10 items)
-    seq_count = 10
-    start_pos = (s_idx * seq_count) % n_total
-    for offset in range(n_total):
-        cand = enriched_all[(start_pos + offset) % n_total]
-        nk = cand.get("norm_key") or normalize_key(cand["word"])
-        if nk not in seen_norms:
-            selected.append(cand)
-            seen_norms.add(nk)
-            if len(selected) >= seq_count:
-                break
-
-    # 2. Algorithmic Priority Pool (6 items: Error-boosted + Short/High-Freq Tier 3 words)
-    priority_pool = sorted(
+    # Sort entire database strictly by weight (error_count, priority_score) descending!
+    sorted_all = sorted(
         enriched_all,
         key=lambda x: (x["error_count"], x["priority_score"]),
         reverse=True,
     )
-    # Rotate slightly by s_idx among top high-priority candidates so daily review stays fresh
-    top_window = [c for c in priority_pool if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
-    if top_window:
-        # Always include any word with error_count > 0 first, rotated by s_idx so all weak words are systematically reviewed across sessions
-        error_words = [c for c in top_window if c["error_count"] > 0]
-        n_ew = len(error_words)
-        if n_ew > 0:
-            ew_offset = (s_idx * 4) % n_ew
-            for i in range(n_ew):
-                if len(selected) >= target_count:
-                    break
-                ew = error_words[(ew_offset + i) % n_ew]
-                nk = ew.get("norm_key") or normalize_key(ew["word"])
-                if nk not in seen_norms:
-                    selected.append(ew)
-                    seen_norms.add(nk)
 
-        # Fill remaining slots from top high-frequency / shorter core words rotated by s_idx
-        remaining_needed = target_count - len(selected)
-        if remaining_needed > 0:
-            freq_pool = [c for c in top_window if (c.get("norm_key") or normalize_key(c["word"])) not in seen_norms]
-            pool_cap = min(len(freq_pool), 48)
-            for i in range(remaining_needed if pool_cap else 0):
-                pick = freq_pool[(s_idx * 3 + i * 5) % pool_cap]
-                nk = pick.get("norm_key") or normalize_key(pick["word"])
-                if nk not in seen_norms:
-                    selected.append(pick)
-                    seen_norms.add(nk)
+    # Pick the slice for the current session from the sorted list
+    start_pos = (s_idx * target_count) % n_total
+    selected = []
+    for offset in range(n_total):
+        cand = sorted_all[(start_pos + offset) % n_total]
+        selected.append(cand)
+        if len(selected) >= target_count:
+            break
 
+    # Guarantee items inside this session are strictly ordered from highest weight to lowest weight
+    selected.sort(key=lambda x: (x["error_count"], x["priority_score"]), reverse=True)
     return selected
 
 

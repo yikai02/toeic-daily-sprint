@@ -420,8 +420,40 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
             "border-left: 5px solid #2563eb;" if int(v.get("freq_tier", 2)) == 3 else "border-left: 5px solid #7c3aed;"
         )
         trap_html = f'<div class="alert-box">⚠️ <b>考點與易混淆陷阱：</b>{html.escape(trap)}</div>' if trap else ""
-        ex_html = f'<div class="vocab-example">📖 <b>商務實戰例句：</b>{html.escape(example)}</div>' if example else ""
 
+        # 1. Example sentence with Chinese translation
+        ex_html = ""
+        if example:
+            ex_zh = v.get("example_zh", "").strip()
+            if ex_zh:
+                ex_html = f"""
+                <div class="vocab-example">
+                    <div class="ex-en">📖 <b>商務例句：</b>{html.escape(example)}</div>
+                    <div class="ex-zh">🇹🇼 <b>例句中譯：</b>{html.escape(ex_zh)}</div>
+                </div>
+                """
+            else:
+                ex_html = f'<div class="vocab-example">📖 <b>商務例句：</b>{html.escape(example)}</div>'
+
+        # 3. Smart Collocation / Synonym detection (never say "必考搭配與同義替換", don't force if no point)
+        colloc_html = ""
+        raw_colloc = v.get("collocations", "").strip()
+        if raw_colloc and raw_colloc.lower() != word.lower() and len(raw_colloc) > 3:
+            # Filter out non-collocation meta descriptions
+            if not (raw_colloc.endswith("情境高頻。") or raw_colloc.endswith("動作描寫。") or raw_colloc.endswith("日常辦公營運指派。")):
+                has_syn = any(k in raw_colloc for k in ("同義", "=", "等同於", "換成", "synonym", "paraphrase"))
+                has_col = any(k in raw_colloc for k in ("搭配", "片語", "短語", "access", "figure", "to", "for", "with", "of", "in", "on", "at", "service", "policy", "roadmap", "layout", "regulations", "selection"))
+                if has_syn and not has_col:
+                    colloc_html = f'<div class="chunk-scenario">🔄 <b>同義詞：</b>{html.escape(raw_colloc)}</div>'
+                elif has_col and not has_syn:
+                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配：</b>{html.escape(raw_colloc)}</div>'
+                elif has_syn and has_col:
+                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配與同義詞：</b>{html.escape(raw_colloc)}</div>'
+                else:
+                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配：</b>{html.escape(raw_colloc)}</div>'
+
+        # 5. Changed "核心字義：" to "中文："
+        # 2. Removed "排程演算法說明：" entirely!
         cards_html += f"""
         <div class="chunk-card" style="{border_style}">
             <div class="vocab-badge-row">
@@ -434,21 +466,20 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
                 <span class="chunk-title">{html.escape(word)}</span>
                 <span class="pos-badge">{html.escape(pos)}</span>
             </div>
-            <div class="chunk-meaning">🇹🇼 <b>核心字義：</b>{html.escape(meaning)}</div>
-            <div class="chunk-scenario">💼 <b>必考搭配與同義替換：</b>{html.escape(colloc)}</div>
+            <div class="chunk-meaning">🇹🇼 <b>中文：</b>{html.escape(meaning)}</div>
+            {colloc_html}
             {ex_html}
             {trap_html}
-            <div class="srs-reason-line">🤖 <b>排程演算法說明：</b>{html.escape(pri_reason)}</div>
         </div>
         """
 
-    total_db = srs_stats.get("total_unique_vocab", 252)
+    total_db = srs_stats.get("total_unique_vocab", 306)
     t3 = srs_stats.get("tier3_ultra_freq", 118)
     return f"""
     <section class="section-container" id="sec-part1">
         <div class="section-title">📚 第一部分：單字表詳細介紹（本場排程 {len(vocab_list)} 字 ／ 總庫 {total_db} 字已去重）</div>
         <div class="part-intro-banner">
-            💡 <b>智慧單字排程說明：</b>系統已將您上傳之 <code>860_antigravity.md</code> 單字與既有課程單字完成<b>自動去重合併（共 {total_db} 個不重複核心單字，含 {t3} 個短小超高頻核心字）</b>。越短、越常考的多益高頻字以及您曾答錯的單字，演算法會自動提高出現頻率！
+            💡 <b>智慧單字排程說明：</b>系統已將您上傳之 <code>860_antigravity.md</code> 與實戰弱點單字完成<b>自動去重合併（共 {total_db} 個不重複核心單字）</b>。系統依據權重由高排到低呈現，優先複習弱點詞彙與超高頻商務核心字！
         </div>
         {cards_html}
     </section>
@@ -482,6 +513,23 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
                 </div>
             </div>
             """
+
+        # 4. Fixed empty formula line behind "秒殺公式" + added explanation, correct example, and wrong trap
+        formula_text = (mod.get("formula") or mod.get("core_formula") or mod.get("rule") or "").strip()
+        formula_html = f'<div class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(formula_text)}</div>' if formula_text else ""
+        expl_text = mod.get("explanation", "").strip()
+        expl_html = f'<div class="gm-expl" style="margin-top:8px; line-height:1.6; color:#334155;">💡 <b>觀念解析：</b>{html.escape(expl_text)}</div>' if expl_text else ""
+        ex_correct = mod.get("correct_example", "").strip()
+        ex_wrong = mod.get("wrong_trap", "").strip()
+        compare_html = ""
+        if ex_correct or ex_wrong:
+            compare_html = f"""
+            <div class="gp-compare" style="margin-top:10px;">
+                {f'<div class="gp-correct" style="background:#f0fdf4; border-left:4px solid #16a34a; padding:8px 12px; margin-bottom:6px; border-radius:4px; font-size:0.92rem; color:#166534;">✅ <b>正確示範：</b>{html.escape(ex_correct)}</div>' if ex_correct else ''}
+                {f'<div class="gp-wrong" style="background:#fef2f2; border-left:4px solid #dc2626; padding:8px 12px; border-radius:4px; font-size:0.92rem; color:#991b1b;">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</div>' if ex_wrong else ''}
+            </div>
+            """
+
         mods_html += f"""
         <div class="grammar-mod-card">
             <div class="gm-header">
@@ -489,7 +537,9 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
                 <span class="gm-id">Module #{m_idx}</span>
             </div>
             <h3 class="gm-title">{html.escape(mod.get('title', ''))}</h3>
-            <div class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(mod.get('core_formula', ''))}</div>
+            {formula_html}
+            {expl_html}
+            {compare_html}
             {pts_html}
         </div>
         """
@@ -1099,19 +1149,26 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
 
         .vocab-example {{
             font-size: 14px;
-            color: var(--text-sub);
-            margin-top: 6px;
-            line-height: 1.5;
-            padding-left: 8px;
-            border-left: 3px solid #94a3b8;
+            color: var(--text-main);
+            margin-top: 7px;
+            line-height: 1.55;
+            padding: 8px 12px;
+            border-left: 3px solid #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 0 8px 8px 0;
         }}
 
-        .srs-reason-line {{
-            font-size: 12.5px;
-            color: var(--text-sub);
-            margin-top: 8px;
-            padding-top: 6px;
-            border-top: 1px dashed var(--border-color);
+        .ex-en {{
+            color: #1e293b;
+            font-weight: 500;
+        }}
+
+        .ex-zh {{
+            color: #475569;
+            margin-top: 4px;
+            font-size: 13.5px;
+            padding-top: 4px;
+            border-top: 1px dashed rgba(148, 163, 184, 0.3);
         }}
 
         .alert-box {{

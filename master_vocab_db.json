@@ -10,7 +10,8 @@
       "trap_note": "exclusive of（不包括）；常考合約與會員獨享權益。 ｜ 副詞形式為 exclusively！",
       "example": "Platinum cardholders enjoy exclusive access to the airport VIP lounge, which is exclusive of guest pass fees.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "白金卡持卡人享有專屬使用機場貴賓室的權益，且該權益不包含隨行賓客入場通行證費用。"
     },
     {
       "id": "860-02",
@@ -21,7 +22,8 @@
       "trap_note": "prominent figure（知名人士、政要）。",
       "example": "Dr. Evelyn Sato, a prominent macroeconomist, will deliver the opening keynote address at the Zurich summit.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "著名總體經濟學家佐藤博士將在蘇黎世高峰會發表開幕主題演講。"
     },
     {
       "id": "860-03",
@@ -32,7 +34,8 @@
       "trap_note": "complimentary breakfast / beverage（聽力高頻：換成 free）。",
       "example": "All conference registrants are entitled to a complimentary buffet breakfast and high-speed Wi-Fi at the venue.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有會議報名者皆有權在會場享受免費自助早餐與高速無線網路。"
     },
     {
       "id": "860-04",
@@ -43,7 +46,8 @@
       "trap_note": "對比：sufficient (adj. 充足的)；衍生：deficit (n. 赤字、虧損)。",
       "example": "The safety audit revealed that the warehouse ventilation system was severely deficient in air-filtration capacity.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "工安稽核顯示，該倉庫的通風系統在空氣過濾效能上嚴重不足。"
     },
     {
       "id": "860-05",
@@ -54,7 +58,8 @@
       "trap_note": "句型：It is imperative that + S + (should) 原形動詞。 ｜ 後面接 (should) + 原形動詞！",
       "example": "It is imperative that all international shipping manifests be verified before the cargo vessel departs.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有國際貨運艙單必須在貨船啟航前完成查核，這點至關重要。"
     },
     {
       "id": "860-06",
@@ -65,7 +70,8 @@
       "trap_note": "例：ascertain the cause of delay；衍生：certain (adj. 確定的)。",
       "example": "Forensic accountants were retained to ascertain the exact cause of the third-quarter inventory discrepancy.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "公司聘請鑑識會計師查明第三季存貨帳目不一致的確切原因。"
     },
     {
       "id": "860-07",
@@ -76,7 +82,8 @@
       "trap_note": "⚠️ **混淆陷阱**：勿混淆 discrete (adj. 個別分開的、不連續的)。",
       "example": "Executive recruiters must remain strictly discreet when approaching senior candidates from competing firms.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "高階獵人頭顧問在接觸競爭對手公司的資深候選人時，必須保持嚴格保密與謹慎。"
     },
     {
       "id": "860-08",
@@ -87,7 +94,8 @@
       "trap_note": "衍生動詞：accumulate (v. 累積、積累)。",
       "example": "The accumulative effect of minor assembly-line delays resulted in a significant production backlog.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "裝配線微小延誤的累積效應，導致了嚴重的生產積壓。"
     },
     {
       "id": "860-09",
@@ -98,7 +106,8 @@
       "trap_note": "常見於科技、文化或市場影響力主題（如 pervasive technology）。",
       "example": "With cloud-based collaboration tools becoming pervasive across the industry, remote auditing is now standard practice.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "隨著雲端協作工具在業界無處不在，遠端審計已成為標準作業流程。"
     },
     {
       "id": "860-10",
@@ -109,7 +118,8 @@
       "trap_note": "衍生：conscientious (adj. 盡責的)、conscience (n. 良心)。",
       "example": "Ms. Lin conscientiously reviewed every clause of the vendor agreement before authorizing the wire transfer.",
       "source": "860_antigravity.md",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "林女士在授權電匯前，認真細緻地審查了供應商協議的每一項條款。"
     },
     {
       "id": "860-11",
@@ -120,7 +130,8 @@
       "trap_note": "衍生：negligently (adv. 疏忽地)、negligence (n. 過失、玩忽職守)。",
       "example": "Tenants who neglect to submit their lease renewal forms thirty days in advance may forfeit their security deposit.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "若房客未提前三十天提交租約續約表單，可能會被沒收押金。"
     },
     {
       "id": "860-12",
@@ -131,7 +142,8 @@
       "trap_note": "等同於 afterward；常用於商業事件流程與時間軸轉折。",
       "example": "The prototype initially failed thermal testing; subsequently, the engineering team redesigned the cooling fan.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "該原型機最初未通過散熱測試；隨後，工程團隊重新設計了冷卻風扇。"
     },
     {
       "id": "860-13",
@@ -142,7 +154,8 @@
       "trap_note": "片語：in succession（連續地）；形容詞：successive（連續的）。",
       "example": "After winning the industry quality award for four years in succession, the plant expanded its production capacity.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "在連續四年榮獲業界品質大獎後，該工廠進一步擴充了其生產產能。"
     },
     {
       "id": "860-14",
@@ -153,7 +166,8 @@
       "trap_note": "片語：in close proximity to（鄰近某地）；approximate (adj. 大約的)。 ｜ 固定搭配 in close proximity to！ ｜ 名詞作主詞！",
       "example": "Located in close proximity to the central rail terminal, the new office complex attracts top regional talent.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "新辦公大樓座落於鄰近中央鐵路客運總站之處，吸引了頂尖的區域專業人才。"
     },
     {
       "id": "860-15",
@@ -164,7 +178,8 @@
       "trap_note": "exposure to foreign markets（進軍國際市場的曝光度）。",
       "example": "Sponsoring the international marathon gave our sportswear brand extensive media exposure across Europe.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "贊助國際馬拉松賽事，為我們的運動品牌在全歐洲帶來了廣泛的媒體曝光度。"
     },
     {
       "id": "860-16",
@@ -175,7 +190,8 @@
       "trap_note": "多益 Part 3/4/7 會議、展覽、研討會最高頻地點詞。",
       "example": "Due to overwhelming ticket demand, organizers relocated the trade symposium to a larger downtown venue.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "由於購票需求極度熱烈，主辦單位將商務研討會移至市中心更大的會場舉行。"
     },
     {
       "id": "860-17",
@@ -189,7 +205,8 @@
       "freq_tier": 3,
       "sources": [
         "user_reported_weakness"
-      ]
+      ],
+      "example_zh": "這家汽車製造商計畫在法蘭克福車展上正式推出其下一代自駕外送貨車。"
     },
     {
       "id": "860-18",
@@ -200,7 +217,8 @@
       "trap_note": "如 autonomous vehicles（自動駕駛車）。",
       "example": "Each regional subsidiary operates as an autonomous business unit while adhering to corporate financial guidelines.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "各區域子公司皆作為獨立自主的業務單位運作，同時嚴格遵守總部財務準則。"
     },
     {
       "id": "860-19",
@@ -211,7 +229,8 @@
       "trap_note": "用於補充說明前方名詞（＝that is to say）。",
       "example": "Only two departments exceeded their quarterly cost-reduction targets, namely Procurement and Logistics.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "僅有兩個部門超越了其季度成本精簡目標，即採購部與物流部。"
     },
     {
       "id": "860-20",
@@ -222,7 +241,8 @@
       "trap_note": "文法重點：後方常接分詞構句 thereby + V-ing（如 thereby cutting costs）。",
       "example": "The firm consolidated three regional warehouses into a single automated hub, thereby cutting transit costs by 22%.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該公司將三個區域倉庫整併為單一自動化物流樞紐，從而降低了22%的運輸成本。"
     },
     {
       "id": "860-21",
@@ -233,7 +253,8 @@
       "trap_note": "等同於 nevertheless；副詞轉折語，不具連接兩子句之功能。",
       "example": "The construction project encountered severe inclement weather in March; nonetheless, the contractor finished on schedule.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該項工程專案在三月遭遇了嚴峻的惡劣天候；儘管如此，承包商仍如期完工。"
     },
     {
       "id": "860-22",
@@ -244,7 +265,8 @@
       "trap_note": "等同於 rather, slightly。",
       "example": "Although third-quarter retail sales were somewhat lower than projected, annual net profit reached a record high.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "儘管第三季零售銷售額略低於預期目標，但全年淨利潤仍創下歷史新高。"
     },
     {
       "id": "860-23",
@@ -255,7 +277,8 @@
       "trap_note": "terminate a contract（終止合約）；termination notice。",
       "example": "Either party may initiate contract termination by providing sixty days' written notice to the other party.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "任何一方均可藉由向對方提供六十天的書面通知，正式啟動終止合約程序。"
     },
     {
       "id": "860-24",
@@ -266,7 +289,8 @@
       "trap_note": "confidentiality clause（保密條款）；escape clause（免責條款）。",
       "example": "Our legal counsel inserted a penalty clause into the supply contract to protect against late deliveries.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "我們的法律顧問在供應合約中加入了一項罰則條款，以防範交貨延遲之風險。"
     },
     {
       "id": "860-25",
@@ -277,7 +301,8 @@
       "trap_note": "對比連接詞，後方接完整子句表兩者對比（S + V whereas S + V）。",
       "example": "Domestic sales of desktop computers declined by five percent, whereas enterprise cloud subscriptions surged.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "桌上型電腦的國內銷售量下滑了5%，反之企業雲端訂閱服務則大幅激增。"
     },
     {
       "id": "860-26",
@@ -288,7 +313,8 @@
       "trap_note": "轉折副詞，前後需使用句號或分號隔開，不可直接當連接詞用。 ｜ however + 形容詞/副詞 + S + V 表示『無論多麼……』！",
       "example": "The proposed software upgrade offers enhanced security; however, it is not compatible with older terminals.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "提議的軟體升級功能強化了安全性；然而，它與舊型終端設備無法相容。"
     },
     {
       "id": "860-27",
@@ -299,7 +325,8 @@
       "trap_note": "連接詞表雖然；放在句尾時為副詞表「然而、不過」。 ｜ as though 常接虛擬語氣 were！",
       "example": "Though the initial investment was substantial, the solar array paid for itself within three fiscal years.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "儘管初期投資金額相當龐大，但太陽能陣列系統在三個會計年度內便已完全回收成本。"
     },
     {
       "id": "860-28",
@@ -310,7 +337,8 @@
       "trap_note": "等同於 as though，引導方式或假設子句。",
       "example": "The newly renovated lobby looks as if it were designed by an award-winning contemporary architect.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "全新翻修的接待大廳看起來宛如出自獲獎當代建築大師之手。"
     },
     {
       "id": "860-29",
@@ -321,7 +349,8 @@
       "trap_note": "兩個單詞，接完整子句表讓步（非合體字）。",
       "example": "Even though raw material prices fluctuated wildly, the manufacturer maintained stable wholesale pricing.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "即使原物料價格劇烈波動，該製造商仍維持了穩定的批發銷售定價。"
     },
     {
       "id": "860-30",
@@ -332,7 +361,8 @@
       "trap_note": "介系詞片語，後接名詞或 V-ing（如 regardless of inclement weather）。",
       "example": "All visitors must present photo identification at the security desk, regardless of their corporate title.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有訪客進入警衛安全櫃檯時，不論其企業職位高低，皆必須出示附照片之身分證件。"
     },
     {
       "id": "860-31",
@@ -343,7 +373,8 @@
       "trap_note": "接子句；對比介系詞片語 in the event of + N。 ｜ 視覺錨點：in the event that 後接完整句子 S+V；in the event of 後接名詞！",
       "example": "In the event that the primary server experiences an outage, backup systems will activate within five seconds.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "萬一主伺服器發生中斷故障，備援系統將於五秒鐘內自動啟動接手。"
     },
     {
       "id": "860-32",
@@ -354,7 +385,8 @@
       "trap_note": "片語：at one's discretion（由某人自行斟酌裁奪）。 ｜ 形容詞形式為 discretionary（自由裁量的）！ ｜ 固定商務片語！",
       "example": "Department managers may approve remote-work requests at their own discretion during severe weather alerts.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在發布嚴峻天候警報期間，部門主管可依自身裁量權核准同仁之遠距辦公申請。"
     },
     {
       "id": "860-33",
@@ -365,7 +397,8 @@
       "trap_note": "財務對帳必考：discrepancy between the invoice and the records。 ｜ discrepancy 為名詞！",
       "example": "The auditor discovered a $4,200 discrepancy between the digital invoice ledger and the bank statement.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "審計人員發現數位發票帳冊與銀行對帳單之間存在四千兩百美元的金額出入不符。"
     },
     {
       "id": "860-34",
@@ -376,7 +409,8 @@
       "trap_note": "workplace discrimination（職場歧視）。",
       "example": "Our corporate charter enforces a zero-tolerance policy regarding any form of workplace discrimination.",
       "source": "860_antigravity.md",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "我們的企業規章嚴格執行針對任何形式職場歧視的零容忍政策。"
     },
     {
       "id": "860-35",
@@ -387,7 +421,8 @@
       "trap_note": "衍生名詞：persistence (n. 堅持、毅力)。",
       "example": "Despite persistent supply chain bottlenecks, the electronics division fulfilled all holiday pre-orders.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "儘管供應鏈持續面臨瓶頸挑戰，電子產品部門仍圓滿履行了所有節慶預購訂單。"
     },
     {
       "id": "860-36",
@@ -398,7 +433,8 @@
       "trap_note": "範圍界定：as far as I know、as far as ... is concerned。",
       "example": "As far as the quarterly marketing budget is concerned, no further expenditure can be authorized this month.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "就季度行銷預算而言，本月份已無法再核准任何額外的支出款項。"
     },
     {
       "id": "860-37",
@@ -409,7 +445,8 @@
       "trap_note": "連接詞接子句，子句常伴隨情態動詞 can / may / could。",
       "example": "Please upload your presentation slides by Wednesday in order that our technical crew can test compatibility.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請於週三前上傳您的簡報投影片，以便我們的技術團隊能事先測試相容性。"
     },
     {
       "id": "860-38",
@@ -420,7 +457,8 @@
       "trap_note": "表假設性讓步（即使發生某事，結果依然……）。",
       "example": "Even if the municipal permit arrives tomorrow, road repaving cannot begin until the rain subsides.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "即使市政施工許可證明日送達，在降雨平息之前仍無法展開道路重新鋪設作業。"
     },
     {
       "id": "860-39",
@@ -431,7 +469,8 @@
       "trap_note": "金融貸款情境核心字（如 loan collateral）。",
       "example": "The commercial lender required the startup to pledge its manufacturing equipment as loan collateral.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "商業放款銀行要求該新創公司將其生產製造設備抵押作為貸款擔保品。"
     },
     {
       "id": "860-40",
@@ -442,7 +481,8 @@
       "trap_note": "衍生動詞：fluctuate（如 currency/price fluctuation）。",
       "example": "To protect profit margins against currency fluctuation, the exporter signed fixed-rate forward contracts.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "為了防範匯率劇烈波動對利潤率造成衝擊，該出口商簽署了固定匯率遠期合約。"
     },
     {
       "id": "860-41",
@@ -453,7 +493,8 @@
       "trap_note": "片語：be subject to change / approval / inspection（多益超高頻）。 ｜ subject 作形容詞！",
       "example": "All international flight schedules and boarding gate assignments are subject to change without prior notice.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有國際航班時刻表與登機門安排如有變動，恕不另行個別通知。"
     },
     {
       "id": "860-42",
@@ -464,7 +505,8 @@
       "trap_note": "分詞/被動：resented。",
       "example": "Several senior technicians resented being excluded from the software architecture planning committee.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "數名資深技術人員因被排除在軟體架構規劃委員會之外而感到不滿不滿。"
     },
     {
       "id": "860-43",
@@ -475,7 +517,8 @@
       "trap_note": "片語：confine A to B（將 A 限制在 B 範圍內）；confined (adj. 狹小的)。",
       "example": "Please confine your presentation remarks to the ten-minute slot allocated on the symposium agenda.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請將您的發言內容嚴格限制在座談會議程所分配的十分鐘時段之內。"
     },
     {
       "id": "860-44",
@@ -486,7 +529,8 @@
       "trap_note": "片語：abstain from voting（投票棄權）。",
       "example": "Three board members abstained from voting on the merger resolution due to potential conflicts of interest.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "因潛在利益衝突考量，三位董事會成員在企業合併決議案表決中投下了棄權票。"
     },
     {
       "id": "860-45",
@@ -497,7 +541,8 @@
       "trap_note": "搭配：unanimous decision / agreement / approval。",
       "example": "Following two hours of deliberation, the selection committee reached a unanimous decision on the new CEO.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "歷經兩個小時的深入審議後，遴選委員會在新任執行長人選上達成了全體一致的決定。"
     },
     {
       "id": "860-46",
@@ -508,7 +553,8 @@
       "trap_note": "片語：inclusive of taxes / shipping fees（包含稅金/運費）。",
       "example": "The quoted banquet package price of $85 per guest is fully inclusive of service charges and local taxes.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所報價的每位賓客85美元宴席套裝方案，已完全包含服務費與地方稅金。"
     },
     {
       "id": "860-47",
@@ -519,7 +565,8 @@
       "trap_note": "多益生活情境高頻字。",
       "example": "To reduce plastic waste, the restaurant chain now offers a ten-percent discount on takeout orders using reusable containers.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "為了減少塑膠廢棄物，該連鎖餐廳現對使用環保容器的外帶訂單提供九折優惠。"
     },
     {
       "id": "860-48",
@@ -530,7 +577,8 @@
       "trap_note": "courier service（快遞服務，聽力 Part 3/4 改寫常用詞）。",
       "example": "Sensitive legal contracts must be dispatched via an insured overnight courier rather than standard mail.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "機密的法律契約必須透過投保之隔日送達快遞遞送，而非一般平信郵寄。"
     },
     {
       "id": "860-49",
@@ -541,7 +589,8 @@
       "trap_note": "市政公告、通勤通知、交通改道情境高頻。",
       "example": "During the highway repaving project, northbound commuter buses will be detoured through Oak Avenue.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在公路重新鋪設瀝青施工期間，北向通勤公車將改道行經橡樹大道。"
     },
     {
       "id": "860-50",
@@ -552,7 +601,8 @@
       "trap_note": "pedestrian zone / crossing（行人徒步區/行人穿越道）。",
       "example": "The downtown shopping boulevard is closed to motor vehicles on weekends to create a safe zone for pedestrians.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "市中心購物徒步大道在週末期間禁止機動車輛進入，以為行人營造安全的通行環境。"
     },
     {
       "id": "860-51",
@@ -563,7 +613,8 @@
       "trap_note": "Part 1 圖片題高頻動作描寫。",
       "example": "Conference attendees can stroll down the scenic waterfront boardwalk during the two-hour midday break.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "與會嘉賓可在長達兩小時的午休時間漫步於風景優美的濱海木棧步道上。"
     },
     {
       "id": "860-52",
@@ -574,7 +625,8 @@
       "trap_note": "日常辦公營運指派。",
       "example": "The newly appointed compliance officer was immediately tasked with revising the data privacy manual.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "新上任的法規遵循主管立即被指派負責修訂企業數據隱私保護手冊。"
     },
     {
       "id": "860-53",
@@ -585,7 +637,8 @@
       "trap_note": "garment industry（成衣業，常作為 clothes 的高階替換字）。",
       "example": "Every waterproof garment manufactured at our Milan facility undergoes rigorous seam-sealing inspection.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在我們米蘭工廠生產的每一件防水成衣，都必須通過嚴格的接縫密封防水檢測。"
     },
     {
       "id": "860-54",
@@ -596,7 +649,8 @@
       "trap_note": "Part 1 物品擺放狀態：Documents are scattered across the desk.",
       "example": "Technicians had to gather dozens of inventory barcodes that had been scattered across the loading dock.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "技術人員必須收集散落在裝卸貨碼頭各處的數十張存貨條碼標籤。"
     },
     {
       "id": "860-55",
@@ -607,7 +661,8 @@
       "trap_note": "地理位置描述。",
       "example": "Several luxury resort hotels along the coast reported ninety-five percent occupancy during the summer festival.",
       "source": "860_antigravity.md",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "沿海數家豪華度假飯店回報，在夏季慶典期間的客房住房率高達百分之九十五。"
     },
     {
       "id": "860-56",
@@ -618,7 +673,8 @@
       "trap_note": "發音注意；聽力同義改寫對象：pamphlet, catalog, flyer。 ｜ 多益常考三胞胎：brochure / pamphlet / flier 通通是文宣小冊子！",
       "example": "Please refer to the enclosed tourist brochure for a detailed map of historical landmarks and shuttle stops.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請參閱隨函附上的觀光宣傳手冊，內有歷史地標與接駁站點的詳細地圖資訊。"
     },
     {
       "id": "860-57",
@@ -629,7 +685,8 @@
       "trap_note": "⚠️ **陷阱**：多益常考名詞「大樓園區」（office complex），非指租金。",
       "example": "The municipal council approved plans to convert the historic textile mill into a modern retail and office complex.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "市議會核准了將歷史悠久的紡織廠改建為現代化零售與辦公綜合商務園區的規劃方案。"
     },
     {
       "id": "860-58",
@@ -640,7 +697,8 @@
       "trap_note": "發音重音在第二音節 /kəˈmɪti/，避免聽力辨音障礙。",
       "example": "The safety steering committee convenes on the first Tuesday of every month to review incident reports.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "安全指導委員會於每個月的第一個星期二固定召開會議，以審查工安事故通報紀錄。"
     },
     {
       "id": "860-59",
@@ -651,7 +709,8 @@
       "trap_note": "Part 1 辦公文具圖片題必背。",
       "example": "Please order three heavy-duty staplers and ten reams of recycled paper from the office supply catalog.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請從辦公文具用品型錄中訂購三台重型訂書機以及十包再生影印紙。"
     },
     {
       "id": "860-60",
@@ -662,7 +721,8 @@
       "trap_note": "spare parts（備用零件）；spare time（抽空）。",
       "example": "Field maintenance technicians always carry spare hydraulic valves in their service vans for emergency repairs.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "外勤維修技術人員總是在服務專車中攜帶備用液壓閥，以應對緊急搶修需求。"
     },
     {
       "id": "860-61",
@@ -673,7 +733,8 @@
       "trap_note": "搭配：on the premises（在廠區/店面內）；business premises。 ｜ 名詞形式為 occupancy（進駐率）或 occupant（住戶）！ ｜ premises 恆用複數形！ ｜ 重要商務法務片語！ ｜ 名詞形式為 vacation（假期）或 vacancy（空缺）！",
       "example": "Smoking and the use of unauthorized recording devices are strictly prohibited anywhere on the company premises.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在公司廠區建築範圍內的任何地點，皆嚴格禁止吸菸及使用未經授權的錄影設備。"
     },
     {
       "id": "860-62",
@@ -684,7 +745,8 @@
       "trap_note": "衍生：circular (adj. 圓形的；n. 通報、傳單)。",
       "example": "By refurbishing returned electronics, our company actively contributes to a sustainable circular economy.",
       "source": "860_antigravity.md",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "透過翻新整修退換貨的電子產品，我們公司積極為永續的循環經濟做出實質貢獻。"
     },
     {
       "id": "860-63",
@@ -695,7 +757,8 @@
       "trap_note": "alternative solution（替代方案）；alternative energy。",
       "example": "When the main freight port was closed, the logistics team arranged rail transport as a cost-effective alternative.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "當主要貨運港口關閉時，物流調度團隊安排了鐵路運輸作為具備成本效益的替代方案。"
     },
     {
       "id": "860-64",
@@ -706,7 +769,8 @@
       "trap_note": "搭配：inclement weather（極常作為活動取消、航班延誤的原因）。",
       "example": "Owing to severe inclement weather across the North Atlantic, several cargo vessels were delayed by two days.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "由於北大西洋地區遭遇嚴峻的惡劣天候，數艘貨輪的航行時程被迫延誤了兩天。"
     },
     {
       "id": "860-65",
@@ -717,7 +781,8 @@
       "trap_note": "衍生：periodical (n. 期刊雜誌)。",
       "example": "To prevent mechanical breakdowns, factory cooling towers must be descaled and inspected periodically.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "為了防止機械故障，工廠冷卻水塔必須定期清除水垢並進行檢驗維護。"
     },
     {
       "id": "860-66",
@@ -728,7 +793,8 @@
       "trap_note": "衍生動詞：collide (v. 相撞)。",
       "example": "All fleet delivery trucks are now equipped with radar sensors designed to prevent rear-end collisions.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "所有物流貨車車隊現均已配備雷達感測器，旨在防止發生後方追撞事故。"
     },
     {
       "id": "860-67",
@@ -739,7 +805,8 @@
       "trap_note": "等同於 temporary workers。",
       "example": "To handle the surge in year-end tax filings, the accounting firm hired fifteen certified seasonal temps.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "為了因應年底報稅季節激增的業務量，這家會計師事務所聘雇了十五名合格的兼職派遣人員。"
     },
     {
       "id": "860-68",
@@ -750,7 +817,8 @@
       "trap_note": "financial / monetary incentive（績效獎金）。",
       "example": "The utility provider offers a generous cash incentive to commercial landlords who install rooftop solar panels.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "電力公用事業機構向安裝屋頂太陽能板的商業房東提供優渥的現金獎勵補貼。"
     },
     {
       "id": "860-69",
@@ -761,7 +829,8 @@
       "trap_note": "衍生動詞：rehearse (v. 彩排)。",
       "example": "All keynote speakers must attend the technical dress rehearsal in the main auditorium at 8:00 A.M.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "所有主講嘉賓皆必須參加上午八點在主大禮堂舉行的技術設備正式彩排。"
     },
     {
       "id": "860-70",
@@ -772,7 +841,8 @@
       "trap_note": "片語：have no intention of + V-ing（無意做某事）。 ｜ 單獨指個人意圖、打算時，通常用 intention。",
       "example": "The pharmaceutical conglomerate announced its intention to acquire two regional diagnostic laboratories.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該跨國製藥集團正式宣布了收購兩家區域性診斷實驗室的商業意向。"
     },
     {
       "id": "860-71",
@@ -783,7 +853,8 @@
       "trap_note": "副詞：urgently；搭配：urgent request / matter。 ｜ 名詞形式為 priority！",
       "example": "Please forward any urgent client inquiries directly to the on-call shift supervisor for immediate handling.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請將任何緊急的客戶諮詢事項直接轉交由值班值班督導進行即刻處理。"
     },
     {
       "id": "860-72",
@@ -797,7 +868,8 @@
       "freq_tier": 2,
       "sources": [
         "user_reported_weakness"
-      ]
+      ],
+      "example_zh": "保險理賠申請遭到否決，因為該起漏水損害是由於承租人的重大過失所造成。"
     },
     {
       "id": "860-73",
@@ -808,7 +880,8 @@
       "trap_note": "saturated market（飽和市場）。",
       "example": "Because the domestic smartphone market is already highly saturated, the brand is expanding into Latin America.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "由於國內智慧型手機市場已高度飽和，該品牌正加速拓展至拉丁美洲市場。"
     },
     {
       "id": "860-74",
@@ -819,7 +892,8 @@
       "trap_note": "出版、新聞與媒體情境詞。",
       "example": "In Sunday's lead editorial, the financial newspaper praised the central bank's interest-rate policy.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "在週日刊登的頭條社論中，該財經報紙盛讚了中央銀行的利率調控政策。"
     },
     {
       "id": "860-75",
@@ -830,7 +904,8 @@
       "trap_note": "等同於 quotation；商業詢價高頻。",
       "example": "Before selecting a commercial roofing contractor, facilities management obtained written quotes from four vendors.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在遴選商業屋頂修繕承包商之前，總務設施管理部門取得了四家廠商的書面報價單。"
     },
     {
       "id": "860-76",
@@ -841,7 +916,8 @@
       "trap_note": "片語：dedication to + N/V-ing（注意 to 為介系詞）。",
       "example": "The retiring laboratory director was honored for her forty years of unwavering dedication to cancer research.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "即將退休的實驗室主管因其四十年來對癌症研究所付出的堅定奉獻精神而獲得崇高表彰。"
     },
     {
       "id": "860-77",
@@ -852,7 +928,8 @@
       "trap_note": "同義改寫：examine thoroughly, inspect closely。",
       "example": "Customs inspectors closely scrutinize all agricultural imports to prevent the introduction of invasive pests.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "海關檢驗官員密切嚴格審查所有進口農產品，以防範外來入侵有害生物之引入。"
     },
     {
       "id": "860-78",
@@ -863,7 +940,8 @@
       "trap_note": "片語：a testament to one's ability/effort（對某人能力的明證）。",
       "example": "Our98% client renewal rate is a clear testament to the reliability and responsiveness of our support team.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "我們高達98%的客戶續約率，正是我們支援團隊可靠性與迅速回應能力的最佳證明。"
     },
     {
       "id": "860-79",
@@ -874,7 +952,8 @@
       "trap_note": "職場表揚與成功故事核心字。",
       "example": "Through remarkable perseverance, the R&D engineers overcame three years of material durability challenges.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "透過堅韌不拔的毅力，研發工程團隊克服了長達三年的材料耐用度技術挑戰。"
     },
     {
       "id": "860-80",
@@ -885,7 +964,8 @@
       "trap_note": "用於天災或重大經濟打擊。",
       "example": "Last winter's frost had a devastating effect on citrus harvests across the southern agricultural belt.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "去年冬季的嚴寒霜凍對整個南部農業走廊的柑橘採收造成了毀滅性的重創。"
     },
     {
       "id": "860-81",
@@ -896,7 +976,8 @@
       "trap_note": "⚠️ **陷阱**：商務指併購（M&A），非文法上的比較級。",
       "example": "Following the acquisition of Nordic Freight, our firm became the largest cold-chain operator in Scandinavia.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在順利完成對北歐貨運的企業收購後，我司成為斯堪地那維亞地區最大的冷鏈物流業者。"
     },
     {
       "id": "860-82",
@@ -907,7 +988,8 @@
       "trap_note": "衍生：distinguished (adj. 傑出的、卓越的)。",
       "example": "Our proprietary optical sensor can accurately distinguish between genuine banknotes and sophisticated counterfeits.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "我們專有的光學感測技術能夠精準辨識真鈔與精密的偽造假鈔。"
     },
     {
       "id": "860-83",
@@ -918,7 +1000,8 @@
       "trap_note": "⚠️ **勘誤注意**：合約/簡報模板拼字為 template。",
       "example": "All department heads must use the standardized budget template when submitting next year's expenditure requests.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有部門主管在提交明年度的各項經費支出預算請求時，均必須使用標準化預算範本。"
     },
     {
       "id": "860-84",
@@ -929,7 +1012,8 @@
       "trap_note": "⚠️ **勘誤注意**：勿與 alternation (交替、輪流) 混淆。",
       "example": "Tailors at our flagship boutique provide complimentary hemline alterations on all full-price business suits.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "我們旗艦精品門市的專屬駐店裁縫師，為所有全價商務西裝提供免費的下擺修改調整服務。"
     },
     {
       "id": "860-85",
@@ -940,7 +1024,8 @@
       "trap_note": "culinary skills（廚藝）；culinary school。",
       "example": "Graduates of the Geneva Culinary Institute have been recruited by five-star hotels around the globe.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "日內瓦廚藝餐飲學院的畢業優秀學員，已深受全球各大五星級連鎖飯店廣泛延攬。"
     },
     {
       "id": "860-86",
@@ -951,7 +1036,8 @@
       "trap_note": "⚠️ **多益熟詞偏義**：除了文學，多益多考「產品文宣/手冊」。",
       "example": "Sales representatives distributed updated product literature to prospective buyers at the medical device trade fair.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "業務代表在醫療器材展覽會現場，向潛在國際買主廣泛發放更新版的最新產品宣傳手冊資料。"
     },
     {
       "id": "860-87",
@@ -962,7 +1048,8 @@
       "trap_note": "monumental milestone / achievement。",
       "example": "Completing the cross-harbor suspension bridge six months ahead of schedule was a monumental engineering feat.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "提前六個月順利完工這座跨海懸索吊橋工程，堪稱是一項非凡且極具紀念碑意義的工程壯舉。"
     },
     {
       "id": "860-88",
@@ -973,7 +1060,8 @@
       "trap_note": "衍生名詞：narrator (n. 旁白員)。",
       "example": "A renowned broadcast journalist was hired to narrate the corporate documentary celebrating our centennial.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "公司聘請了一位知名的資深廣播新聞記者，為慶祝本公司創立百週年的企業紀錄片錄製旁白敘述。"
     },
     {
       "id": "860-89",
@@ -984,7 +1072,8 @@
       "trap_note": "衍生動詞：manifest (v. 表明、顯現)。",
       "example": "The surge in repeat enterprise orders is a direct manifestation of our improved quality control protocols.",
       "source": "860_antigravity.md",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "企業客戶續購重複訂單的大幅激增，正是我們品質控制標準流程優化後的具體展現。"
     },
     {
       "id": "860-90",
@@ -995,7 +1084,8 @@
       "trap_note": "人事評價、履歷推薦信用字。",
       "example": "Thanks to a resourceful warehouse supervisor, the chilled cargo was transferred to backup freezers during the blackout.",
       "source": "860_antigravity.md",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "幸虧有一位機智靈活的倉庫主管迅速應變，冷藏貨物在全廠大停電期間被即刻轉移至備份冰庫。"
     },
     {
       "id": "860-91",
@@ -1006,7 +1096,8 @@
       "trap_note": "句型：prohibit A from B-ing。",
       "example": "Corporate cybersecurity guidelines strictly prohibit employees from installing unverified browser extensions.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "企業資訊安全規章明文嚴格禁止內部員工在工作電腦上安裝未經驗證的瀏覽器擴充元件套件。"
     },
     {
       "id": "860-92",
@@ -1017,7 +1108,8 @@
       "trap_note": "如：relinquish one's position / role / rights。",
       "example": "Under the terms of the settlement, the holding company agreed to relinquish its voting majority on the board.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "根據這項法律和解協議的條款內容，該控股集團同意正式交出其在董事會中的多數投票表決權利。"
     },
     {
       "id": "860-93",
@@ -1028,7 +1120,8 @@
       "trap_note": "如：concede defeat、concede that...。",
       "example": "After reviewing the independent lab results, the supplier had to concede that the alloy batch was defective.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在仔細檢視獨立第三方實驗室的檢驗數據報告後，該供應商不得不無奈承認這批合金零件確實存在瑕疵。"
     },
     {
       "id": "860-94",
@@ -1039,7 +1132,8 @@
       "trap_note": "一詞多義高頻字（discharge duties / patients）。",
       "example": "The hospital Board praised the nursing staff for discharging their clinical duties with exceptional professionalism.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "醫院董事會大力盛讚護理全體團隊，以無比卓越的專業素養克盡並履行其各項臨床醫療照護職責。"
     },
     {
       "id": "860-95",
@@ -1050,7 +1144,8 @@
       "trap_note": "搭配：exempt customs duties（免關稅）；be exempt from。",
       "example": "Small businesses with annual revenues below the statutory threshold are exempt from the new municipal surcharge.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "年營業額低於法定免稅門檻規範的小型微創企業，依法得享有免除繳納全新市政附加稅款之優惠。"
     },
     {
       "id": "860-96",
@@ -1061,7 +1156,8 @@
       "trap_note": "同義字：compulsory, obligatory。 ｜ 反義詞為 optional！",
       "example": "Attendance at Friday's cybersecurity awareness workshop is mandatory for all personnel handling client data.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有負責經手接觸客戶敏感資料的同仁，皆必須強制參加本週五舉辦的資安防護意識宣導工作坊。"
     },
     {
       "id": "860-97",
@@ -1072,7 +1168,8 @@
       "trap_note": "搭配：stringent regulations / standards / policies。",
       "example": "Medical device manufacturers must comply with stringent sterilization standards prior to product distribution.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "醫療器材製造商在正式對外分銷流通產品之前，必須無條件完全符合極其嚴苛的滅菌安全標準。"
     },
     {
       "id": "860-C1",
@@ -1083,7 +1180,8 @@
       "trap_note": "⚠️ 易混淆陷阱：切勿與 remains（遺體、歷史遺蹟、殘渣）混淆！表合約剩餘款項或會議剩餘時間一律用 the remainder。",
       "example": "The keynote lecture will occupy the first hour, and the remainder of the morning will be devoted to workshops.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "主題演講將占用上午第一個小時的時間，而上午其餘剩餘的寶貴時間將全數投入於專案實作工作坊。"
     },
     {
       "id": "860-C2",
@@ -1094,7 +1192,8 @@
       "trap_note": "⚠️ 易混淆陷阱：反義片語為 out of reach（遙不可及、能力所不及）。",
       "example": "With fourth-quarter pre-orders exceeding expectations, our annual sales milestone is now well within reach.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "隨著第四季度的預購訂單表現遠超原先預期，我們全年度的營收突破目標里程碑如今已然觸手可及。"
     },
     {
       "id": "860-C3",
@@ -1105,7 +1204,8 @@
       "trap_note": "⚠️ 易混淆陷阱：固定商業搭配詞，切勿誤選非正規搭配 combined totaling。",
       "example": "The three regional charity galas raised a combined total of four hundred thousand dollars for children's hospitals.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "這三場在不同區域舉辦的慈善募款晚宴，總計為市立兒童綜合醫院共同募集了高達四十萬美元的愛心善款。"
     },
     {
       "id": "860-C4",
@@ -1116,7 +1216,8 @@
       "trap_note": "⚠️ 易混淆陷阱：A and B alike 置於兩個對等名詞之後；like A and B 則置於名詞之前。",
       "example": "The new ergonomic office chairs have received enthusiastic feedback from executives and administrative staff alike.",
       "source": "860_antigravity.md",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "這款全新引進的人體工學辦公座椅，獲得了高階主管以及基層行政同仁雙方全體一致的高度肯定與讚賞。"
     },
     {
       "id": "CORE-001",
@@ -1127,7 +1228,8 @@
       "trap_note": "注意：oversight 是名詞，指『疏忽 / 遺漏』！",
       "example": "Ms. Lin was appointed to oversee the project due to her extensive management experience.",
       "source": "Day 01 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "由於林女士具備豐富的管理經驗，她被指派負責監督這項專案。"
     },
     {
       "id": "CORE-002",
@@ -1138,7 +1240,8 @@
       "trap_note": "核心替換：oversight = mistake = omission",
       "example": "Due to an unfortunate oversight, the revised invoice was sent to the wrong vendor.",
       "source": "Day 01 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "由於一個令人遺憾的疏忽，修訂後的發票被寄給了錯誤的供應商。"
     },
     {
       "id": "CORE-003",
@@ -1149,7 +1252,8 @@
       "trap_note": "必考介系詞：eligible 後方固定搭配 for + 名詞！ ｜ eligible 後接 for！",
       "example": "Only full-time staff who complete the leadership workshop are eligible for promotion.",
       "source": "Day 01 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "只有完成領導力工作坊的全職員工，才符合晉升拔擢的資格。"
     },
     {
       "id": "CORE-004",
@@ -1160,7 +1264,8 @@
       "trap_note": "必考介系詞：be entitled to + 名詞 / 原形動詞",
       "example": "Customers receiving damaged items are entitled to a refund within 14 business days.",
       "source": "Day 01 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "收到瑕疵損壞商品的顧客，有權在十四個營業日內申請全額退款。"
     },
     {
       "id": "CORE-005",
@@ -1171,7 +1276,8 @@
       "trap_note": "必考介系詞：exempted 後方固定搭配 from！",
       "example": "Attendees registering before Friday are automatically exempted from the fee.",
       "source": "Day 01 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "在星期五前報名註冊的與會者，將自動獲得免除此筆會議費用的優惠。"
     },
     {
       "id": "CORE-006",
@@ -1182,7 +1288,8 @@
       "trap_note": "必考介系詞：compatible 固定搭配 with！ ｜ compatible 後接 with！",
       "example": "Please verify that the software update is compatible with the operating system.",
       "source": "Day 01 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "請務必確認該項軟體更新能與既有的電腦作業系統完全相容。"
     },
     {
       "id": "CORE-007",
@@ -1193,7 +1300,8 @@
       "trap_note": "核心替換：under the direction of = under the leadership of",
       "example": "The new research lab was constructed under the direction of Dr. Morales.",
       "source": "Day 01 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "這座全新的科研實驗室是在莫拉萊斯博士的指導領導之下規劃建造的。"
     },
     {
       "id": "CORE-008",
@@ -1204,7 +1312,8 @@
       "trap_note": "易混淆：proceed (v.) 繼續進行 vs. procedure (n.) 程序步驟！",
       "example": "Engineers were advised to proceed with caution during the structural inspection.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「謹慎繼續進行」於職場之情境：Engineers were advised to proceed with caution during the structural inspection."
     },
     {
       "id": "CORE-009",
@@ -1215,7 +1324,8 @@
       "trap_note": "核心替換：procedure = protocol = routine",
       "example": "Employees must adhere to the standard operating procedure when handling toxic chemicals.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「標準作業程序 (SOP)」於職場之情境：Employees must adhere to the standard operating procedure when handling toxic chemicals."
     },
     {
       "id": "CORE-010",
@@ -1226,7 +1336,8 @@
       "trap_note": "必考用法：consist of 永遠沒有被動態 (is consisted of ❌)！",
       "example": "The executive training program consists of five rigorous modules.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「由五個模組組成」於職場之情境：The executive training program consists of five rigorous modules."
     },
     {
       "id": "CORE-011",
@@ -1237,7 +1348,8 @@
       "trap_note": "介系詞搭配：persist 固定接 in！",
       "example": "The sales team persisted in efforts despite facing severe market contraction.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「堅持不懈地努力」於職場之情境：The sales team persisted in efforts despite facing severe market contraction."
     },
     {
       "id": "CORE-012",
@@ -1248,7 +1360,8 @@
       "trap_note": "介系詞搭配：insist 固定接 on！",
       "example": "The safety auditor insisted on immediate compliance with environmental standards.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「堅持要求合規」於職場之情境：The safety auditor insisted on immediate compliance with environmental standards."
     },
     {
       "id": "CORE-013",
@@ -1259,7 +1372,8 @@
       "trap_note": "視覺錨點：prior to 是介系詞片語，後接名詞或 V-ing！ ｜ prior 後接 to！",
       "example": "All travelers must submit visa documentation prior to departure.",
       "source": "Day 02 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「在出發之前」於職場之情境：All travelers must submit visa documentation prior to departure."
     },
     {
       "id": "CORE-014",
@@ -1270,7 +1384,8 @@
       "trap_note": "核心替換：delegate = assign = entrust; capably = skillfully",
       "example": "A great supervisor knows how to delegate tasks capably to team members.",
       "source": "Day 02 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「幹練地委派任務」於職場之情境：A great supervisor knows how to delegate tasks capably to team members."
     },
     {
       "id": "CORE-015",
@@ -1281,7 +1396,8 @@
       "trap_note": "商務固定名詞搭配：letter of intent（意向書），不可用 intention 替換！",
       "example": "Both firms signed a letter of intent to finalize the cross-border merger.",
       "source": "Day 03 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「意向書 (LOI)」於職場之情境：Both firms signed a letter of intent to finalize the cross-border merger."
     },
     {
       "id": "CORE-016",
@@ -1292,7 +1408,8 @@
       "trap_note": "多義字：convention 可指『大型會議/年會』或『慣例/傳統』。",
       "example": "Over 3,000 delegates will gather at the annual convention center.",
       "source": "Day 03 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「年度大會中心」於職場之情境：Over 3,000 delegates will gather at the annual convention center."
     },
     {
       "id": "CORE-017",
@@ -1303,7 +1420,8 @@
       "trap_note": "核心替換：assess = evaluate = appraise = gauge",
       "example": "Insurance adjusters arrived early to assess the damage caused by the storm.",
       "source": "Day 03 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「評估損失 / 災情」於職場之情境：Insurance adjusters arrived early to assess the damage caused by the storm."
     },
     {
       "id": "CORE-018",
@@ -1314,7 +1432,8 @@
       "trap_note": "核心替換：evaluate = estimate = analyze",
       "example": "The consulting firm will evaluate market potential before greenlighting the launch.",
       "source": "Day 03 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「評估市場潛力」於職場之情境：The consulting firm will evaluate market potential before greenlighting the launch."
     },
     {
       "id": "CORE-019",
@@ -1325,7 +1444,8 @@
       "trap_note": "核心替換：provided that = as long as = on condition that",
       "example": "The contract will be renewed provided that terms are met satisfactorily.",
       "source": "Day 03 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「只要符合條件」於職場之情境：The contract will be renewed provided that terms are met satisfactorily."
     },
     {
       "id": "CORE-020",
@@ -1336,7 +1456,8 @@
       "trap_note": "核心替換：coverage = reporting = broadcast; 多義字：coverage 亦指『保險理賠範圍』！",
       "example": "The tech summit received extensive media coverage across North America.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "這場科技高峰會在全北美地區獲得了各主流媒體的廣泛深度報導。"
     },
     {
       "id": "CORE-021",
@@ -1347,7 +1468,8 @@
       "trap_note": "核心替換：recall = withdraw = call back; faulty = defective",
       "example": "The distributor decided to recall faulty appliances to avoid legal liability.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「召回故障家電」於職場之情境：The distributor decided to recall faulty appliances to avoid legal liability."
     },
     {
       "id": "CORE-022",
@@ -1358,7 +1480,8 @@
       "trap_note": "核心替換：conditions = terms = stipulations",
       "example": "Repairs are conducted free of charge under warranty conditions.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「在保固條件限制下」於職場之情境：Repairs are conducted free of charge under warranty conditions."
     },
     {
       "id": "CORE-023",
@@ -1369,7 +1492,8 @@
       "trap_note": "核心替換：in stock = available = on hand",
       "example": "The warehouse strives to keep high-demand merchandise in stock.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「備有現貨庫存」於職場之情境：The warehouse strives to keep high-demand merchandise in stock."
     },
     {
       "id": "CORE-024",
@@ -1380,7 +1504,8 @@
       "trap_note": "核心替換：conduct = carry out = perform = execute",
       "example": "The compliance division was authorized to conduct an investigation into the leak.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「執行內部調查」於職場之情境：The compliance division was authorized to conduct an investigation into the leak."
     },
     {
       "id": "CORE-025",
@@ -1391,7 +1516,8 @@
       "trap_note": "核心替換：promote = boost = enhance; 多義字：promote 亦指『升遷 / 提拔』！",
       "example": "Digital campaigns were launched to promote brand awareness among young professionals.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「提昇品牌知名度」於職場之情境：Digital campaigns were launched to promote brand awareness among young professionals."
     },
     {
       "id": "CORE-026",
@@ -1402,7 +1528,8 @@
       "trap_note": "核心替換：prospective = potential = future; promising = favorable",
       "example": "The sales representative scheduled meetings with several promising prospective clients.",
       "source": "Day 04 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「有潛力的潛在客戶」於職場之情境：The sales representative scheduled meetings with several promising prospective clients."
     },
     {
       "id": "CORE-027",
@@ -1413,7 +1540,8 @@
       "trap_note": "必考介系詞：proficient 後方固定搭配 in！",
       "example": "Candidates proficient in Mandarin and English are preferred for the regional role.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「精通中文」於職場之情境：Candidates proficient in Mandarin and English are preferred for the regional role."
     },
     {
       "id": "CORE-028",
@@ -1424,7 +1552,8 @@
       "trap_note": "注意：be accustomed to 後方的 to 是介系詞，接名詞或 V-ing！",
       "example": "Staff members quickly became accustomed to changes in remote work guidelines.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「習慣於各種變動」於職場之情境：Staff members quickly became accustomed to changes in remote work guidelines."
     },
     {
       "id": "CORE-029",
@@ -1435,7 +1564,8 @@
       "trap_note": "介系詞搭配：resistant 固定接 to！",
       "example": "The new kitchen apron is made of synthetic fibers highly resistant to heat.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「耐熱的 / 抗熱的」於職場之情境：The new kitchen apron is made of synthetic fibers highly resistant to heat."
     },
     {
       "id": "CORE-030",
@@ -1446,7 +1576,8 @@
       "trap_note": "介系詞搭配：vulnerable 固定接 to！",
       "example": "Unpatched database servers are vulnerable to cyber attacks.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「易遭受攻擊」於職場之情境：Unpatched database servers are vulnerable to cyber attacks."
     },
     {
       "id": "CORE-031",
@@ -1457,7 +1588,8 @@
       "trap_note": "介系詞搭配：pertinent 固定接 to！",
       "example": "Please disclose all files pertinent to the ongoing patent dispute.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「與本案直接相關」於職場之情境：Please disclose all files pertinent to the ongoing patent dispute."
     },
     {
       "id": "CORE-032",
@@ -1468,7 +1600,8 @@
       "trap_note": "多義字：mandate 可作名詞（授權/指令）亦可作動詞（強制規定）。",
       "example": "The factory complied strictly with the government mandate on emission limits.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「政府的強制命令」於職場之情境：The factory complied strictly with the government mandate on emission limits."
     },
     {
       "id": "CORE-033",
@@ -1479,7 +1612,8 @@
       "trap_note": "多義字：deliberate (adj.) 蓄意的/審慎的；(v.) 仔細考慮/研議。",
       "example": "The firm made a deliberate attempt to capture market share in rural regions.",
       "source": "Day 05 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「一項蓄意/深思熟慮的企圖」於職場之情境：The firm made a deliberate attempt to capture market share in rural regions."
     },
     {
       "id": "CORE-034",
@@ -1490,7 +1624,8 @@
       "trap_note": "核心替換：in charge of = responsible for = overseeing",
       "example": "Mr. Chen was placed in charge of logistics for the Asia-Pacific territory.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「負責物流營運」於職場之情境：Mr. Chen was placed in charge of logistics for the Asia-Pacific territory."
     },
     {
       "id": "CORE-035",
@@ -1501,7 +1636,8 @@
       "trap_note": "視覺錨點：in addition to 後接名詞 / V-ing，表『除了…還有…』！",
       "example": "In addition to bonuses, employees receive subsidized commuting passes.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "除了年終績效獎金之外，全體員工還可獲得公司補貼的上下班通勤交通票卡。"
     },
     {
       "id": "CORE-036",
@@ -1512,7 +1648,8 @@
       "trap_note": "核心替換：step down = resign = retire from",
       "example": "The founder announced plans to step down from the board next spring.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「辭去董事會職位」於職場之情境：The founder announced plans to step down from the board next spring."
     },
     {
       "id": "CORE-037",
@@ -1523,7 +1660,8 @@
       "trap_note": "核心替換：take over = assume control of",
       "example": "A veteran manager will take over the department following the restructuring.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「接管該部門業務」於職場之情境：A veteran manager will take over the department following the restructuring."
     },
     {
       "id": "CORE-038",
@@ -1534,7 +1672,8 @@
       "trap_note": "核心替換：hold off on = delay = defer = postpone",
       "example": "Management decided to hold off on hiring until third-quarter forecasts improve.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「暫緩招聘新進人員」於職場之情境：Management decided to hold off on hiring until third-quarter forecasts improve."
     },
     {
       "id": "CORE-039",
@@ -1545,7 +1684,8 @@
       "trap_note": "核心替換：put off = postpone = defer",
       "example": "Both parties agreed to put off the negotiation until legal reviews are complete.",
       "source": "Day 06 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「推遲雙邊談判會議」於職場之情境：Both parties agreed to put off the negotiation until legal reviews are complete."
     },
     {
       "id": "CORE-040",
@@ -1556,7 +1696,8 @@
       "trap_note": "核心替換：putting in overtime = working extra hours",
       "example": "Staff members were putting in overtime to meet the rigorous software rollout date.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「持續加班工作」於職場之情境：Staff members were putting in overtime to meet the rigorous software rollout date."
     },
     {
       "id": "CORE-041",
@@ -1567,7 +1708,8 @@
       "trap_note": "必考介系詞：refrain 固定搭配 from + V-ing/N！",
       "example": "Guests are kindly requested to refrain from smoking on the outdoor terrace.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「請勿抽煙 / 克制避免」於職場之情境：Guests are kindly requested to refrain from smoking on the outdoor terrace."
     },
     {
       "id": "CORE-042",
@@ -1578,7 +1720,8 @@
       "trap_note": "必考介系詞：adhere 固定搭配 to！",
       "example": "All laboratory personnel must adhere to guidelines set by the safety commission.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「遵守各項準則」於職場之情境：All laboratory personnel must adhere to guidelines set by the safety commission."
     },
     {
       "id": "CORE-043",
@@ -1589,7 +1732,8 @@
       "trap_note": "核心替換：be bound to = be certain to = inevitable",
       "example": "With market volatility at record highs, price fluctuations are bound to happen.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「必然會發生」於職場之情境：With market volatility at record highs, price fluctuations are bound to happen."
     },
     {
       "id": "CORE-044",
@@ -1600,7 +1744,8 @@
       "trap_note": "核心替換：back down = yield = concede",
       "example": "Neither negotiating team was willing to back down from demands.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「從訴求中退讓妥協」於職場之情境：Neither negotiating team was willing to back down from demands."
     },
     {
       "id": "CORE-045",
@@ -1611,7 +1756,8 @@
       "trap_note": "核心替換：throughout the day = all day long",
       "example": "Refreshments and snacks will be served in the foyer throughout the day.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「一整天持續不斷」於職場之情境：Refreshments and snacks will be served in the foyer throughout the day."
     },
     {
       "id": "CORE-046",
@@ -1622,7 +1768,8 @@
       "trap_note": "核心替換：vice versa = the reverse is also true",
       "example": "A successful marketing campaign benefits sales figures, and vice versa.",
       "source": "Day 07 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「反之亦然」於職場之情境：A successful marketing campaign benefits sales figures, and vice versa."
     },
     {
       "id": "CORE-047",
@@ -1633,7 +1780,8 @@
       "trap_note": "文法陷阱：damage 當『損害』時為不可數名詞！damages 複數時指『法律賠償金』！",
       "example": "The courier promised to compensate for damage sustained during transit.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「賠償所造成的損失」於職場之情境：The courier promised to compensate for damage sustained during transit."
     },
     {
       "id": "CORE-048",
@@ -1644,7 +1792,8 @@
       "trap_note": "不可數名詞：accommodation（住宿）多益常考不可數！",
       "example": "Travel coordinators booked luxury accommodation for the visiting delegates.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「預訂奢華住宿設施」於職場之情境：Travel coordinators booked luxury accommodation for the visiting delegates."
     },
     {
       "id": "CORE-049",
@@ -1655,7 +1804,8 @@
       "trap_note": "核心替換：aisle = walkway = corridor = passageway",
       "example": "Please keep luggage clear while walking down the aircraft aisle.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「沿著走道走過去」於職場之情境：Please keep luggage clear while walking down the aircraft aisle."
     },
     {
       "id": "CORE-050",
@@ -1666,7 +1816,8 @@
       "trap_note": "核心替換：anticipate = foresee = expect = predict",
       "example": "Retailers must anticipate the demand for winter coats before the freeze.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "服飾零售商必須在寒流降臨前，準確預期並評估市場對冬季大衣的購買需求。"
     },
     {
       "id": "CORE-051",
@@ -1677,7 +1828,8 @@
       "trap_note": "不可數名詞：attire 為不可數；attired (adj.) 穿著……服裝的。",
       "example": "Consultants are expected to wear professional attire during client presentations.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「穿著專業商務服飾」於職場之情境：Consultants are expected to wear professional attire during client presentations."
     },
     {
       "id": "CORE-052",
@@ -1688,7 +1840,8 @@
       "trap_note": "核心替換：appliance = device = machine = equipment",
       "example": "The restaurant replaced its outdated commercial kitchen appliance.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「商用廚房家電器具」於職場之情境：The restaurant replaced its outdated commercial kitchen appliance."
     },
     {
       "id": "CORE-053",
@@ -1699,7 +1852,8 @@
       "trap_note": "核心替換：attired in = dressed in",
       "example": "All convention attendees were neatly attired in business suits.",
       "source": "Day 08 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「身著商務套裝」於職場之情境：All convention attendees were neatly attired in business suits."
     },
     {
       "id": "CORE-054",
@@ -1710,7 +1864,8 @@
       "trap_note": "文法考點：one another 與 each other 是代名詞，通常當受詞，不能直接當主詞！",
       "example": "Colleagues are encouraged to assist one another in the team during peak hours.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「團隊彼此互相（三人以上）」於職場之情境：Colleagues are encouraged to assist one another in the team during peak hours."
     },
     {
       "id": "CORE-055",
@@ -1721,7 +1876,8 @@
       "trap_note": "核心替換：broaden = expand = widen",
       "example": "The marketing team launched campaigns to broaden client outreach in suburban districts.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「拓展客戶觸及範圍」於職場之情境：The marketing team launched campaigns to broaden client outreach in suburban districts."
     },
     {
       "id": "CORE-056",
@@ -1732,7 +1888,8 @@
       "trap_note": "核心替換：capacity = volume = maximum occupancy",
       "example": "The auditorium reached maximum capacity minutes before the keynote address.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「達到最大容納量 / 產能」於職場之情境：The auditorium reached maximum capacity minutes before the keynote address."
     },
     {
       "id": "CORE-057",
@@ -1743,7 +1900,8 @@
       "trap_note": "核心替換：capably = competently = adeptly",
       "example": "Despite her young age, she performed tasks capably under intense deadline pressure.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「幹練稱職地執行任務」於職場之情境：Despite her young age, she performed tasks capably under intense deadline pressure."
     },
     {
       "id": "CORE-058",
@@ -1754,7 +1912,8 @@
       "trap_note": "核心替換：caterer = food service provider",
       "example": "The event coordinator decided to hire a local caterer for the banquet dinner.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「聘請當地外燴廠商」於職場之情境：The event coordinator decided to hire a local caterer for the banquet dinner."
     },
     {
       "id": "CORE-059",
@@ -1765,7 +1924,8 @@
       "trap_note": "核心替換：closure = shutdown = blockage",
       "example": "Commuters were alerted to a temporary road closure along Main Street.",
       "source": "Day 09 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「臨時道路封閉」於職場之情境：Commuters were alerted to a temporary road closure along Main Street."
     },
     {
       "id": "CORE-060",
@@ -1776,7 +1936,8 @@
       "trap_note": "易混淆：commend (v.) 表揚讚賞 vs. comment (v./n.) 評論！",
       "example": "The regional director commended the staff for exceeding quarterly sales benchmarks.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "區域總監大力表揚全體員工超越了季度銷售業績指標。"
     },
     {
       "id": "CORE-061",
@@ -1787,7 +1948,8 @@
       "trap_note": "核心替換：competent = capable = skilled = proficient",
       "example": "Hiring a competent manager helped stabilize the company's manufacturing unit.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「一位能幹稱職的經理」於職場之情境：Hiring a competent manager helped stabilize the company's manufacturing unit."
     },
     {
       "id": "CORE-062",
@@ -1798,7 +1960,8 @@
       "trap_note": "易混淆：comprehensive (adj.) 全面的 vs. comprehensible (adj.) 可理解的！",
       "example": "The human resources department compiled a comprehensive training guide.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「詳盡全面的培訓手冊」於職場之情境：The human resources department compiled a comprehensive training guide."
     },
     {
       "id": "CORE-063",
@@ -1809,7 +1972,8 @@
       "trap_note": "核心替換：conclusive = definitive = decisive",
       "example": "Researchers presented conclusive laboratory evidence supporting the new formula.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「決定性的實驗室證據」於職場之情境：Researchers presented conclusive laboratory evidence supporting the new formula."
     },
     {
       "id": "CORE-064",
@@ -1820,7 +1984,8 @@
       "trap_note": "易混淆：considerable (adj.) 相當多的/可觀的 vs. considerate (adj.) 體貼的！",
       "example": "The pharmaceutical sector achieved considerable growth over the past two quarters.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「相當可觀的成長幅度」於職場之情境：The pharmaceutical sector achieved considerable growth over the past two quarters."
     },
     {
       "id": "CORE-065",
@@ -1831,7 +1996,8 @@
       "trap_note": "核心替換：contemporary = modern = current",
       "example": "The architecture firm specializes in sustainable and contemporary office design.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "這家建築設計事務所專精於具備永續環保理念且現代新穎的辦公空間設計。"
     },
     {
       "id": "CORE-066",
@@ -1842,7 +2008,8 @@
       "trap_note": "核心替換：corridor = hallway = passageway",
       "example": "Exit signs are installed along the corridor leading to the emergency stairwell.",
       "source": "Day 10 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「通往……的走廊通道」於職場之情境：Exit signs are installed along the corridor leading to the emergency stairwell."
     },
     {
       "id": "CORE-067",
@@ -1853,7 +2020,8 @@
       "trap_note": "注意：deduct 後方固定接 from！",
       "example": "Health insurance premiums are automatically deducted from monthly payroll.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「從薪資中扣除」於職場之情境：Health insurance premiums are automatically deducted from monthly payroll."
     },
     {
       "id": "CORE-068",
@@ -1864,7 +2032,8 @@
       "trap_note": "allocate 固定搭配 to + 受詞！",
       "example": "The executive board agreed to allocate additional resources to the AI research lab.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「將資源分配給」於職場之情境：The executive board agreed to allocate additional resources to the AI research lab."
     },
     {
       "id": "CORE-069",
@@ -1875,7 +2044,8 @@
       "trap_note": "名詞形式為 reliability！",
       "example": "Apex Supplies has proven to be a highly reliable vendor over the past decade.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「可靠的供應商」於職場之情境：Apex Supplies has proven to be a highly reliable vendor over the past decade."
     },
     {
       "id": "CORE-070",
@@ -1886,7 +2056,8 @@
       "trap_note": "contingent 固定搭配 upon / on！",
       "example": "The property acquisition is contingent upon approval from the municipal zoning board.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「取決於／視核准而定」於職場之情境：The property acquisition is contingent upon approval from the municipal zoning board."
     },
     {
       "id": "CORE-071",
@@ -1897,7 +2068,8 @@
       "trap_note": "otherwise 為副詞，常出現在 unless otherwise [V-ed]！",
       "example": "All team members must attend the weekly briefing unless otherwise noted.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「除非另有說明」於職場之情境：All team members must attend the weekly briefing unless otherwise noted."
     },
     {
       "id": "CORE-072",
@@ -1908,7 +2080,8 @@
       "trap_note": "therefore 為副詞，不可直接連接兩個獨立子句（須用分號或句號）！",
       "example": "Contractors are therefore required to wear safety helmets in active zones.",
       "source": "Day 11 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「因此被要求……」於職場之情境：Contractors are therefore required to wear safety helmets in active zones."
     },
     {
       "id": "CORE-073",
@@ -1919,7 +2092,8 @@
       "trap_note": "名詞形式為 renovation！",
       "example": "Management authorized funds to renovate the historical training facility.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「翻新整修設施」於職場之情境：Management authorized funds to renovate the historical training facility."
     },
     {
       "id": "CORE-074",
@@ -1930,7 +2104,8 @@
       "trap_note": "形容詞形式為 expeditious！",
       "example": "The logistics team agreed to expedite the shipment for our premier client.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「加速出貨處理」於職場之情境：The logistics team agreed to expedite the shipment for our premier client."
     },
     {
       "id": "CORE-075",
@@ -1941,7 +2116,8 @@
       "trap_note": "過去分詞 streamlined 可作形容詞『精簡流線型的』！",
       "example": "Digital invoicing has helped streamline the workflow across departments.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「精簡工作流程」於職場之情境：Digital invoicing has helped streamline the workflow across departments."
     },
     {
       "id": "CORE-076",
@@ -1952,7 +2128,8 @@
       "trap_note": "名詞形式為 enhancement！",
       "example": "Regular feedback sessions substantially enhance team performance.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「提升績效表現」於職場之情境：Regular feedback sessions substantially enhance team performance."
     },
     {
       "id": "CORE-077",
@@ -1963,7 +2140,8 @@
       "trap_note": "revamp 可作動詞也可直接作名詞！",
       "example": "The corporate website underwent a major revamp this quarter.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「大規模改版翻新」於職場之情境：The corporate website underwent a major revamp this quarter."
     },
     {
       "id": "CORE-078",
@@ -1974,7 +2152,8 @@
       "trap_note": "refurbished 常指出廠翻新良品！",
       "example": "The company chose to refurbish old equipment rather than purchase new units.",
       "source": "Day 12 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「重新整修舊設備」於職場之情境：The company chose to refurbish old equipment rather than purchase new units."
     },
     {
       "id": "CORE-079",
@@ -1985,7 +2164,8 @@
       "trap_note": "provided that 等同 providing that，後接完整子句！",
       "example": "Reimbursement will be honored provided that receipts are submitted.",
       "source": "Day 13 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「只要附有收據（前提是）」於職場之情境：Reimbursement will be honored provided that receipts are submitted."
     },
     {
       "id": "CORE-080",
@@ -1996,7 +2176,8 @@
       "trap_note": "even if 表縱使/即使！",
       "example": "We will deliver the shipment even if minor delays occur at customs.",
       "source": "Day 13 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "即使在進口海關通關時發生微幅延誤，我們仍保證將如期完成貨品交付。"
     },
     {
       "id": "CORE-081",
@@ -2007,7 +2188,8 @@
       "trap_note": "名詞形式為 reinforcement！",
       "example": "Concrete pillars were added to reinforce the foundation.",
       "source": "Day 13 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「加固基礎結構」於職場之情境：Concrete pillars were added to reinforce the foundation."
     },
     {
       "id": "CORE-082",
@@ -2018,7 +2200,8 @@
       "trap_note": "名詞形式為 fulfillment！",
       "example": "The vendor worked tirelessly to fulfill the obligation on time.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「履行義務/達成承諾」於職場之情境：The vendor worked tirelessly to fulfill the obligation on time."
     },
     {
       "id": "CORE-083",
@@ -2029,7 +2212,8 @@
       "trap_note": "動詞形式為 be affiliated with！",
       "example": "Our branch is a regional affiliate of the parent holding company.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「……的附屬機構/子公司」於職場之情境：Our branch is a regional affiliate of the parent holding company."
     },
     {
       "id": "CORE-084",
@@ -2040,7 +2224,8 @@
       "trap_note": "pressing 是形容詞！",
       "example": "Management met behind closed doors to discuss pressing matters.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「迫切事項」於職場之情境：Management met behind closed doors to discuss pressing matters."
     },
     {
       "id": "CORE-085",
@@ -2051,7 +2236,8 @@
       "trap_note": "those who attend 簡化為 those attending！",
       "example": "Those attending the event must wear identification badges.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「參加該活動的人員」於職場之情境：Those attending the event must wear identification badges."
     },
     {
       "id": "CORE-086",
@@ -2062,7 +2248,8 @@
       "trap_note": "分詞簡化句型！",
       "example": "Anyone wishing to apply should submit a resume online.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「任何希望……的人」於職場之情境：Anyone wishing to apply should submit a resume online."
     },
     {
       "id": "CORE-087",
@@ -2073,7 +2260,8 @@
       "trap_note": "商業情境高頻語塊！",
       "example": "The team worked over the weekend due to pressing deadlines.",
       "source": "Day 14 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「緊迫的截止時間」於職場之情境：The team worked over the weekend due to pressing deadlines."
     },
     {
       "id": "CORE-088",
@@ -2084,7 +2272,8 @@
       "trap_note": "名詞形式為 initiation 或 initiative！",
       "example": "Internal auditors decided to initiate the investigation immediately.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「發起調查/啟動審查」於職場之情境：Internal auditors decided to initiate the investigation immediately."
     },
     {
       "id": "CORE-089",
@@ -2095,7 +2284,8 @@
       "trap_note": "常修飾 contract, deal, market！",
       "example": "The firm landed a lucrative contract with a multinational telecommunications provider.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「利潤豐厚的合約」於職場之情境：The firm landed a lucrative contract with a multinational telecommunications provider."
     },
     {
       "id": "CORE-090",
@@ -2106,7 +2296,8 @@
       "trap_note": "動詞為 regulate，名詞為 regulation！",
       "example": "Companies must ensure regulatory compliance to avoid punitive fines.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「法規遵從/符合監管」於職場之情境：Companies must ensure regulatory compliance to avoid punitive fines."
     },
     {
       "id": "CORE-091",
@@ -2117,7 +2308,8 @@
       "trap_note": "副詞為 rigorously！",
       "example": "All medical software undergoes rigorous testing before hospital deployment.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「嚴密嚴格的測試」於職場之情境：All medical software undergoes rigorous testing before hospital deployment."
     },
     {
       "id": "CORE-092",
@@ -2128,7 +2320,8 @@
       "trap_note": "barring 為介系詞，後接名詞！",
       "example": "Barring any delays, the new office wing will open in October.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「除非有任何延誤」於職場之情境：Barring any delays, the new office wing will open in October."
     },
     {
       "id": "CORE-093",
@@ -2139,7 +2332,8 @@
       "trap_note": "常考除外或包含語意！",
       "example": "Aside from the initial registration fee, participation is free.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「除了該費用之外」於職場之情境：Aside from the initial registration fee, participation is free."
     },
     {
       "id": "CORE-094",
@@ -2150,7 +2344,8 @@
       "trap_note": "商業合約必備語塊！",
       "example": "Prices are subject to adjustment without prior notice.",
       "source": "Day 15 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「未經事先通知」於職場之情境：Prices are subject to adjustment without prior notice."
     },
     {
       "id": "CORE-095",
@@ -2161,7 +2356,8 @@
       "trap_note": "prior 後固定接 to + 名詞或 V-ing！",
       "example": "Please review the agenda prior to the conference.",
       "source": "Day 16 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在正式參加國際商務會議之前，請各部門代表務必先行審閱詳細大會議程。"
     },
     {
       "id": "CORE-096",
@@ -2172,7 +2368,8 @@
       "trap_note": "subsequent 後接 to！",
       "example": "Subsequent to the merger, departmental operations were reorganized.",
       "source": "Day 16 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「在合併之後」於職場之情境：Subsequent to the merger, departmental operations were reorganized."
     },
     {
       "id": "CORE-097",
@@ -2183,7 +2380,8 @@
       "trap_note": "following 作介系詞等同 after！",
       "example": "Following the speech, a question-and-answer session took place.",
       "source": "Day 16 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「在演講之後」於職場之情境：Following the speech, a question-and-answer session took place."
     },
     {
       "id": "CORE-098",
@@ -2194,7 +2392,8 @@
       "trap_note": "pending 可作介系詞表『有待/在等待……期間』！",
       "example": "The new product launch is pending board approval.",
       "source": "Day 16 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「有待董事會批准（在等待批准期間）」於職場之情境：The new product launch is pending board approval."
     },
     {
       "id": "CORE-099",
@@ -2205,7 +2404,8 @@
       "trap_note": "名詞形式為 acquisition！",
       "example": "The developer secured financing to acquire the property.",
       "source": "Day 16 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「收購該不動產」於職場之情境：The developer secured financing to acquire the property."
     },
     {
       "id": "CORE-100",
@@ -2216,7 +2416,8 @@
       "trap_note": "動詞為 orient！",
       "example": "All new hires must attend employee orientation on their first day.",
       "source": "Day 16 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "所有新進員工均必須在到職第一天參加員工職前新生培訓。"
     },
     {
       "id": "CORE-101",
@@ -2227,7 +2428,8 @@
       "trap_note": "名詞形式為 prestige！",
       "example": "The architect accepted a prestigious award for design excellence.",
       "source": "Day 17 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「享譽盛名的獎項」於職場之情境：The architect accepted a prestigious award for design excellence."
     },
     {
       "id": "CORE-102",
@@ -2238,7 +2440,8 @@
       "trap_note": "名詞為 precision，副詞為 precisely！",
       "example": "Engineers took precise measurements before cutting the steel beams.",
       "source": "Day 17 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「精確的測量數據」於職場之情境：Engineers took precise measurements before cutting the steel beams."
     },
     {
       "id": "CORE-103",
@@ -2249,7 +2452,8 @@
       "trap_note": "criteria 為複數，單數形為 criterion！",
       "example": "Applicants must satisfy all stated eligibility criteria.",
       "source": "Day 17 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「資格審查條件」於職場之情境：Applicants must satisfy all stated eligibility criteria."
     },
     {
       "id": "CORE-104",
@@ -2260,7 +2464,8 @@
       "trap_note": "常修飾工藝或高科技製造！",
       "example": "The automated arm placed the microchip with surgical precision.",
       "source": "Day 17 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「以極高精密度」於職場之情境：The automated arm placed the microchip with surgical precision."
     },
     {
       "id": "CORE-105",
@@ -2271,7 +2476,8 @@
       "trap_note": "criterion 為單數！",
       "example": "The product failed to satisfy the crucial safety criterion.",
       "source": "Day 17 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「符合該項標準」於職場之情境：The product failed to satisfy the crucial safety criterion."
     },
     {
       "id": "CORE-106",
@@ -2282,7 +2488,8 @@
       "trap_note": "固定片語 in compliance with！",
       "example": "The facility was designed in compliance with federal guidelines.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「遵守符合……規章」於職場之情境：The facility was designed in compliance with federal guidelines."
     },
     {
       "id": "CORE-107",
@@ -2293,7 +2500,8 @@
       "trap_note": "動詞為 consult，名詞為 consultation！",
       "example": "Clients may schedule a consultation with our senior tax attorneys.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「安排諮詢商談」於職場之情境：Clients may schedule a consultation with our senior tax attorneys."
     },
     {
       "id": "CORE-108",
@@ -2304,7 +2512,8 @@
       "trap_note": "動詞為 restrict！",
       "example": "New trade restrictions impacted overseas consumer electronics exports.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「貿易限制規章」於職場之情境：New trade restrictions impacted overseas consumer electronics exports."
     },
     {
       "id": "CORE-109",
@@ -2315,7 +2524,8 @@
       "trap_note": "compliant 為形容詞！",
       "example": "We conduct internal reviews to ensure operations remain compliant.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「始終保持合規」於職場之情境：We conduct internal reviews to ensure operations remain compliant."
     },
     {
       "id": "CORE-110",
@@ -2326,7 +2536,8 @@
       "trap_note": "consult with + 專家對象！",
       "example": "Engineers must consult with specialists before modifying blueprints.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "工程師在著手修改工程建築藍圖之前，必須先行與外部專業顧問諮詢討論。"
     },
     {
       "id": "CORE-111",
@@ -2337,7 +2548,8 @@
       "trap_note": "動詞固定搭配 impose / place！",
       "example": "The authorities chose to impose restrictions on heavy vehicle traffic.",
       "source": "Day 18 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「對……施加限制」於職場之情境：The authorities chose to impose restrictions on heavy vehicle traffic."
     },
     {
       "id": "CORE-112",
@@ -2348,7 +2560,8 @@
       "trap_note": "名詞為 strategy，副詞為 strategically！",
       "example": "The executive committee unveiled a new strategic plan.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「策略計畫」於職場之情境：The executive committee unveiled a new strategic plan."
     },
     {
       "id": "CORE-113",
@@ -2359,7 +2572,8 @@
       "trap_note": "常考 corporate division！",
       "example": "The logistics division handled over a million shipments.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「物流部門/事業部」於職場之情境：The logistics division handled over a million shipments."
     },
     {
       "id": "CORE-114",
@@ -2370,7 +2584,8 @@
       "trap_note": "副詞為 solely（僅僅/唯一地）！",
       "example": "Apex is the sole distributor of this medical scanner.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「唯一經銷商/獨家代理」於職場之情境：Apex is the sole distributor of this medical scanner."
     },
     {
       "id": "CORE-115",
@@ -2381,7 +2596,8 @@
       "trap_note": "複數形為 protocols！",
       "example": "Personnel must adhere to strict security protocol.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「安全協定/規範規程」於職場之情境：Personnel must adhere to strict security protocol."
     },
     {
       "id": "CORE-116",
@@ -2392,7 +2608,8 @@
       "trap_note": "副詞 solely 修飾形容詞！",
       "example": "The project lead is solely responsible for budget oversight.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「全權負責」於職場之情境：The project lead is solely responsible for budget oversight."
     },
     {
       "id": "CORE-117",
@@ -2403,7 +2620,8 @@
       "trap_note": "名詞作主詞！",
       "example": "Each corporate division submits monthly productivity reports.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「企業事業部」於職場之情境：Each corporate division submits monthly productivity reports."
     },
     {
       "id": "CORE-118",
@@ -2414,7 +2632,8 @@
       "trap_note": "商業閱讀高頻詞彙！",
       "example": "The merger prompted a strategic realignment of assets.",
       "source": "Day 19 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「策略性重新配置」於職場之情境：The merger prompted a strategic realignment of assets."
     },
     {
       "id": "CORE-119",
@@ -2425,7 +2644,8 @@
       "trap_note": "反義詞為 intangible assets（無形資產）！",
       "example": "Machinery and land represent tangible assets.",
       "source": "Day 20 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「有形資產」於職場之情境：Machinery and land represent tangible assets."
     },
     {
       "id": "CORE-120",
@@ -2436,7 +2656,8 @@
       "trap_note": "常考 performance threshold, credit threshold！",
       "example": "Revenues must cross the threshold to qualify for subsidies.",
       "source": "Day 20 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「跨過門檻/超過界限」於職場之情境：Revenues must cross the threshold to qualify for subsidies."
     },
     {
       "id": "CORE-121",
@@ -2447,7 +2668,8 @@
       "trap_note": "名詞形式為 tenancy！",
       "example": "The commercial tenant executed a five-year lease.",
       "source": "Day 20 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「商用承租人/店面租戶」於職場之情境：The commercial tenant executed a five-year lease."
     },
     {
       "id": "CORE-122",
@@ -2458,7 +2680,8 @@
       "trap_note": "高頻形容詞搭配！",
       "example": "Investigators searched for tangible evidence of compliance.",
       "source": "Day 20 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「具體有形的證據」於職場之情境：Investigators searched for tangible evidence of compliance."
     },
     {
       "id": "CORE-123",
@@ -2469,7 +2692,8 @@
       "trap_note": "法規高頻語塊！",
       "example": "Firms exceeding the statutory threshold must submit audits.",
       "source": "Day 20 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「法定門檻」於職場之情境：Firms exceeding the statutory threshold must submit audits."
     },
     {
       "id": "CORE-124",
@@ -2480,7 +2704,8 @@
       "trap_note": "動詞形式為 expire！",
       "example": "Renew your pass prior to expiration to avoid lapses.",
       "source": "Day 21 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「在到期之前」於職場之情境：Renew your pass prior to expiration to avoid lapses."
     },
     {
       "id": "CORE-125",
@@ -2491,7 +2716,8 @@
       "trap_note": "動詞為 vend（販售）！",
       "example": "We order replacement valves from a certified vendor.",
       "source": "Day 21 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "我們一律直接向通過官方品質認證的特約供應商，訂購機器管線更換用閥門。"
     },
     {
       "id": "CORE-126",
@@ -2502,7 +2728,8 @@
       "trap_note": "動詞形式亦為 invoice！",
       "example": "The billing clerk will issue an invoice upon dispatch.",
       "source": "Day 21 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「開立發票/請款單」於職場之情境：The billing clerk will issue an invoice upon dispatch."
     },
     {
       "id": "CORE-127",
@@ -2513,7 +2740,8 @@
       "trap_note": "常見商務複合名詞！",
       "example": "Check the expiration date stamped on the container.",
       "source": "Day 21 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「有效期限/截止日」於職場之情境：Check the expiration date stamped on the container."
     },
     {
       "id": "CORE-128",
@@ -2524,7 +2752,8 @@
       "trap_note": "採購管理常見片語！",
       "example": "Purchases must be made from the approved vendor list.",
       "source": "Day 21 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「合格供應商名單」於職場之情境：Purchases must be made from the approved vendor list."
     },
     {
       "id": "CORE-129",
@@ -2535,7 +2764,8 @@
       "trap_note": "Part 7 雙篇三篇核心技巧！",
       "example": "Always cross-reference the documents to detect discrepancies.",
       "source": "Day 21 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「交叉比對文件」於職場之情境：Always cross-reference the documents to detect discrepancies."
     },
     {
       "id": "CORE-130",
@@ -2546,7 +2776,8 @@
       "trap_note": "亦可指 media coverage（新聞報導）！",
       "example": "The policy provides comprehensive insurance coverage.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「保險理賠涵蓋範圍」於職場之情境：The policy provides comprehensive insurance coverage."
     },
     {
       "id": "CORE-131",
@@ -2557,7 +2788,8 @@
       "trap_note": "可指『狀態』也可指『條件』（terms and conditions）！",
       "example": "The leased equipment was returned in pristine condition.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「保持完好如新的狀態」於職場之情境：The leased equipment was returned in pristine condition."
     },
     {
       "id": "CORE-132",
@@ -2568,7 +2800,8 @@
       "trap_note": "可指『庫存』也可指『股票』（corporate stock）！",
       "example": "All replacement parts are currently in stock.",
       "source": "Day 22 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「有現貨庫存」於職場之情境：All replacement parts are currently in stock."
     },
     {
       "id": "CORE-133",
@@ -2579,7 +2812,8 @@
       "trap_note": "可作動詞『實施』也可作名詞『行為/操守』！",
       "example": "External accountants will conduct an audit next week.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「進行審計調查」於職場之情境：External accountants will conduct an audit next week."
     },
     {
       "id": "CORE-134",
@@ -2590,7 +2824,8 @@
       "trap_note": "可作動詞『處理/演說』也可作名詞『地址/演講』！",
       "example": "The committee met to address the issue of delays.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「處理/解決問題」於職場之情境：The committee met to address the issue of delays."
     },
     {
       "id": "CORE-135",
@@ -2601,7 +2836,8 @@
       "trap_note": "商業情境高頻詞義！",
       "example": "The product launch received widespread media coverage.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「媒體報導/新聞宣傳」於職場之情境：The product launch received widespread media coverage."
     },
     {
       "id": "CORE-136",
@@ -2612,7 +2848,8 @@
       "trap_note": "常用於商務合約前提！",
       "example": "The loan was approved on condition that records be audited.",
       "source": "Day 22 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「在……條件下/前提是」於職場之情境：The loan was approved on condition that records be audited."
     },
     {
       "id": "CORE-137",
@@ -2623,7 +2860,8 @@
       "trap_note": "Part 7 多篇閱讀必備技巧！",
       "example": "Auditors cross-check the data to verify invoice accuracy.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「交叉核對數據」於職場之情境：Auditors cross-check the data to verify invoice accuracy."
     },
     {
       "id": "CORE-138",
@@ -2634,7 +2872,8 @@
       "trap_note": "動詞為 amend！",
       "example": "Both parties signed a contract amendment yesterday.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「合約修正案/補充條款」於職場之情境：Both parties signed a contract amendment yesterday."
     },
     {
       "id": "CORE-139",
@@ -2645,7 +2884,8 @@
       "trap_note": "動詞為 confirm！",
       "example": "We require written confirmation before dispatching goods.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「書面確認函/證實」於職場之情境：We require written confirmation before dispatching goods."
     },
     {
       "id": "CORE-140",
@@ -2656,7 +2896,8 @@
       "trap_note": "動詞片語！",
       "example": "Software sensors detect an error in the circuit board.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "精密的軟體診斷感測器，在電路基板運作過程中敏銳偵測到了一處計算錯誤。"
     },
     {
       "id": "CORE-141",
@@ -2667,7 +2908,8 @@
       "trap_note": "常見商務財務文件！",
       "example": "The billing statement reflects all promotional discounts.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「帳單對帳單」於職場之情境：The billing statement reflects all promotional discounts."
     },
     {
       "id": "CORE-142",
@@ -2678,7 +2920,8 @@
       "trap_note": "TOEIC Part 7 核心高分策略！",
       "example": "Apply reverse elimination to find the NOT question answer.",
       "source": "Day 23 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「反向排除法」於職場之情境：Apply reverse elimination to find the NOT question answer."
     },
     {
       "id": "CORE-143",
@@ -2689,7 +2932,8 @@
       "trap_note": "adhere 固定接 to！ ｜ 必考介系詞 to！",
       "example": "Personnel must adhere strictly to the rules.",
       "source": "Day 24 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「嚴格遵守……規章」於職場之情境：Personnel must adhere strictly to the rules."
     },
     {
       "id": "CORE-144",
@@ -2700,7 +2944,8 @@
       "trap_note": "固定商務法務片語！",
       "example": "The audit was conducted in accordance with national laws.",
       "source": "Day 24 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「依照/根據……規定」於職場之情境：The audit was conducted in accordance with national laws."
     },
     {
       "id": "CORE-145",
@@ -2711,7 +2956,8 @@
       "trap_note": "名詞形式為 supervision！",
       "example": "Interns work under the supervision of senior researchers.",
       "source": "Day 24 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「在……監督指導下」於職場之情境：Interns work under the supervision of senior researchers."
     },
     {
       "id": "CORE-146",
@@ -2722,7 +2968,8 @@
       "trap_note": "副詞修飾動詞！",
       "example": "The new product will substantially boost revenue.",
       "source": "Day 25 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「大幅提升營收」於職場之情境：The new product will substantially boost revenue."
     },
     {
       "id": "CORE-147",
@@ -2733,7 +2980,8 @@
       "trap_note": "片語動詞！",
       "example": "We decided to hold off on the project until next quarter.",
       "source": "Day 25 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「暫緩擱置該專案」於職場之情境：We decided to hold off on the project until next quarter."
     },
     {
       "id": "CORE-148",
@@ -2744,7 +2992,8 @@
       "trap_note": "必考介系詞 for！",
       "example": "Only full-time staff are eligible for the award.",
       "source": "Day 25 Core",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該句體現「符合獲獎資格」於職場之情境：Only full-time staff are eligible for the award."
     },
     {
       "id": "CORE-149",
@@ -2755,7 +3004,8 @@
       "trap_note": "實戰考試必備配速心法！",
       "example": "Pacing requires candidates to allocate time wisely.",
       "source": "Day 25 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「明智分配時間」於職場之情境：Pacing requires candidates to allocate time wisely."
     },
     {
       "id": "CORE-150",
@@ -2766,7 +3016,8 @@
       "trap_note": "25 天特訓核心心法！",
       "example": "In Part 5, trust visual anchors to eliminate guesswork.",
       "source": "Day 25 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「信任視覺錨點」於職場之情境：In Part 5, trust visual anchors to eliminate guesswork."
     },
     {
       "id": "CORE-151",
@@ -2777,7 +3028,8 @@
       "trap_note": "衝刺終極目標！",
       "example": "With steady practice, you will achieve 860+ golden certificate.",
       "source": "Day 25 Core",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "該句體現「勇奪 860+ 多益金色證書」於職場之情境：With steady practice, you will achieve 860+ golden certificate."
     },
     {
       "id": "USER-253",
@@ -2788,7 +3040,8 @@
       "trap_note": "常作後位修飾分詞（the strategy outlined in the report），勿與 outline（動詞原形／名詞）混淆。",
       "example": "As outlined in the corporate restructuring proposal, the research division will receive additional funding.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "如企業組織重組提案中所述，研發核心部門將依序獲得額外的專案挹注資金。"
     },
     {
       "id": "USER-254",
@@ -2799,7 +3052,8 @@
       "trap_note": "商業書信高頻短語，固定搭配介系詞 upon 或 on（upon request 等同於 on request）。",
       "example": "The detailed product catalog and wholesale price list are available upon request from our sales representatives.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "詳細產品規格型錄與大宗批發價目表，可隨時向我們的區域業務代表索取備索。"
     },
     {
       "id": "USER-255",
@@ -2810,7 +3064,8 @@
       "trap_note": "形容詞表體積精簡省空間；名詞可表正式條約或小型車。",
       "example": "The startup opted for a compact office layout to minimize overhead expenses during its initial year of operation.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "這家新創科技公司選擇了緊湊精簡的辦公室格局，以將營運首年的管理開銷降至最低。"
     },
     {
       "id": "USER-256",
@@ -2821,7 +3076,8 @@
       "trap_note": "作動詞必接政策、措施等受詞；名詞 implementation 表「執行實施」。",
       "example": "The human resources department will implement new remote-work guidelines starting on the first of next month.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "人力資源部門將自下個月初起，正式在全公司實施最新修訂的遠距工作管理規章。"
     },
     {
       "id": "USER-257",
@@ -2832,7 +3088,8 @@
       "trap_note": "切勿與 direct（動詞／形容詞）或 direction（方向／指示）混淆。",
       "example": "New employees can find contact information for department supervisors in the internal staff directory.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "新進到職同仁可在內部企業通訊錄中，迅速查閱各部門主管與同事的聯絡方式。"
     },
     {
       "id": "USER-258",
@@ -2843,7 +3100,8 @@
       "trap_note": "過去式及分詞須重複 t（omitted）；名詞為 omission（疏忽／遺漏）。",
       "example": "Please make sure not to omit any travel expenses when submitting your reimbursement form.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "在提交差旅核銷申請表單時，請務必再三確認不要遺漏填報任何實際發生的差旅費用。"
     },
     {
       "id": "USER-259",
@@ -2854,7 +3112,8 @@
       "trap_note": "動詞為 narrate（敘述、配旁白）；narrator 為「旁白員、敘述者」。",
       "example": "The multimedia marketing team hired a professional actor to provide the voice-over narration for the new commercial.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "多媒體數位行銷團隊聘請了專業外配音員，為最新發布的宣傳短片錄製旁白口述。"
     },
     {
       "id": "USER-260",
@@ -2865,7 +3124,8 @@
       "trap_note": "be obliged to + V 表示「依法或道義上有義務做某事」；much obliged 表「非常感激」。",
       "example": "Under the terms of the confidentiality agreement, contractors are obliged to protect proprietary client data.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "依據雙方簽訂的嚴格保密條款，合約承包商在道義與法規上有義務全力保護客戶的專有資料。"
     },
     {
       "id": "USER-261",
@@ -2876,7 +3136,8 @@
       "trap_note": "修飾影響力、見解或變革（profound impact / influence / changes）。",
       "example": "The introduction of artificial intelligence tools has had a profound impact on customer support operations.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "人工智慧創新工具的全面導入，對整體客戶支援與售後服務流程產生了深遠巨大的變革影響。"
     },
     {
       "id": "USER-262",
@@ -2887,7 +3148,8 @@
       "trap_note": "與 automatically（自動地）構成反義對比；形容詞為 manual（手動的／手冊）。",
       "example": "Customer purchase orders received by fax must be verified and entered into the database manually.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "凡是透過紙本傳真方式遞送的客戶採購訂單，皆必須由專責人員以人工手動方式核對並輸入系統。"
     },
     {
       "id": "USER-263",
@@ -2898,7 +3160,8 @@
       "trap_note": "多益聽力 Part 1 與閱讀倉儲高頻場景詞，常接 belt 構成 conveyor belt。",
       "example": "Maintenance crews shut down the luggage conveyor belt for two hours to replace a worn motor.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "航廈維修工程人員將行李輸送帶暫停運作兩小時，以全面檢修並更換老舊磨損的驅動馬達。"
     },
     {
       "id": "USER-264",
@@ -2909,7 +3172,8 @@
       "trap_note": "多益聽力圖片題常考「吊車正在吊起建材」（A crane is hoisting materials）。",
       "example": "Dockworkers used an industrial crane to hoist heavy cargo containers onto the outgoing freighter.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "碼頭裝卸作業人員操作重型起重機，將巨大的貨櫃平穩吊起並安置至即將出港的遠洋貨輪上。"
     },
     {
       "id": "USER-265",
@@ -2920,7 +3184,8 @@
       "trap_note": "比 use 更正式，常用於商務資源或產能的最佳化（utilize resources / capacity）。",
       "example": "The logistics manager suggested utilizing regional storage depots to reduce cross-country shipping times.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "物流統籌經理提出具體建言，主張善加利用效益未達預期的區域閒置倉儲，以有效縮短跨區運送耗時。"
     },
     {
       "id": "USER-266",
@@ -2931,7 +3196,8 @@
       "trap_note": "常與 complimentary（免費的）連用，指飯店或會場之往返接駁車。",
       "example": "Guests staying at the resort hotel can take advantage of a complimentary shuttle service to the train station.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "凡下榻該海濱度假飯店的貴賓，均可全額免費搭乘往返於鄰近高鐵車站的定時接駁專車服務。"
     },
     {
       "id": "USER-267",
@@ -2942,7 +3208,8 @@
       "trap_note": "動詞為 harass（騷擾）；注意不可數名詞屬性，前不加 a 亦無複數。",
       "example": "All newly hired managers are required to complete an annual training seminar on preventing workplace harassment.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "全體新晉管理幹部均被嚴格要求必須每年完成防止職場騷擾與營造友善工作環境的專案培訓研討會。"
     },
     {
       "id": "USER-268",
@@ -2953,7 +3220,8 @@
       "trap_note": "必考固定搭配：be held accountable for + N（對某事負起責任）。",
       "example": "Project leads are held directly accountable for ensuring their teams meet quarterly project deadlines.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "專案專職經理需承擔直接監督責任，對確保整個團隊能準時達成季度專案進度截止日全面負責。"
     },
     {
       "id": "USER-269",
@@ -2964,7 +3232,8 @@
       "trap_note": "同義字為 optimum；副詞為 optimally（最適化地）。",
       "example": "The ventilation system was recalibrated to maintain optimal temperature conditions in the server room.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "機房通風空調系統已經重新校準，以在伺服器高乘載運作時維持最優良最適宜的恆溫濕度環境。"
     },
     {
       "id": "USER-270",
@@ -2975,7 +3244,8 @@
       "trap_note": "常與 inspection（檢查）、daycare（托兒設施）、parking（現場停車）連用。",
       "example": "Safety compliance auditors conducted an on-site inspection of the chemical manufacturing plant.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "工業安全法規稽核員今日親赴化學原料製造工廠，展開全面且嚴謹的現場實地安全檢查作業。"
     },
     {
       "id": "USER-271",
@@ -2986,7 +3256,8 @@
       "trap_note": "美式英語常以複數 accommodations 表住宿；注意拼法為雙 c 雙 m。",
       "example": "The conference registration fee covers admission to all breakout sessions and luxury hotel accommodations.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "本次國際論壇之全額報名費，已包含全天候分案專題演講入場資格與特約豪華五星飯店住宿膳宿。"
     },
     {
       "id": "USER-272",
@@ -2997,7 +3268,8 @@
       "trap_note": "動詞時常接不定詞：endeavor to do sth（竭力做某事）。",
       "example": "The executive committee wished Mr. Tanaka great success in his future entrepreneurial endeavors.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "全體執行董事會成員同聲祝福田中先生在未來開拓海外市場的全新商業努力與創業嘗試中大獲成功。"
     },
     {
       "id": "USER-273",
@@ -3008,7 +3280,8 @@
       "trap_note": "及物動詞為 reimburse（核銷／退還）；reimburse sb for expenses。",
       "example": "Employees seeking travel expense reimbursement must attach original receipts to their claim forms.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "凡欲申請公出代墊差旅費用核銷之同仁，送件時務必檢附各項交通與餐飲之原始統一發票收據單據。"
     },
     {
       "id": "USER-274",
@@ -3019,7 +3292,8 @@
       "trap_note": "多益資訊系統題高頻詞，名詞為 retrieval（檢索取回）。",
       "example": "The updated accounting database enables staff to retrieve historical sales transactions in seconds.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "全新升級後的雲端會計資料庫，讓財務同仁能夠在短短幾秒鐘之內立即檢索並取回歷史封存發票憑證。"
     },
     {
       "id": "USER-275",
@@ -3030,7 +3304,8 @@
       "trap_note": "固定動詞搭配為 run errands（奔走辦事），不可與 task 或 chore 誤搭配。",
       "example": "The administrative assistant left the office briefly to run several banking errands before noon.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "行政部門助理同仁在中午用餐之前短暫外出，專程為部門主管奔走處理數筆緊急的銀行往來公幹雜事。"
     },
     {
       "id": "USER-276",
@@ -3041,7 +3316,8 @@
       "trap_note": "動詞為 acquaint（使熟悉）；be acquainted with sth 表「熟悉某事物」。",
       "example": "Ms. Chen made the acquaintance of several prospective investors during the networking dinner.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "陳專案副理在昨晚的商業交流聯誼餐會中，有幸結識了數名對我司產品展現濃厚興趣的潛在投資人熟人。"
     },
     {
       "id": "USER-277",
@@ -3052,7 +3328,8 @@
       "trap_note": "多益常以複數 amenities 出現，指泳池、健身房、商務中心等附屬便利設施。",
       "example": "The residential complex offers modern amenities such as an on-site fitness center and bicycle storage.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "這處全新完工的頂級住宅綜合社區，配備了各項齊全的生活便利設施，包括駐點健身房與溫水游泳池。"
     },
     {
       "id": "USER-278",
@@ -3063,7 +3340,8 @@
       "trap_note": "商務演講開場固定客套句：It is a privilege to welcome you all。",
       "example": "It is an honor and a privilege to introduce Dr. Vance as our keynote speaker this morning.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "今天早晨能夠由我代表全體大會，向在場各位隆重介紹我們萬分敬佩的主講嘉賓凡斯博士，實屬無上殊榮。"
     },
     {
       "id": "USER-279",
@@ -3074,7 +3352,8 @@
       "trap_note": "動詞為 decide；副詞 decisively（果斷地）；名詞 decision（決定）。",
       "example": "The board commended the CEO for taking decisive action during the recent supply chain crisis.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "全體監察人與董事會高度肯定執行長在面對突如其來的供應鏈中斷危機時，所迅速採取的果斷決策行動。"
     },
     {
       "id": "USER-280",
@@ -3085,7 +3364,8 @@
       "trap_note": "修飾經濟成長（robust growth）或系統架構（robust infrastructure）。",
       "example": "Despite global economic volatility, the multinational retail chain reported robust revenue growth.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "即便面對全球總體經濟情勢的高度不確定性，該跨國連鎖通路集團依然繳出了營收強健穩步擴張的佳績。"
     },
     {
       "id": "USER-281",
@@ -3096,7 +3376,8 @@
       "trap_note": "動詞為 tend（tend to + V 傾向於做某事）；名詞常搭配介系詞 towards 或 to-V。",
       "example": "Consumer survey data shows a noticeable tendency among commuters to switch to electric vehicles.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "最新的市場消費行為分析報告顯示，年輕通勤族群正呈現出逐漸轉向選購純電動代步車輛的明顯趨勢傾向。"
     },
     {
       "id": "USER-282",
@@ -3107,7 +3388,8 @@
       "trap_note": "及物動詞為 exclude；形容詞 exclusive（專屬的／排他的）；exclusion clause（免責條款）。",
       "example": "Customers should carefully review the warranty terms regarding the exclusion of accidental water damage.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "所有購買本產品之消費者，均應詳加審閱保固合約手冊中關於排除天然意外與進水損害之各項免責條款。"
     },
     {
       "id": "USER-283",
@@ -3118,7 +3400,8 @@
       "trap_note": "動詞為 repeat；形容詞 repetitive（重複乏味的）；切勿混淆拼寫。",
       "example": "The editor recommended cutting several redundant paragraphs to avoid needless repetition.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "資深審查編輯強烈建議刪除提案中數個語意重疊的贅述段落，以徹底避免商務企劃書中不必要的冗言重複。"
     },
     {
       "id": "USER-284",
@@ -3129,7 +3412,8 @@
       "trap_note": "多益商務審計必考片語：a conflict of interest（利益衝突）。",
       "example": "Employees must sign a disclosure agreement to prevent any potential conflict of interest.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有新進專業人員在簽約入職前均須完成簽署利益揭露書，以確保能全面杜絕日後任何潛在之商業利益衝突。"
     },
     {
       "id": "USER-285",
@@ -3140,7 +3424,8 @@
       "trap_note": "多益合約與通知最高頻片語！to 為介系詞，後接名詞（subject to approval / change）。",
       "example": "All discounted airfare rates are subject to seat availability and seasonal peak surcharges.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有促銷特惠機票的折扣費率均須視當下機位訂位狀況而定，且可能隨旺季附加費用隨時變動調整。"
     },
     {
       "id": "USER-286",
@@ -3151,7 +3436,8 @@
       "trap_note": "動詞為 appraise（考核／評估）；注意勿與 apprise（通知告知）混淆。",
       "example": "Human resources conducts an annual employee performance appraisal every November.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "人力資源發展部固定於每年十一月第一週，正式在全公司各事業處全面推展年度員工績效考評作業。"
     },
     {
       "id": "USER-287",
@@ -3162,7 +3448,8 @@
       "trap_note": "動詞 appropriate 表「撥出款項」或「挪用」；形容詞 appropriate 表「適當的」。",
       "example": "The municipal legislature approved a special budget appropriation to modernize urban drainage systems.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "市政議會於昨晚表決通過了一筆特別公共預算撥款，專門用以加速推動老舊都會地下排水防洪工程現代化。"
     },
     {
       "id": "USER-288",
@@ -3173,7 +3460,8 @@
       "trap_note": "及物動詞 aggregate（匯總／聚集）；形容詞 aggregate 表「總計的」。",
       "example": "The business intelligence tool performs real-time data aggregation across all retail outlets.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "這款先進的商業智慧分析系統，能夠在幕後全自動執行跨越全省兩百家零售實體門市的即時營業數據匯總。"
     },
     {
       "id": "USER-289",
@@ -3184,7 +3472,8 @@
       "trap_note": "一詞多義代表：(1) 感謝（in appreciation of）；(2) 資產或貨幣升值（反義 depreciation）。",
       "example": "The general manager expressed his sincere appreciation to the entire engineering division for their hard work.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "事業群總經理在季會中發表感言，向全體工程研發團隊日以繼夜的辛勤付出與技術突破表達最誠摯的感謝。"
     },
     {
       "id": "USER-290",
@@ -3195,7 +3484,8 @@
       "trap_note": "動詞 exaggerate（誇大吹噓）；名詞 exaggeration（誇大）。",
       "example": "The consumer protection bureau fined the vendor for publishing exaggerated promotional claims.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "公平交易與消費者保護主管機關，針對競爭同業在社群媒體上刊發誇大不實之療效促銷宣稱正式立案展開調查。"
     },
     {
       "id": "USER-291",
@@ -3206,7 +3496,8 @@
       "trap_note": "財務報表常用 miscellaneous expenses（雜支費用）。",
       "example": "The finance department allocated a modest fund for miscellaneous stationery and catering expenses.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 1
+      "freq_tier": 1,
+      "example_zh": "公司財務會計部門特別核准提撥了一筆零用金備用專款，以支應日常採購文具紙張與各項雜項辦公行政支出。"
     },
     {
       "id": "USER-292",
@@ -3217,7 +3508,8 @@
       "trap_note": "常見搭配：disciplinary action / measures / penalty（紀律懲戒處分）。",
       "example": "Any employee who shares proprietary source code will face immediate disciplinary proceedings.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "凡經查證屬實擅自對外傳播外洩公司內部未公開軟體專利核心原始碼者，將面臨即刻且嚴厲的紀律懲戒處分。"
     },
     {
       "id": "USER-293",
@@ -3228,7 +3520,8 @@
       "trap_note": "指代表團時為可數名詞；指「授權」時為不可數名詞（delegation of authority）。",
       "example": "A senior commercial delegation will arrive tomorrow to discuss bilateral export agreements.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "一支由歐洲綠能知名專家與企業領袖組成的國際跨國貿易代表團，即將於明日抵達我國展開參訪交流。"
     },
     {
       "id": "USER-294",
@@ -3239,7 +3532,8 @@
       "trap_note": "單數為 proprietor；proprietorship 表獨資企業；與 landlord / owner 同義。",
       "example": "Local shop proprietors formed an alliance to lobby for reduced municipal commercial taxes.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "多位深受原物料物流延誤衝擊的在地小企業獨資經營業主，聯合組成互助陣線向主管機關爭取營運紓困。"
     },
     {
       "id": "USER-295",
@@ -3250,7 +3544,8 @@
       "trap_note": "正式商業書信動詞，rectify an error / mistake / situation。",
       "example": "The billing department worked overtime to rectify the software glitch before issuing monthly invoices.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "客戶服務與計費管理團隊全員加班排查，務求在今日下班正式寄發每月帳單前，迅速矯正修正軟體系統計算錯誤。"
     },
     {
       "id": "USER-296",
@@ -3261,7 +3556,8 @@
       "trap_note": "常用於修飾最高級形容詞（arguably the best / most effective）。",
       "example": "The newly opened medical research facility is arguably the most advanced center of its kind in Asia.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "這座甫於上個月正式剪綵啟用的頂尖臨床醫學科技園區，論證上堪稱是全亞洲規模最龐大且設備最新穎的中心。"
     },
     {
       "id": "USER-297",
@@ -3272,7 +3568,8 @@
       "trap_note": "字尾恆有 s，指整個物流學科或運作體系時視為單數或複數，logistics hub（物流樞紐）。",
       "example": "By consolidating warehousing hubs, the firm streamlined its overseas logistics network.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "透過大刀闊斧整併既有的區域倉儲節點，該製造集團成功精簡了跨國海陸空物流後勤運籌體系，有效節省運費。"
     },
     {
       "id": "USER-298",
@@ -3283,7 +3580,8 @@
       "trap_note": "介系詞，後接交通方式、通訊管道或中停地點（via email / via Frankfurt）。",
       "example": "All confidential contract drafts should be transmitted via encrypted file transfer rather than regular email.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "所有涉及核心商業機密的合作備忘錄與正式合約最終定稿，均應透過受高強度金鑰保護的專用檔案通道遞送。"
     },
     {
       "id": "USER-299",
@@ -3294,7 +3592,8 @@
       "trap_note": "商務偏義字！除了「手臂」外，多益常考「分支業務單位（an investigative / commercial arm）」。",
       "example": "The commercial banking arm of the financial group recorded a thirty percent rise in net profits.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該跨國大型綜合企業集團旗下專責先進醫藥研發的海外業務分支機構，於昨日正式宣布獲得國際專利授權。"
     },
     {
       "id": "USER-300",
@@ -3305,7 +3604,8 @@
       "trap_note": "形容詞為 suburban（郊區的）；in the suburbs 表「在郊區居住」。",
       "example": "Many families choose to live in the green suburbs and commute into the financial center by light rail.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "許多在市中心金融商務特區服務的高階白領家庭，寧可選擇安居在綠樹成蔭的寧靜住宅郊區，兼顧生活品質。"
     },
     {
       "id": "USER-301",
@@ -3316,7 +3616,8 @@
       "trap_note": "重要文法片語！出現在否定句或表缺乏（lack / barely）之後，強調更不可能發生的情況。",
       "example": "The cash-strapped startup could barely afford office rent, let alone hire full-time legal counsel.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "這家資金極度困窘的新創團隊目前連繳交共享辦公室租金都捉襟見肘，更不用說大手筆額外聘請常年法律顧問了。"
     },
     {
       "id": "USER-302",
@@ -3327,7 +3628,8 @@
       "trap_note": "多益必考搭配詞：make an informed decision / choice。informative 則是形容事物提供豐富資訊。",
       "example": "Consumers are encouraged to consult certified financial planners before making an informed investment decision.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "專業財經專家極力倡導，廣大投資人在簽署購買複雜金融商品前，務必諮詢持牌顧問以做出深思熟慮的明智決策。"
     },
     {
       "id": "USER-303",
@@ -3338,7 +3640,8 @@
       "trap_note": "修飾單數集合名詞 selection / assortment 時用 varied；various 則直接修飾複數名詞。",
       "example": "The international food market offers a varied selection of organic cheeses and artisanal breads.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該高檔國際精品進口食品選品店，每日均為高端饕客陳列並提供多樣化且種類繁多的歐陸手工特調咖啡與乳酪。"
     },
     {
       "id": "USER-304",
@@ -3349,7 +3652,8 @@
       "trap_note": "固定搭配：be opposed to + N / V-ing（to 為介系詞）。主動 oppose 則直接接受詞。",
       "example": "Several neighborhood associations are firmly opposed to the proposed industrial zoning expansion.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 3
+      "freq_tier": 3,
+      "example_zh": "該行政區境內的數個主要在地居民自治協會，正聯合採取堅定立場，公開表達強烈反對此項新商業分區開發案。"
     },
     {
       "id": "USER-305",
@@ -3360,7 +3664,8 @@
       "trap_note": "由過去分詞轉化之形容詞，修飾談判、延遲或乾旱等持續很久的事件。",
       "example": "Following prolonged negotiations, the two pharmaceutical giants finally agreed on the merger terms.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "在歷經了長達數個月勞資雙方緊湊且艱辛的馬拉松式持久談判後，這場重大罷工工潮終於迎來了和解的曙光。"
     },
     {
       "id": "USER-306",
@@ -3371,7 +3676,8 @@
       "trap_note": "商務名詞表「目標」（primary / principal objective）；作形容詞表「客觀的」（objective analysis）。",
       "example": "The primary objective of the corporate restructuring is to accelerate product development cycles.",
       "source": "使用者回報弱點單字",
-      "freq_tier": 2
+      "freq_tier": 2,
+      "example_zh": "此項由董事會主導之跨部門營運精簡重組計畫，其最關鍵的核心首要目標，就是力求縮短新產品推向市場的週期。"
     }
   ]
 }
