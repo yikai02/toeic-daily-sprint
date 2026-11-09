@@ -33,8 +33,7 @@ INTERACTIVE_SCRIPT = """
         restoreProgress();
     });
 
-    document.addEventListener('click', (e) => {
-        const btn = e.target.closest('.opt-btn');
+    window.handleOptClick = function(btn) {
         if (!btn) return;
         const grid = btn.closest('.options-grid');
         if (!grid || grid.classList.contains('answered')) return;
@@ -68,6 +67,11 @@ INTERACTIVE_SCRIPT = """
 
         updateScoreBar();
         saveProgress();
+    };
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.opt-btn');
+        if (btn) handleOptClick(btn);
     });
 
     // When user manually opens spoiler details without clicking an option, highlight correct answer
@@ -574,10 +578,10 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         </div>
         <div class="q-text">{html.escape(q.get('question', ''))}</div>
         <div class="options-grid" data-answer="{ans}">
-            <button type="button" class="opt-btn" data-opt="A"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="B"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="C"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="D"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="A" onclick="handleOptClick(this)"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="B" onclick="handleOptClick(this)"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="C" onclick="handleOptClick(this)"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
+            <button type="button" class="opt-btn" data-opt="D" onclick="handleOptClick(this)"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
         </div>
 
         <details class="spoiler-card">
@@ -895,6 +899,17 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             padding: 22px 18px;
             border-radius: 18px;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+            margin-bottom: 14px;
+        }}
+
+        .mobile-tip-banner {{
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-main);
             margin-bottom: 14px;
         }}
 
@@ -1431,6 +1446,14 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             line-height: 1.45;
             cursor: pointer;
             font-family: inherit;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
+            user-select: none;
+            -webkit-user-select: none;
+        }}
+
+        .opt-btn * {{
+            pointer-events: none;
         }}
 
         .opt-letter {{
@@ -1728,6 +1751,10 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
         <h1 class="hero-title">{session_title}</h1>
         <div class="hero-topic">🎯 {topic}</div>
     </header>
+
+    <div class="mobile-tip-banner">
+        📱 <b>手機作答溫馨提示</b>：若在 iPhone / iPad Telegram 點開檔案發現無法直接點擊選項（iOS 檔案快速預覽預設停用腳本），請點擊右上角「<b>分享圖示 ➔ 選擇以 Safari 或 Chrome 開啟</b>」，即可 100% 享受即時算分、正誤秒回饋、秒殺倒數與 Telegram 錯題回傳功能！
+    </div>
 
     {body_content}
 
