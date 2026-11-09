@@ -166,6 +166,24 @@ class TestDispatchScheduling(unittest.TestCase):
             self.assertTrue(res3)
             self.assertEqual(mock_dispatch.call_count, 1)
 
+    def test_dispatch_report_receives_web_link_and_portal_caption(self):
+        """Dispatched document must include direct GitHub Pages link and portal URL in caption."""
+        with patch("dispatch_runner.get_credentials", return_value=("fake_token", "fake_chat_id")), \
+             patch("dispatch_runner.check_already_sent_today", return_value=False), \
+             patch("dispatch_runner.claim_session_today", return_value=True), \
+             patch("dispatch_runner.mark_session_sent_today"), \
+             patch("dispatch_runner.dispatch_report", return_value=True) as mock_dispatch:
+
+            res = dispatch_runner.run_dispatch(session="morning", target_day=6, dry_run=False, force=True)
+            self.assertTrue(res)
+            mock_dispatch.assert_called_once()
+            _, kwargs = mock_dispatch.call_args
+            caption = kwargs.get("caption", "")
+            self.assertIn("https://yikai02.github.io/toeic-daily-sprint/TOEIC_Day06_Morning.html", caption)
+            self.assertIn("https://yikai02.github.io/toeic-daily-sprint/", caption)
+            self.assertNotIn("🇹🇼", caption)
+            self.assertNotIn("🇺🇸", caption)
+
 
 if __name__ == "__main__":
     unittest.main()

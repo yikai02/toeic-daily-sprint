@@ -2503,14 +2503,17 @@ def render_day_html(
     <header class="hero-banner">
         <div class="hero-top">
             <span class="phase-badge">Phase {phase} · {phase_name}</span>
-            <span>{date_str} (Day {day}/25)</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span>{date_str} (Day {day}/25)</span>
+                <a href="index.html" class="portal-pill" style="display:inline-flex; align-items:center; background:rgba(255,255,255,0.22); color:#ffffff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:700; text-decoration:none; border:1px solid rgba(255,255,255,0.35); box-shadow:0 1px 3px rgba(0,0,0,0.1);">📚 全地圖</a>
+            </div>
         </div>
         <h1 class="hero-title">{session_title}</h1>
         <div class="hero-topic">🎯 {topic}</div>
     </header>
 
     <div class="mobile-tip-banner">
-        📱 <b>手機作答專屬升級</b>：點擊任一選項即會<b>立即直接展開詳解</b>（包含您選的選項為什麼錯、正確答案為什麼對與全句中譯）！若在 iPhone / iPad Telegram 預覽想享受動態計分板與 Telegram 錯題回傳，亦可點擊右上角「<b>分享圖示 ➔ 以 Safari 或 Chrome 開啟</b>」！
+        📱 <b>手機作答專屬升級</b>：點擊任一選項即會<b>立即直接展開詳解</b>（包含您選的選項為什麼錯、正確答案為什麼對與全句中譯）！亦可點擊右上角「<b>📚 全地圖</b>」切換各天特訓，隨時掌握 25 天衝刺進度。若在 Telegram 預覽想使用計分板與語音朗讀，可點擊右上角分享按鈕「<b>以 Safari 或 Chrome 開啟</b>」。
     </div>
 
     {body_content}

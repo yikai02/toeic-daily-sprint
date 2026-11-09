@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多益特訓即時導向中...</title>
+    <script>
+    (function() {
+        const startDate = new Date('2026-11-04T00:00:00+08:00');
+        const now = new Date();
+        const diffDays = Math.floor((now - startDate) / 86400000) + 1;
+        const currentDay = Math.max(1, Math.min(25, diffDays));
+        const dayStr = String(currentDay).padStart(2, '0');
+        const hourTaipei = (now.getUTCHours() + 8) % 24;
+        const sess = hourTaipei < 12 ? 'Morning' : 'Afternoon';
+        window.location.replace(`TOEIC_Day${dayStr}_${sess}.html`);
+    })();
+    </script>
+</head>
+<body style="font-family: -apple-system, sans-serif; text-align: center; padding: 50px 20px; color: #334155;">
+    <h2>🚀 正在為您開啟今日多益練習...</h2>
+    <p style="margin-top: 10px; font-size: 14px; color: #64748b;">
+        若未自動跳轉，請點擊此處前往 <a href="index.html" style="color: #2563eb; font-weight: bold;">特訓網站首頁</a>。
+    </p>
+</body>
+</html>

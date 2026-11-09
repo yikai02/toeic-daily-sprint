@@ -169,7 +169,20 @@ def run_dispatch(
             return True
         claimed = True
 
-    ok = dispatch_report(str(file_path))
+    web_url = f"https://yikai02.github.io/toeic-daily-sprint/TOEIC_Day{day_num:02d}_{tag}.html"
+    portal_url = "https://yikai02.github.io/toeic-daily-sprint/"
+    days_left = max(0, (date(2026, 11, 29) - now.date()).days)
+    sess_icon = "☀️" if session == "morning" else "🌤️"
+
+    caption = (
+        f"{sess_icon} 多益 860+ Day {day_num} {zh_label} (考前倒數 {days_left} 天)\n\n"
+        f"🎯 點此網頁直開（手機免下載、全功能判題）：\n"
+        f"👉 {web_url}\n\n"
+        f"📚 25天全期學習網站：{portal_url}\n\n"
+        f"💡 亦可下載下方 HTML 附件離線練習。"
+    )
+
+    ok = dispatch_report(str(file_path), caption=caption)
     if ok:
         if token and not is_forced:
             mark_session_sent_today(token, today_str, session)
