@@ -47,35 +47,63 @@ def determine_session(now: datetime = None) -> str:
     return "afternoon" if now.hour >= 12 else "morning"
 
 
-def resolve_effective_session(requested_session: str, now: datetime = None) -> str:
-    """Resolves the true intended session.
+def resolve_effective_session(
+    requested_session: str = "auto",
+    now: datetime = None,
+    cron_expr: str = None,
+) -> str:
+    """Resolves the true intended session ('morning' or 'afternoon').
 
-    When triggered by GitHub Actions 'schedule' event, GitHub's free cron queue can
-    delay '0 0 * * *' (08:00 Taipei) past 12:00 PM Taipei. Reading the actual cron
-    expression from GITHUB_EVENT_PATH prevents a delayed morning cron from being
-    misclassified as 'afternoon' by daily_dispatch.yml's hour>=12 shell check.
+    Prioritizes:
+    1. Explicit requested_session if it is 'morning' or 'afternoon'.
+    2. cron_expr (passed via CLI or GITHUB_EVENT_SCHEDULE or GITHUB_EVENT_PATH):
+       - Morning window in UTC: hours 23 (e.g. 23:45-23:58 UTC = 07:45-07:58 Taipei),
+         0 (08:xx Taipei), or 1 (09:xx Taipei).
+       - Afternoon window in UTC: hours 5 (13:xx Taipei), 6 (14:xx Taipei), or 7 (15:xx Taipei).
+    3. Fallback to current Taipei local hour: < 12:00 -> 'morning', >= 12:00 -> 'afternoon'.
     """
     now = now or datetime.now(TZ)
-    event_name = os.environ.get("GITHUB_EVENT_NAME", "").strip()
-    if event_name == "schedule":
+
+    # 1. Explicit requested_session has highest priority
+    if requested_session and requested_session.lower() in ("morning", "afternoon"):
+        return requested_session.lower()
+
+    # 2. Extract cron_expr if not provided directly
+    if not cron_expr:
+        cron_expr = os.environ.get("GITHUB_EVENT_SCHEDULE", "").strip()
+
+    if not cron_expr and os.environ.get("GITHUB_EVENT_NAME", "").strip() == "schedule":
         event_path = os.environ.get("GITHUB_EVENT_PATH", "").strip()
         if event_path and os.path.exists(event_path):
             try:
                 with open(event_path, "r", encoding="utf-8") as f:
                     payload = json.load(f)
                 cron_expr = str(payload.get("schedule", "")).strip()
-                if cron_expr in ("0 0 * * *", "55 23 * * *"):
-                    return "morning"
-                if cron_expr in ("0 6 * * *", "55 5 * * *"):
-                    return "afternoon"
             except Exception as e:
                 print(f"Warning: could not parse GITHUB_EVENT_PATH: {e}")
-        # Fallback for schedule event: afternoon cron ('0 6 * * *') never fires before 14:00 Taipei
-        return "afternoon" if now.hour >= 14 else "morning"
 
-    if requested_session == "auto" or not requested_session:
-        return determine_session(now)
-    return requested_session.lower()
+    if cron_expr:
+        parts = cron_expr.strip().split()
+        if len(parts) >= 2:
+            hour_part = parts[1]
+            try:
+                hour_val = int(hour_part)
+                if hour_val in (23, 0, 1):
+                    return "morning"
+                if hour_val in (5, 6, 7):
+                    return "afternoon"
+            except ValueError:
+                pass
+        cron_cleaned = " ".join(parts)
+        morning_prefixes = ("45 23", "50 23", "52 23", "55 23", "58 23", "0 0", "5 0", "10 0", "15 0", "20 0", "30 0", "0 1")
+        afternoon_prefixes = ("45 5", "50 5", "52 5", "55 5", "58 5", "0 6", "5 6", "10 6", "15 6", "20 6", "30 6", "0 7")
+        if any(cron_cleaned.startswith(p) for p in morning_prefixes):
+            return "morning"
+        if any(cron_cleaned.startswith(p) for p in afternoon_prefixes):
+            return "afternoon"
+
+    # 3. Fallback to time-of-day in Taipei
+    return determine_session(now)
 
 
 def run_dispatch(
@@ -83,12 +111,14 @@ def run_dispatch(
     target_day: int = None,
     dry_run: bool = False,
     force: bool = False,
+    cron_expr: str = None,
 ) -> bool:
     now = datetime.now(TZ)
     today_str = now.strftime("%Y-%m-%d")
-    session = resolve_effective_session(session, now)
+    session = resolve_effective_session(session, now, cron_expr=cron_expr)
 
-    day_num = target_day if target_day is not None else calculate_current_day(now.date())
+    current_cal_day = calculate_current_day(now.date())
+    day_num = target_day if target_day is not None else current_cal_day
     if day_num not in DAYS_DATA:
         print(f"Error: Day {day_num} not found in curriculum data!")
         return False
@@ -119,7 +149,8 @@ def run_dispatch(
 
     token, _ = get_credentials()
     force_env = os.environ.get("FORCE_RESEND", "").lower() in ("1", "true", "yes")
-    is_forced = force or force_env or (target_day is not None)
+    # Only treat as forced if explicitly forced or if testing a different day than current calendar day
+    is_forced = force or force_env or (target_day is not None and target_day != current_cal_day)
 
     claimed = False
     if not is_forced and token:
@@ -139,7 +170,7 @@ def run_dispatch(
 
     ok = dispatch_report(str(file_path))
     if ok:
-        if token and not (target_day is not None and not force):
+        if token and not is_forced:
             mark_session_sent_today(token, today_str, session)
     else:
         if claimed and token:
@@ -151,8 +182,9 @@ def run_dispatch(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="TOEIC Daily Telegram Dispatcher")
     parser.add_argument("--session", choices=["morning", "afternoon", "auto"], default="auto")
+    parser.add_argument("--cron", type=str, default=None, help="GitHub Actions schedule cron string")
     parser.add_argument("--day", type=int, default=None, help="Specific Day (1-25)")
     parser.add_argument("--dry-run", action="store_true", help="Generate HTML without sending to Telegram")
     parser.add_argument("--force", action="store_true", help="Bypass daily deduplication guard")
     args = parser.parse_args()
-    sys.exit(0 if run_dispatch(args.session, args.day, args.dry_run, args.force) else 1)
+    sys.exit(0 if run_dispatch(args.session, args.day, args.dry_run, args.force, cron_expr=args.cron) else 1)

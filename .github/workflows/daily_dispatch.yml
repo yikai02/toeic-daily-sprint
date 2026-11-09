@@ -3,15 +3,31 @@ name: 多益 25 天金色證書每日雲端推播 (08:00 & 14:00)
 on:
   schedule:
     # 早上八點 (台北時間 08:00 = UTC 00:00)
-    - cron: '0 0 * * *'
+    # 設定前置與間隔備援 cron，徹底規避 GitHub 00:00 UTC 整點隊列大塞車 (3-4小時延遲)
+    - cron: '50 23 * * *'  # 07:50 台北 (避開整點尖峰)
+    - cron: '55 23 * * *'  # 07:55 台北
+    - cron: '0 0 * * *'   # 08:00 台北
+    - cron: '5 0 * * *'   # 08:05 台北
+    - cron: '15 0 * * *'  # 08:15 台北
+    - cron: '30 0 * * *'  # 08:30 台北
     # 下午兩點 (台北時間 14:00 = UTC 06:00)
-    - cron: '0 6 * * *'
+    - cron: '50 5 * * *'   # 13:50 台北 (避開整點尖峰)
+    - cron: '55 5 * * *'   # 13:55 台北
+    - cron: '0 6 * * *'   # 14:00 台北
+    - cron: '5 6 * * *'   # 14:05 台北
+    - cron: '15 6 * * *'  # 14:15 台北
+    - cron: '30 6 * * *'  # 14:30 台北
   workflow_dispatch:
     inputs:
       session:
         description: '推播梯次：morning 或 afternoon'
         required: false
         default: ''
+      force:
+        description: '強制重發 (忽略今日已發送標記)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -39,15 +55,7 @@ jobs:
 
       - name: 判定推播梯次並發送純檔案
         run: |
-          INPUT_SESSION="${{ github.event.inputs.session }}"
-          if [ -n "$INPUT_SESSION" ]; then
-            SESSION="$INPUT_SESSION"
-          else
-            HOUR=$(TZ='Asia/Taipei' date '+%H')
-            if [ "$HOUR" -ge 12 ]; then
-              SESSION="afternoon"
-            else
-              SESSION="morning"
-            fi
-          fi
-          python3 dispatch_runner.py --session "$SESSION"
+          python3 dispatch_runner.py \
+            --session "${{ github.event.inputs.session || 'auto' }}" \
+            --cron "${{ github.event.schedule }}" \
+            ${{ github.event.inputs.force == 'true' && '--force' || '' }}
