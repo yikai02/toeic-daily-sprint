@@ -126,11 +126,12 @@ def run_dispatch(
     tag = "Morning" if session == "morning" else "Afternoon"
     zh_label = "上午練習" if session == "morning" else "下午練習"
 
+    token, _ = get_credentials()
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     # Build the session payload ONCE so the HTML and the saved question manifest are identical.
     payload = build_session_payload(day_num, session)
     save_session_manifest(payload)
-    html_content = render_day_html(DAYS_DATA[day_num], session=session, payload=payload)
+    html_content = render_day_html(DAYS_DATA[day_num], session=session, payload=payload, bot_token=token)
     file_path = REPORTS_DIR / f"TOEIC_Day{day_num:02d}_{tag}.html"
     file_path.write_text(html_content, encoding="utf-8")
     print(f"Generated {file_path.name} ({len(html_content)} bytes), Day {day_num} ({zh_label})")

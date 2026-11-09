@@ -13,27 +13,34 @@ Generates standalone, mobile-optimized interactive HTML practice files for both
 """
 
 import html
+import os
 import re
 from typing import Dict, List
 
 from adaptive_srs_engine import build_session_payload
 
-INTERACTIVE_SCRIPT = """
-    <!-- Interactive 5-Part Quiz Engine, Live Sub-Score Analytics & Remote Agent Bridge -->
+INTERACTIVE_SCRIPT_TEMPLATE = """
+    <!-- Interactive 5-Part Quiz Engine, Real-Time Cloud Sync & Remote Agent Bridge -->
     <script>
     let totalAnswered = 0;
     let correctCount = 0;
     let wrongOnlyMode = false;
-    const day = document.body.dataset.day || '1';
-    const session = document.body.dataset.session || 'morning';
+    let isApplyingCloud = false;
+    let syncTimeout = null;
+    const day = document.body.dataset.day || '__DAY__';
+    const session = document.body.dataset.session || '__SESSION__';
     const STORAGE_KEY = `toeic_860_v2_d${day}_${session}`;
+    const CLOUD_BOT_TOKEN = "__BOT_TOKEN__";
 
     document.addEventListener('DOMContentLoaded', () => {
         updateScoreBar();
         restoreProgress();
+        if (CLOUD_BOT_TOKEN) {
+            fetchCloudProgress();
+        }
     });
 
-    window.handleOptClick = function(btn) {
+    window.handleOptClick = function(btn, skipSync = false) {
         if (!btn) return;
         const grid = btn.closest('.options-grid');
         if (!grid || grid.classList.contains('answered')) return;
@@ -66,7 +73,9 @@ INTERACTIVE_SCRIPT = """
         }
 
         updateScoreBar();
-        saveProgress();
+        if (!skipSync) {
+            saveProgress();
+        }
     };
 
     document.addEventListener('click', (e) => {
@@ -222,7 +231,7 @@ INTERACTIVE_SCRIPT = """
     }
 
     function resetQuiz() {
-        if (!confirm('確定要清除本次作答紀錄，重新開始特訓嗎？')) return;
+        if (!confirm('確定要清除本次作答紀錄，重新開始特訓嗎？這將同步重設雲端紀錄。')) return;
         totalAnswered = 0;
         correctCount = 0;
         wrongOnlyMode = false;
@@ -244,30 +253,78 @@ INTERACTIVE_SCRIPT = """
         document.querySelectorAll('details.spoiler-card').forEach(d => d.open = false);
         const card = document.getElementById('final-summary-card');
         if (card) card.style.display = 'none';
-        try { sessionStorage.removeItem(STORAGE_KEY); } catch(e) {}
+        try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
         updateScoreBar();
+
+        if (CLOUD_BOT_TOKEN) {
+            const statusEl = document.getElementById('cloud-sync-status');
+            if (statusEl) statusEl.innerText = '☁️ 雲端重設中...';
+            const sessTag = (session === 'morning' || session === 'm') ? 'M' : 'A';
+            const dayStr = String(day).padStart(2, '0');
+            const totalQ = document.querySelectorAll('.question-block').length;
+            const currentRecord = `${sessTag}:D${dayStr}${sessTag}:${Date.now()}:${'-'.repeat(totalQ)}`;
+
+            fetch(`https://api.telegram.org/bot${CLOUD_BOT_TOKEN}/getMyDescription`)
+                .then(r => r.json())
+                .then(gData => {
+                    const existing = (gData.result && gData.result.description) || '';
+                    const otherTag = (sessTag === 'M') ? 'A:' : 'M:';
+                    const parts = existing.split(' | ').filter(p => p.startsWith(otherTag));
+                    parts.push(currentRecord);
+                    return fetch(`https://api.telegram.org/bot${CLOUD_BOT_TOKEN}/setMyDescription`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ description: parts.join(' | ') })
+                    });
+                })
+                .then(() => {
+                    if (statusEl) statusEl.innerText = '☁️ 雲端進度已重設';
+                })
+                .catch(() => {});
+        }
     }
 
-    function saveProgress() {
+    function getLocalAnswers() {
         try {
-            const data = {};
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return { timestamp: 0, answers: {} };
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed === 'object' && parsed.answers) {
+                return parsed;
+            }
+            return { timestamp: Date.now(), answers: parsed || {} };
+        } catch(e) {
+            return { timestamp: 0, answers: {} };
+        }
+    }
+
+    function saveLocalProgress(ts = Date.now()) {
+        try {
+            const answers = {};
             document.querySelectorAll('.question-block').forEach(qb => {
                 const qid = qb.id;
                 const grid = qb.querySelector('.options-grid.answered');
                 if (grid) {
                     const picked = grid.querySelector('.opt-btn.opt-correct, .opt-btn.opt-wrong');
-                    if (picked) data[qid] = picked.getAttribute('data-opt');
+                    if (picked) answers[qid] = picked.getAttribute('data-opt');
                 }
             });
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                timestamp: ts,
+                answers: answers
+            }));
         } catch(e) {}
+    }
+
+    function saveProgress() {
+        saveLocalProgress();
+        triggerCloudSync();
     }
 
     function restoreProgress() {
         try {
-            const raw = sessionStorage.getItem(STORAGE_KEY);
-            if (!raw) return;
-            const data = JSON.parse(raw);
+            const local = getLocalAnswers();
+            const data = local.answers;
             if (!data) return;
             Object.keys(data).forEach(qid => {
                 const qb = document.getElementById(qid);
@@ -275,10 +332,143 @@ INTERACTIVE_SCRIPT = """
                 const optLetter = data[qid];
                 const btn = qb.querySelector(`.opt-btn[data-opt="${optLetter}"]`);
                 if (btn && !btn.closest('.options-grid').classList.contains('answered')) {
-                    btn.click();
+                    handleOptClick(btn, true);
                 }
             });
         } catch(e) {}
+    }
+
+    function triggerCloudSync() {
+        if (isApplyingCloud || !CLOUD_BOT_TOKEN) return;
+        const statusEl = document.getElementById('cloud-sync-status');
+        if (statusEl) statusEl.innerText = '☁️ 雲端同步中...';
+
+        clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => {
+            syncProgressToCloud();
+        }, 800);
+    }
+
+    async function syncProgressToCloud() {
+        if (!CLOUD_BOT_TOKEN) return;
+        const statusEl = document.getElementById('cloud-sync-status');
+        try {
+            const nowTs = Date.now();
+            saveLocalProgress(nowTs);
+            const local = getLocalAnswers();
+
+            const totalQ = document.querySelectorAll('.question-block').length;
+            let ansChars = '';
+            for (let i = 1; i <= totalQ; i++) {
+                const opt = local.answers[`q-block-${i}`];
+                ansChars += (opt && ['A', 'B', 'C', 'D'].includes(opt)) ? opt : '-';
+            }
+
+            const sessTag = (session === 'morning' || session === 'm') ? 'M' : 'A';
+            const dayStr = String(day).padStart(2, '0');
+            const currentRecord = `${sessTag}:D${dayStr}${sessTag}:${nowTs}:${ansChars}`;
+
+            // Fetch current description to merge and preserve other session
+            const getResp = await fetch(`https://api.telegram.org/bot${CLOUD_BOT_TOKEN}/getMyDescription`);
+            let existing = '';
+            if (getResp.ok) {
+                const gData = await getResp.json();
+                existing = (gData.result && gData.result.description) || '';
+            }
+
+            const otherTag = (sessTag === 'M') ? 'A:' : 'M:';
+            const parts = existing.split(' | ').filter(p => p.startsWith(otherTag));
+            parts.push(currentRecord);
+            const newDescription = parts.join(' | ');
+
+            const setResp = await fetch(`https://api.telegram.org/bot${CLOUD_BOT_TOKEN}/setMyDescription`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ description: newDescription })
+            });
+
+            if (setResp.ok && statusEl) {
+                statusEl.innerText = `☁️ 雲端已同步 (${totalAnswered}/${totalQ} 題)`;
+            }
+        } catch(e) {
+            console.warn('syncProgressToCloud error:', e);
+            if (statusEl) statusEl.innerText = '☁️ 本地已存 (離線模式)';
+        }
+    }
+
+    async function fetchCloudProgress(forceManual = false) {
+        if (!CLOUD_BOT_TOKEN) return;
+        const statusEl = document.getElementById('cloud-sync-status');
+        if (statusEl) statusEl.innerText = '☁️ 雲端同步中...';
+
+        try {
+            const resp = await fetch(`https://api.telegram.org/bot${CLOUD_BOT_TOKEN}/getMyDescription`);
+            if (!resp.ok) throw new Error('Cloud fetch failed');
+            const res = await resp.json();
+            const desc = (res.result && res.result.description) || '';
+
+            const sessTag = (session === 'morning' || session === 'm') ? 'M' : 'A';
+            const dayStr = String(day).padStart(2, '0');
+            const targetPrefix = `${sessTag}:D${dayStr}${sessTag}:`;
+
+            let record = '';
+            desc.split(' | ').forEach(part => {
+                if (part.startsWith(targetPrefix)) {
+                    record = part.substring(targetPrefix.length);
+                }
+            });
+
+            if (!record) {
+                const local = getLocalAnswers();
+                if (Object.keys(local.answers).length > 0) {
+                    syncProgressToCloud();
+                } else if (statusEl) {
+                    statusEl.innerText = '☁️ 雲端同步就緒';
+                }
+                return;
+            }
+
+            const rParts = record.split(':');
+            const cloudTs = parseInt(rParts[0], 10) || 0;
+            const ansChars = rParts[1] || '';
+
+            const local = getLocalAnswers();
+            const localTs = local.timestamp || 0;
+
+            if (cloudTs > localTs || forceManual) {
+                isApplyingCloud = true;
+                for (let i = 0; i < ansChars.length; i++) {
+                    const ch = ansChars[i];
+                    if (ch === 'A' || ch === 'B' || ch === 'C' || ch === 'D') {
+                        const qid = `q-block-${i + 1}`;
+                        const qb = document.getElementById(qid);
+                        if (qb) {
+                            const grid = qb.querySelector('.options-grid');
+                            if (grid && !grid.classList.contains('answered')) {
+                                const btn = grid.querySelector(`.opt-btn[data-opt="${ch}"]`);
+                                if (btn) {
+                                    handleOptClick(btn, true);
+                                }
+                            }
+                        }
+                    }
+                }
+                isApplyingCloud = false;
+                saveLocalProgress(cloudTs);
+                if (statusEl) {
+                    statusEl.innerText = `☁️ 已自雲端同步 (${totalAnswered} 題)`;
+                }
+            } else if (localTs > cloudTs) {
+                syncProgressToCloud();
+            } else {
+                if (statusEl) {
+                    statusEl.innerText = `☁️ 雲端已同步 (${totalAnswered} 題)`;
+                }
+            }
+        } catch(e) {
+            console.warn('fetchCloudProgress error:', e);
+            if (statusEl) statusEl.innerText = '☁️ 本地已存 (離線中)';
+        }
     }
 
     // Countdown timer with urgent visual cues
@@ -371,6 +561,16 @@ INTERACTIVE_SCRIPT = """
     }
     </script>
 """
+
+
+def build_interactive_script(day: int = 1, session: str = "morning", bot_token: str = "") -> str:
+    bot_token = bot_token or os.environ.get("TELEGRAM_BOT_TOKEN", "")
+    return (
+        INTERACTIVE_SCRIPT_TEMPLATE
+        .replace("__DAY__", str(day))
+        .replace("__SESSION__", session.lower())
+        .replace("__BOT_TOKEN__", bot_token)
+    )
 
 
 def _render_option_details_html(q: dict) -> str:
@@ -601,7 +801,13 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     """
 
 
-def render_day_html(day_data: dict, session: str = "morning", payload: dict = None) -> str:
+def render_day_html(
+    day_data: dict,
+    session: str = "morning",
+    payload: dict = None,
+    bot_token: str = "",
+) -> str:
+    bot_token = bot_token or os.environ.get("TELEGRAM_BOT_TOKEN", "")
     day = int(day_data.get("day", 1))
     date_str = day_data.get("date", "")
     phase = day_data.get("phase", 1)
@@ -815,6 +1021,7 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             <div class="score-stats">
                 <span>📝 {session_label}進度: <b id="score-progress">0 / {total_q}</b></span>
                 <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                <span id="cloud-sync-status" class="sync-badge-live" onclick="fetchCloudProgress(true)" title="點擊立即從雲端同步最新進度">☁️ 雲端同步就緒</span>
             </div>
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
@@ -1014,6 +1221,30 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             border-radius: 6px;
             font-size: 12px;
             font-weight: 800;
+        }}
+
+        .sync-badge-live {{
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: rgba(99, 102, 241, 0.12);
+            color: #4f46e5;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            user-select: none;
+            -webkit-user-select: none;
+        }}
+
+        @media (prefers-color-scheme: dark) {{
+            .sync-badge-live {{
+                background: rgba(99, 102, 241, 0.25);
+                color: #c7d2fe;
+                border-color: rgba(99, 102, 241, 0.4);
+            }}
         }}
 
         .bar-actions {{
@@ -1782,4 +2013,8 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
         持之以恆，語感秒殺，金色必達！
     </footer>
 """
-    return full_html + INTERACTIVE_SCRIPT + "\n</body>\n</html>\n"
+    script_html = build_interactive_script(day, session, bot_token)
+    return full_html + script_html + "\n</body>\n</html>\n"
+
+
+INTERACTIVE_SCRIPT = build_interactive_script(1, "morning")
