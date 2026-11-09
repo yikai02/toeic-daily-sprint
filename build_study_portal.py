@@ -524,6 +524,6 @@ def build_all_pages(target_dir: Path = None, token: str = ""):
 
 
 if __name__ == "__main__":
-    from telegram_sender import get_credentials
-    token, _ = get_credentials()
-    build_all_pages(token=token)
+    # For public website hosting, do NOT bake secrets into HTML files.
+    # Users can sync via localStorage or pass ?token= safely on client-side.
+    build_all_pages(token="")

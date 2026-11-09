@@ -9406,7 +9406,16 @@
     const day = document.body.dataset.day || '1';
     const session = document.body.dataset.session || 'morning';
     const STORAGE_KEY = `toeic_860_v2_d${day}_${session}`;
-    const CLOUD_BOT_TOKEN = "9073523773:AAFmu6fcg2TikM5MWYzwTbUWf7AYR3Yb6yk";
+    let CLOUD_BOT_TOKEN = "";
+    try {
+        const urlToken = new URLSearchParams(window.location.search).get('token');
+        if (urlToken) {
+            localStorage.setItem('TOEIC_SYNC_TOKEN', urlToken);
+            CLOUD_BOT_TOKEN = urlToken;
+        } else if (!CLOUD_BOT_TOKEN) {
+            CLOUD_BOT_TOKEN = localStorage.getItem('TOEIC_SYNC_TOKEN') || "";
+        }
+    } catch(e) {}
 
     document.addEventListener('DOMContentLoaded', () => {
         updateScoreBar();

@@ -30,7 +30,16 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
     const day = document.body.dataset.day || '__DAY__';
     const session = document.body.dataset.session || '__SESSION__';
     const STORAGE_KEY = `toeic_860_v2_d${day}_${session}`;
-    const CLOUD_BOT_TOKEN = "__BOT_TOKEN__";
+    let CLOUD_BOT_TOKEN = "__BOT_TOKEN__";
+    try {
+        const urlToken = new URLSearchParams(window.location.search).get('token');
+        if (urlToken) {
+            localStorage.setItem('TOEIC_SYNC_TOKEN', urlToken);
+            CLOUD_BOT_TOKEN = urlToken;
+        } else if (!CLOUD_BOT_TOKEN) {
+            CLOUD_BOT_TOKEN = localStorage.getItem('TOEIC_SYNC_TOKEN') || "";
+        }
+    } catch(e) {}
 
     document.addEventListener('DOMContentLoaded', () => {
         updateScoreBar();
