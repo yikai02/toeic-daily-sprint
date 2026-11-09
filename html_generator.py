@@ -82,8 +82,18 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
             });
         }
 
+        // Lock all radios and unselected labels in this question until reset is clicked
         allRadios.forEach(r => {
             r.disabled = true;
+        });
+        const allLabels = grid.querySelectorAll('.opt-label');
+        allLabels.forEach(lbl => {
+            if (!lbl.querySelector('.opt-radio:checked')) {
+                lbl.classList.add('opt-locked');
+                lbl.style.pointerEvents = 'none';
+                lbl.style.opacity = '0.52';
+                lbl.style.cursor = 'not-allowed';
+            }
         });
 
         updateScoreBar();
@@ -99,6 +109,10 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
 
         const label = e.target.closest('.opt-label');
         if (label) {
+            const grid = label.closest('.options-grid');
+            if (grid && grid.classList.contains('answered')) {
+                return;
+            }
             const radio = label.querySelector('.opt-radio');
             if (radio && !radio.disabled) {
                 handleOptSelect(radio);
@@ -279,6 +293,12 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
             g.querySelectorAll('.opt-radio').forEach(r => {
                 r.checked = false;
                 r.disabled = false;
+            });
+            g.querySelectorAll('.opt-label').forEach(lbl => {
+                lbl.classList.remove('opt-locked');
+                lbl.style.pointerEvents = '';
+                lbl.style.opacity = '';
+                lbl.style.cursor = '';
             });
             g.querySelectorAll('.opt-btn-content, .opt-btn').forEach(b => {
                 b.classList.remove('opt-correct', 'opt-wrong');
@@ -614,6 +634,50 @@ def build_interactive_script(day: int = 1, session: str = "morning", bot_token: 
     )
 
 
+def format_option_detail_categorized(raw: str, is_correct: bool) -> str:
+    """Parses and formats option detail text into structured, categorized UI chips & blocks."""
+    if not raw:
+        return ""
+    s = raw.strip()
+    # Strip leading tags like 【錯誤排除】, 【正解】, 【✓ 正確選項】, 【✗ 錯誤干擾】
+    s = re.sub(r"^【[^】]+】\s*", "", s)
+
+    # 1. Extract POS (Part of Speech) and Meaning
+    pos_match = re.search(r"詞性：([^｜]+)｜(?:中譯|字義)：([^。]+)。", s)
+    chips_html = ""
+    if pos_match:
+        pos_str = pos_match.group(1).strip()
+        meaning_str = pos_match.group(2).strip()
+        chips_html = f"""
+        <div class="fb-chips-row">
+            <span class="fb-chip fb-chip-pos">🏷️ 詞性：<b>{html.escape(pos_str)}</b></span>
+            <span class="fb-chip fb-chip-meaning">📖 釋義：<b>{html.escape(meaning_str)}</b></span>
+        </div>
+        """
+        s = s[pos_match.end():].strip()
+
+    # 2. Extract Collocation & Usage (高頻搭配 / 用法提醒)
+    usage_html = ""
+    usage_match = re.search(r"(語法與搭配功能|用法提醒|搭配提醒|高頻搭配|必考搭配)：([^。]+。?)", s)
+    if usage_match:
+        usage_txt = usage_match.group(2).strip()
+        usage_html = f"""
+        <div class="fb-usage-card">
+            📌 <b>必考搭配與用法：</b>{html.escape(usage_txt)}
+        </div>
+        """
+        s = s[:usage_match.start()] + s[usage_match.end():]
+        s = s.strip()
+
+    # 3. Reason & Diagnosis (入選理由 / 排除診斷)
+    s = re.sub(r"^(正確原因|錯誤原因)：\s*", "", s).strip()
+    reason_label = "💡 <b>入選理由：</b>" if is_correct else "🚫 <b>排除診斷：</b>"
+    reason_cls = "fb-reason-correct" if is_correct else "fb-reason-wrong"
+    reason_html = f'<div class="fb-reason-card {reason_cls}">{reason_label}{html.escape(s)}</div>' if s else ""
+
+    return f'<div class="fb-categorized-content">{chips_html}{usage_html}{reason_html}</div>'
+
+
 def _render_option_details_html(q: dict) -> str:
     """Renders the detailed per-option breakdown (meaning, POS, why right/wrong)."""
     opt_details = q.get("option_details")
@@ -630,10 +694,11 @@ def _render_option_details_html(q: dict) -> str:
         is_ans = (letter == ans)
         row_cls = "opt-bd-row opt-bd-correct" if is_ans else "opt-bd-row opt-bd-wrong"
         badge_txt = f"✓ ({letter}) {html.escape(opt_word)}" if is_ans else f"✗ ({letter}) {html.escape(opt_word)}"
+        categorized_content = format_option_detail_categorized(detail_text, is_ans)
         rows_html += f"""
         <div class="{row_cls}">
             <div class="opt-bd-head">{badge_txt}</div>
-            <div class="opt-bd-desc">{html.escape(detail_text)}</div>
+            <div class="opt-bd-desc">{categorized_content}</div>
         </div>
         """
     if not rows_html:
@@ -823,22 +888,25 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         correct_detail = opt_details.get(ans, "").strip()
 
         if is_ans:
+            formatted_chosen = format_option_detail_categorized(chosen_detail, is_correct=True)
             feedback_html = f"""
             <span class="opt-instant-feedback opt-feedback-correct">
                 <span class="fb-correct-congrats">🎉 <b>太棒了！您選擇的 ({opt_key}) 是正確答案！</b></span>
                 <span class="fb-heading fb-heading-correct">✅ <b>為什麼 ({opt_key}) 是對的：</b></span>
-                <span class="fb-correct-detail">{html.escape(chosen_detail)}</span>
+                <span class="fb-correct-detail">{formatted_chosen}</span>
                 {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
             </span>
             """
         else:
+            formatted_chosen = format_option_detail_categorized(chosen_detail, is_correct=False)
+            formatted_correct = format_option_detail_categorized(correct_detail, is_correct=True)
             feedback_html = f"""
             <span class="opt-instant-feedback opt-feedback-wrong">
                 <span class="fb-wrong-tag">❌ <b>您選擇的 ({opt_key}) 是錯誤選項</b></span>
                 <span class="fb-heading fb-heading-wrong">⚠️ <b>為什麼您選的 ({opt_key}) 是錯的：</b></span>
-                <span class="fb-wrong-detail">{html.escape(chosen_detail)}</span>
+                <span class="fb-wrong-detail">{formatted_chosen}</span>
                 <span class="fb-heading fb-heading-correct">✅ <b>正確答案是 ({ans}) {html.escape(ans_word)}，為什麼對：</b></span>
-                <span class="fb-correct-detail">{html.escape(correct_detail)}</span>
+                <span class="fb-correct-detail">{formatted_correct}</span>
                 {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
             </span>
             """
@@ -1102,11 +1170,11 @@ def render_day_html(
                 <span id="cloud-sync-status" class="sync-badge-live" onclick="fetchCloudProgress(true)" title="點擊立即從雲端同步最新進度">☁️ 雲端同步就緒</span>
             </div>
             <div class="bar-actions">
+                <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
+                <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
                 <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
                 <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
-                <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
-                <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
             </div>
         </div>
         <div class="progress-track">
@@ -1260,42 +1328,57 @@ def render_day_html(
 
         .sticky-control-bar {{
             position: sticky;
-            top: 10px;
-            z-index: 100;
+            top: calc(env(safe-area-inset-top, 0px) + 52px);
+            z-index: 999;
             background: var(--card-bg);
             border: 1.5px solid var(--border-color);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.09);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
             border-radius: 14px;
-            padding: 10px 14px;
+            padding: 9px 12px;
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            backdrop-filter: blur(8px);
+            gap: 7px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }}
+
+        @media (min-width: 640px) {{
+            .sticky-control-bar {{
+                top: 14px;
+            }}
         }}
 
         .bar-top-row {{
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 7px;
             width: 100%;
-            flex-wrap: wrap;
-            gap: 6px;
+        }}
+
+        @media (min-width: 520px) {{
+            .bar-top-row {{
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }}
         }}
 
         .score-stats {{
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             color: var(--text-main);
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 6px;
+            flex-wrap: wrap;
         }}
 
         .score-pct-badge {{
             background: rgba(37, 99, 235, 0.14);
             color: var(--primary);
-            padding: 3px 8px;
+            padding: 2px 7px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 800;
@@ -1327,15 +1410,26 @@ def render_day_html(
 
         .bar-actions {{
             display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 2px 0;
+            width: 100%;
+        }}
+
+        .bar-actions::-webkit-scrollbar {{
+            display: none;
         }}
 
         .action-btn-sm {{
+            flex-shrink: 0;
+            white-space: nowrap;
             background: rgba(100, 116, 139, 0.12);
             border: 1px solid var(--border-color);
             color: var(--text-main);
-            padding: 5px 9px;
+            padding: 5px 10px;
             border-radius: 8px;
             font-size: 12.5px;
             font-weight: 700;
@@ -1941,6 +2035,28 @@ def render_day_html(
             padding-left: 8px;
         }}
 
+        /* Lock options once an answer is chosen in pure CSS (Quick Look & offline compatible) */
+        .options-grid:has(.opt-radio:checked) .opt-label:not(:has(.opt-radio:checked)) {{
+            pointer-events: none !important;
+            opacity: 0.52 !important;
+            filter: grayscale(0.2);
+            cursor: not-allowed !important;
+        }}
+
+        .options-grid:has(.opt-radio:checked) .opt-label:has(.opt-radio:checked) {{
+            cursor: default;
+        }}
+
+        .options-grid:has(.opt-radio:checked) .opt-label:has(.opt-radio:checked) .opt-btn-content {{
+            cursor: default;
+        }}
+
+        .opt-label.opt-locked {{
+            pointer-events: none !important;
+            opacity: 0.52 !important;
+            cursor: not-allowed !important;
+        }}
+
         /* Instant Personalized Feedback Box (Works instantly in iOS Quick Look offline & browsers!) */
         .opt-instant-feedback {{
             display: none;
@@ -1986,37 +2102,77 @@ def render_day_html(
             display: block;
             font-size: 13.5px;
             font-weight: 700;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }}
 
         .fb-heading-wrong {{
             color: #991b1b;
         }}
 
-        .fb-wrong-detail {{
-            display: block;
-            background: rgba(239, 68, 68, 0.08);
-            border-radius: 6px;
-            padding: 8px 10px;
-            color: #7f1d1d;
-            font-size: 13.5px;
-            line-height: 1.55;
-            margin-bottom: 10px;
-        }}
-
         .fb-heading-correct {{
             color: #047857;
         }}
 
-        .fb-correct-detail {{
-            display: block;
-            background: rgba(16, 185, 129, 0.08);
+        /* Categorized Feedback Chips & Cards */
+        .fb-chips-row {{
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+            margin-top: 4px;
+        }}
+
+        .fb-chip {{
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 3px 8px;
             border-radius: 6px;
-            padding: 8px 10px;
-            color: #064e3b;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }}
+
+        .fb-chip-pos {{
+            background: rgba(37, 99, 235, 0.12);
+            color: #1d4ed8;
+            border: 1px solid rgba(37, 99, 235, 0.25);
+        }}
+
+        .fb-chip-meaning {{
+            background: rgba(217, 119, 6, 0.12);
+            color: #b45309;
+            border: 1px solid rgba(217, 119, 6, 0.25);
+        }}
+
+        .fb-usage-card {{
+            background: rgba(99, 102, 241, 0.08);
+            border-left: 3.5px solid #6366f1;
+            border-radius: 0 6px 6px 0;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }}
+
+        .fb-reason-card {{
+            border-radius: 6px;
+            padding: 7px 10px;
             font-size: 13.5px;
             line-height: 1.55;
             margin-bottom: 8px;
+        }}
+
+        .fb-reason-wrong {{
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 3.5px solid #dc2626;
+            color: #7f1d1d;
+        }}
+
+        .fb-reason-correct {{
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 3.5px solid #059669;
+            color: #064e3b;
         }}
 
         .opt-feedback-correct {{
@@ -2069,15 +2225,32 @@ def render_day_html(
             .fb-heading-wrong {{
                 color: #fca5a5 !important;
             }}
-            .fb-wrong-detail {{
-                background: rgba(127, 29, 29, 0.45) !important;
+            .fb-chip-pos {{
+                background: rgba(37, 99, 235, 0.25) !important;
+                color: #93c5fd !important;
+                border-color: rgba(99, 102, 241, 0.4) !important;
+            }}
+            .fb-chip-meaning {{
+                background: rgba(217, 119, 6, 0.25) !important;
+                color: #fcd34d !important;
+                border-color: rgba(217, 119, 6, 0.4) !important;
+            }}
+            .fb-usage-card {{
+                background: rgba(99, 102, 241, 0.2) !important;
+                border-left-color: #818cf8 !important;
+                color: #e0e7ff !important;
+            }}
+            .fb-reason-wrong {{
+                background: rgba(127, 29, 29, 0.4) !important;
+                border-left-color: #ef4444 !important;
                 color: #fecaca !important;
             }}
             .fb-heading-correct {{
                 color: #6ee7b7 !important;
             }}
-            .fb-correct-detail {{
-                background: rgba(6, 78, 59, 0.45) !important;
+            .fb-reason-correct {{
+                background: rgba(6, 78, 59, 0.4) !important;
+                border-left-color: #34d399 !important;
                 color: #a7f3d0 !important;
             }}
             .opt-feedback-correct {{

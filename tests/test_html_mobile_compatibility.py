@@ -47,6 +47,22 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         self.assertIn('為什麼您選的', self.html)
         self.assertIn('為什麼對', self.html)
 
+    def test_feedback_has_categorized_chips_and_cards(self):
+        """Explanations must have categorized chips (POS, meaning, collocations)."""
+        self.assertIn('fb-chips-row', self.html)
+        self.assertIn('fb-chip-pos', self.html)
+        self.assertIn('fb-chip-meaning', self.html)
+
+    def test_options_locked_after_selection_in_css_and_js(self):
+        """Options must be locked after selection until reset."""
+        self.assertIn('.options-grid:has(.opt-radio:checked) .opt-label:not(:has(.opt-radio:checked))', self.html)
+        self.assertIn('pointer-events: none', self.html)
+        self.assertIn('opt-locked', self.html)
+
+    def test_sticky_bar_has_safe_top_offset_to_avoid_title_overlap(self):
+        """Sticky control bar must clear mobile document title bar with safe-area offset."""
+        self.assertIn('top: calc(env(safe-area-inset-top', self.html)
+
     def test_mobile_tip_banner_present(self):
         """HTML must render a clear mobile tip banner for iPhone Telegram preview users."""
         self.assertIn('mobile-tip-banner', self.html)
