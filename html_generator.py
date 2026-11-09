@@ -40,32 +40,51 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         }
     });
 
-    window.handleOptClick = function(btn, skipSync = false) {
-        if (!btn) return;
-        const grid = btn.closest('.options-grid');
+    window.handleOptSelect = function(el, skipSync = false) {
+        if (!el) return;
+        let radio = el;
+        if (el.tagName && el.tagName.toLowerCase() !== 'input') {
+            radio = el.querySelector('.opt-radio') || el.closest('.opt-label')?.querySelector('.opt-radio') || el;
+        }
+        const grid = radio.closest('.options-grid');
         if (!grid || grid.classList.contains('answered')) return;
 
         grid.classList.add('answered');
         totalAnswered++;
 
-        const chosen = btn.getAttribute('data-opt');
+        if (radio.tagName && radio.tagName.toLowerCase() === 'input') {
+            radio.checked = true;
+        }
+
+        const chosen = radio.getAttribute('data-opt');
         const correct = grid.getAttribute('data-answer');
-        const allBtns = grid.querySelectorAll('.opt-btn');
-        const qBlock = btn.closest('.question-block');
+        const qBlock = radio.closest('.question-block');
+        const contentEl = radio.nextElementSibling || radio;
+        const allRadios = grid.querySelectorAll('.opt-radio');
+        const allBtns = grid.querySelectorAll('.opt-btn, .opt-btn-content');
 
         if (chosen === correct) {
-            btn.classList.add('opt-correct');
+            contentEl.classList.add('opt-correct');
             correctCount++;
             if (qBlock) qBlock.classList.add('has-correct');
         } else {
-            btn.classList.add('opt-wrong');
+            contentEl.classList.add('opt-wrong');
             if (qBlock) qBlock.classList.add('has-wrong');
+            allRadios.forEach(r => {
+                if (r.getAttribute('data-opt') === correct) {
+                    if (r.nextElementSibling) r.nextElementSibling.classList.add('opt-correct');
+                }
+            });
             allBtns.forEach(b => {
                 if (b.getAttribute('data-opt') === correct) {
                     b.classList.add('opt-correct');
                 }
             });
         }
+
+        allRadios.forEach(r => {
+            r.disabled = true;
+        });
 
         if (qBlock) {
             const details = qBlock.querySelector('details.spoiler-card');
@@ -77,10 +96,19 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
             saveProgress();
         }
     };
+    window.handleOptClick = window.handleOptSelect;
 
     document.addEventListener('click', (e) => {
+        const label = e.target.closest('.opt-label');
+        if (label) {
+            const radio = label.querySelector('.opt-radio');
+            if (radio && !radio.disabled) {
+                handleOptSelect(radio);
+            }
+            return;
+        }
         const btn = e.target.closest('.opt-btn');
-        if (btn) handleOptClick(btn);
+        if (btn) handleOptSelect(btn);
     });
 
     // When user manually opens spoiler details without clicking an option, highlight correct answer
@@ -91,6 +119,10 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                 const grid = qBlock.querySelector('.options-grid');
                 if (grid && !grid.classList.contains('answered')) {
                     const correct = grid.getAttribute('data-answer');
+                    const correctRadio = grid.querySelector('.opt-radio[data-opt="' + correct + '"]');
+                    if (correctRadio && correctRadio.nextElementSibling) {
+                        correctRadio.nextElementSibling.classList.add('opt-correct');
+                    }
                     const correctBtn = grid.querySelector('.opt-btn[data-opt="' + correct + '"]');
                     if (correctBtn) correctBtn.classList.add('opt-correct');
                 }
@@ -246,7 +278,11 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         });
         document.querySelectorAll('.options-grid').forEach(g => {
             g.classList.remove('answered');
-            g.querySelectorAll('.opt-btn').forEach(b => {
+            g.querySelectorAll('.opt-radio').forEach(r => {
+                r.checked = false;
+                r.disabled = false;
+            });
+            g.querySelectorAll('.opt-btn-content, .opt-btn').forEach(b => {
                 b.classList.remove('opt-correct', 'opt-wrong');
             });
         });
@@ -305,8 +341,15 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                 const qid = qb.id;
                 const grid = qb.querySelector('.options-grid.answered');
                 if (grid) {
-                    const picked = grid.querySelector('.opt-btn.opt-correct, .opt-btn.opt-wrong');
-                    if (picked) answers[qid] = picked.getAttribute('data-opt');
+                    const checkedRadio = grid.querySelector('.opt-radio:checked');
+                    if (checkedRadio) {
+                        answers[qid] = checkedRadio.getAttribute('data-opt');
+                    } else {
+                        const picked = grid.querySelector('.opt-btn-content.opt-correct, .opt-btn-content.opt-wrong, .opt-btn.opt-correct, .opt-btn.opt-wrong');
+                        if (picked) {
+                            answers[qid] = picked.getAttribute('data-opt') || picked.closest('.opt-label')?.querySelector('.opt-radio')?.getAttribute('data-opt');
+                        }
+                    }
                 }
             });
             localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -330,9 +373,9 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                 const qb = document.getElementById(qid);
                 if (!qb) return;
                 const optLetter = data[qid];
-                const btn = qb.querySelector(`.opt-btn[data-opt="${optLetter}"]`);
-                if (btn && !btn.closest('.options-grid').classList.contains('answered')) {
-                    handleOptClick(btn, true);
+                const target = qb.querySelector(`.opt-radio[data-opt="${optLetter}"]`) || qb.querySelector(`.opt-btn[data-opt="${optLetter}"]`);
+                if (target && !target.closest('.options-grid').classList.contains('answered')) {
+                    handleOptSelect(target, true);
                 }
             });
         } catch(e) {}
@@ -445,9 +488,9 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                         if (qb) {
                             const grid = qb.querySelector('.options-grid');
                             if (grid && !grid.classList.contains('answered')) {
-                                const btn = grid.querySelector(`.opt-btn[data-opt="${ch}"]`);
-                                if (btn) {
-                                    handleOptClick(btn, true);
+                                const target = grid.querySelector(`.opt-radio[data-opt="${ch}"]`) || grid.querySelector(`.opt-btn[data-opt="${ch}"]`);
+                                if (target) {
+                                    handleOptSelect(target, true);
                                 }
                             }
                         }
@@ -717,19 +760,19 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
             </div>
             """
 
-        # 4. Fixed empty formula line behind "秒殺公式" + added explanation, correct example, and wrong trap
+        # 4. Fixed formula and explanation, correct example, and wrong trap with high-contrast classes
         formula_text = (mod.get("formula") or mod.get("core_formula") or mod.get("rule") or "").strip()
         formula_html = f'<div class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(formula_text)}</div>' if formula_text else ""
         expl_text = mod.get("explanation", "").strip()
-        expl_html = f'<div class="gm-expl" style="margin-top:8px; line-height:1.6; color:#334155;">💡 <b>觀念解析：</b>{html.escape(expl_text)}</div>' if expl_text else ""
+        expl_html = f'<div class="gm-expl">💡 <b>觀念解析：</b>{html.escape(expl_text)}</div>' if expl_text else ""
         ex_correct = mod.get("correct_example", "").strip()
         ex_wrong = mod.get("wrong_trap", "").strip()
         compare_html = ""
         if ex_correct or ex_wrong:
             compare_html = f"""
             <div class="gp-compare" style="margin-top:10px;">
-                {f'<div class="gp-correct" style="background:#f0fdf4; border-left:4px solid #16a34a; padding:8px 12px; margin-bottom:6px; border-radius:4px; font-size:0.92rem; color:#166534;">✅ <b>正確示範：</b>{html.escape(ex_correct)}</div>' if ex_correct else ''}
-                {f'<div class="gp-wrong" style="background:#fef2f2; border-left:4px solid #dc2626; padding:8px 12px; border-radius:4px; font-size:0.92rem; color:#991b1b;">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</div>' if ex_wrong else ''}
+                {f'<div class="gp-correct-box">✅ <b>正確示範：</b>{html.escape(ex_correct)}</div>' if ex_correct else ''}
+                {f'<div class="gp-wrong-box">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</div>' if ex_wrong else ''}
             </div>
             """
 
@@ -778,10 +821,22 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         </div>
         <div class="q-text">{html.escape(q.get('question', ''))}</div>
         <div class="options-grid" data-answer="{ans}">
-            <button type="button" class="opt-btn" data-opt="A" onclick="handleOptClick(this)"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="B" onclick="handleOptClick(this)"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="C" onclick="handleOptClick(this)"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></button>
-            <button type="button" class="opt-btn" data-opt="D" onclick="handleOptClick(this)"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></button>
+            <label class="opt-label" for="opt_{qid}_A">
+                <input type="radio" name="q_{qid}" id="opt_{qid}_A" class="opt-radio" data-opt="A" onchange="handleOptSelect(this)">
+                <span class="opt-btn-content"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></span>
+            </label>
+            <label class="opt-label" for="opt_{qid}_B">
+                <input type="radio" name="q_{qid}" id="opt_{qid}_B" class="opt-radio" data-opt="B" onchange="handleOptSelect(this)">
+                <span class="opt-btn-content"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></span>
+            </label>
+            <label class="opt-label" for="opt_{qid}_C">
+                <input type="radio" name="q_{qid}" id="opt_{qid}_C" class="opt-radio" data-opt="C" onchange="handleOptSelect(this)">
+                <span class="opt-btn-content"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></span>
+            </label>
+            <label class="opt-label" for="opt_{qid}_D">
+                <input type="radio" name="q_{qid}" id="opt_{qid}_D" class="opt-radio" data-opt="D" onchange="handleOptSelect(this)">
+                <span class="opt-btn-content"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></span>
+            </label>
         </div>
 
         <details class="spoiler-card">
@@ -1513,13 +1568,26 @@ def render_day_html(
         }}
 
         .gm-formula {{
-            background: rgba(16, 185, 129, 0.1);
-            border-left: 4px solid #10b981;
-            padding: 9px 12px;
+            background: #ecfdf5;
+            border-left: 4px solid #059669;
+            color: #065f46;
+            padding: 11px 14px;
+            border-radius: 0 8px 8px 0;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }}
+
+        .gm-expl {{
+            background: #f0fdfa;
+            border-left: 4px solid #0284c7;
+            color: #0f172a;
+            padding: 11px 14px;
             border-radius: 0 8px 8px 0;
             font-size: 14.5px;
             margin-bottom: 12px;
-            line-height: 1.55;
+            line-height: 1.65;
         }}
 
         .grammar-point-box {{
@@ -1547,8 +1615,31 @@ def render_day_html(
         .gp-compare {{
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             font-size: 13.5px;
+        }}
+
+        .gp-correct-box {{
+            background: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #166534;
+            line-height: 1.5;
+            font-weight: 500;
+        }}
+
+        .gp-wrong-box {{
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #991b1b;
+            line-height: 1.5;
+            font-weight: 500;
         }}
 
         .gp-correct {{
@@ -1577,6 +1668,26 @@ def render_day_html(
         }}
 
         @media (prefers-color-scheme: dark) {{
+            .gm-formula {{
+                background: rgba(6, 78, 59, 0.45) !important;
+                border-left-color: #34d399 !important;
+                color: #6ee7b7 !important;
+            }}
+            .gm-expl {{
+                background: rgba(15, 23, 42, 0.6) !important;
+                border-left-color: #38bdf8 !important;
+                color: #f1f5f9 !important;
+            }}
+            .gp-correct-box {{
+                background: rgba(6, 78, 59, 0.4) !important;
+                border-left-color: #22c55e !important;
+                color: #86efac !important;
+            }}
+            .gp-wrong-box {{
+                background: rgba(127, 29, 29, 0.4) !important;
+                border-left-color: #ef4444 !important;
+                color: #fca5a5 !important;
+            }}
             .gp-correct {{ color: #6ee7b7; }}
             .gp-wrong {{ color: #fca5a5; }}
             .cloze-blank-marker {{ color: #fcd34d; }}
@@ -1682,7 +1793,27 @@ def render_day_html(
             margin-bottom: 12px;
         }}
 
-        .opt-btn {{
+        .opt-label {{
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
+            user-select: none;
+            -webkit-user-select: none;
+        }}
+
+        .opt-radio {{
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            pointer-events: none;
+        }}
+
+        .opt-btn-content, .opt-btn {{
             display: flex;
             align-items: center;
             width: 100%;
@@ -1700,6 +1831,7 @@ def render_day_html(
             -webkit-tap-highlight-color: rgba(99, 102, 241, 0.2);
             user-select: none;
             -webkit-user-select: none;
+            transition: all 0.15s ease;
         }}
 
         .opt-btn * {{
@@ -1716,15 +1848,32 @@ def render_day_html(
             flex: 1;
         }}
 
-        .opt-btn.opt-correct {{
+        /* Pure CSS selected state (works 100% even without JavaScript in iOS Quick Look!) */
+        .opt-radio:checked + .opt-btn-content {{
+            background: rgba(37, 99, 235, 0.12);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 700;
+        }}
+
+        .opt-radio:checked + .opt-btn-content::after {{
+            content: "👈 已選取";
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            padding-left: 8px;
+        }}
+
+        .opt-btn-content.opt-correct, .opt-btn.opt-correct {{
             background: #ecfdf5 !important;
             border-color: #10b981 !important;
             color: #065f46 !important;
             font-weight: 700;
         }}
 
-        .opt-btn.opt-correct::after {{
-            content: "✓ 正確";
+        .opt-btn-content.opt-correct::after, .opt-btn.opt-correct::after {{
+            content: "✓ 正確" !important;
             margin-left: auto;
             font-size: 13px;
             font-weight: 800;
@@ -1732,15 +1881,15 @@ def render_day_html(
             padding-left: 8px;
         }}
 
-        .opt-btn.opt-wrong {{
+        .opt-btn-content.opt-wrong, .opt-btn.opt-wrong {{
             background: #fef2f2 !important;
             border-color: #ef4444 !important;
             color: #991b1b !important;
             font-weight: 700;
         }}
 
-        .opt-btn.opt-wrong::after {{
-            content: "✗ 錯誤";
+        .opt-btn-content.opt-wrong::after, .opt-btn.opt-wrong::after {{
+            content: "✗ 錯誤" !important;
             margin-left: auto;
             font-size: 13px;
             font-weight: 800;
@@ -1749,12 +1898,12 @@ def render_day_html(
         }}
 
         @media (prefers-color-scheme: dark) {{
-            .opt-btn.opt-correct {{
+            .opt-btn-content.opt-correct, .opt-btn.opt-correct {{
                 background: #064e3b !important;
                 border-color: #10b981 !important;
                 color: #a7f3d0 !important;
             }}
-            .opt-btn.opt-wrong {{
+            .opt-btn-content.opt-wrong, .opt-btn.opt-wrong {{
                 background: #7f1d1d !important;
                 border-color: #ef4444 !important;
                 color: #fecaca !important;
