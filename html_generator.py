@@ -643,48 +643,46 @@ def build_interactive_script(day: int = 1, session: str = "morning", bot_token: 
     )
 
 
+def extract_clean_option_info(detail_text: str) -> dict:
+    """Extracts concise POS, meaning, and key reason from raw detail string."""
+    if not detail_text:
+        return {"pos": "", "meaning": "", "reason": ""}
+    s = re.sub(r"^【[^】]+】\s*", "", detail_text).strip()
+    pos = ""
+    meaning = ""
+    m = re.search(r"詞性：([^｜]+)｜(?:中譯|字義)：([^。]+)。?", s)
+    if m:
+        pos = m.group(1).strip()
+        meaning = m.group(2).strip().strip("「」『』\"'")
+        s = s[m.end():].strip()
+    # Strip verbose boilerplate
+    s = re.sub(r"^(?:此選項為[^，,。]+[，,。]|語法與搭配功能：|正確原因：|錯誤原因：|用法提醒：)\s*", "", s)
+    s = re.sub(r"放入本題空格完全符合前後文句構與商務語意[。]?", "", s)
+    s = re.sub(r"^【[^】]+】\s*", "", s)
+    s = s.strip()
+    return {"pos": pos, "meaning": meaning, "reason": s}
+
+
+def extract_clean_core_analysis(analysis_text: str) -> str:
+    """Extracts 1-2 sentence core grammar/sentence pattern rule without boilerplate."""
+    if not analysis_text:
+        return ""
+    core = re.split(r"【(?:正解確認|干擾項排除|選項分析|詳解|常見陷阱提醒)】", analysis_text)[0]
+    core = re.sub(r"^【[^】]+】\s*", "", core).strip()
+    core = re.sub(r"^(?:核心考點與句構解析|秒殺句構與上下文解析|句構解析|考點說明)：\s*", "", core).strip()
+    return core
+
+
 def format_option_detail_categorized(raw: str, is_correct: bool) -> str:
-    """Parses and formats option detail text into structured, categorized UI chips & blocks."""
+    """Parses and formats option detail text into clean, concise chips & reason string."""
     if not raw:
         return ""
-    s = raw.strip()
-    # Strip leading tags like 【錯誤排除】, 【正解】, 【✓ 正確選項】, 【✗ 錯誤干擾】
-    s = re.sub(r"^【[^】]+】\s*", "", s)
-
-    # 1. Extract POS (Part of Speech) and Meaning
-    pos_match = re.search(r"詞性：([^｜]+)｜(?:中譯|字義)：([^。]+)。", s)
-    chips_html = ""
-    if pos_match:
-        pos_str = pos_match.group(1).strip()
-        meaning_str = pos_match.group(2).strip()
-        chips_html = f"""
-        <div class="fb-chips-row">
-            <span class="fb-chip fb-chip-pos">🏷️ 詞性：<b>{html.escape(pos_str)}</b></span>
-            <span class="fb-chip fb-chip-meaning">📖 釋義：<b>{html.escape(meaning_str)}</b></span>
-        </div>
-        """
-        s = s[pos_match.end():].strip()
-
-    # 2. Extract Collocation & Usage (高頻搭配 / 用法提醒)
-    usage_html = ""
-    usage_match = re.search(r"(語法與搭配功能|用法提醒|搭配提醒|高頻搭配|必考搭配)：([^。]+。?)", s)
-    if usage_match:
-        usage_txt = usage_match.group(2).strip()
-        usage_html = f"""
-        <div class="fb-usage-card">
-            📌 <b>必考搭配與用法：</b>{html.escape(usage_txt)}
-        </div>
-        """
-        s = s[:usage_match.start()] + s[usage_match.end():]
-        s = s.strip()
-
-    # 3. Reason & Diagnosis (入選理由 / 排除診斷)
-    s = re.sub(r"^(正確原因|錯誤原因)：\s*", "", s).strip()
-    reason_label = "💡 <b>入選理由：</b>" if is_correct else "🚫 <b>排除診斷：</b>"
-    reason_cls = "fb-reason-correct" if is_correct else "fb-reason-wrong"
-    reason_html = f'<div class="fb-reason-card {reason_cls}">{reason_label}{html.escape(s)}</div>' if s else ""
-
-    return f'<div class="fb-categorized-content">{chips_html}{usage_html}{reason_html}</div>'
+    info = extract_clean_option_info(raw)
+    pos_chip = f'<span class="fb-chip fb-chip-pos">{html.escape(info["pos"])}</span>' if info["pos"] else ""
+    meaning_chip = f'<span class="fb-chip fb-chip-meaning">{html.escape(info["meaning"])}</span>' if info["meaning"] else ""
+    chips_html = f'<span class="fb-chips-row">{pos_chip} {meaning_chip}</span>' if (pos_chip or meaning_chip) else ""
+    reason_html = f'<span class="fb-reason-text">{html.escape(info["reason"])}</span>' if info["reason"] else ""
+    return f'{chips_html} {reason_html}'.strip()
 
 
 def _render_option_details_html(q: dict) -> str:
@@ -726,81 +724,38 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
         word = v.get("word", "")
         pos = v.get("pos", "")
         meaning = v.get("meaning", "")
-        colloc = v.get("collocations", "")
-        trap = v.get("trap_note", "")
-        example = v.get("example", "")
-        freq_stars = v.get("freq_stars", "⭐⭐⭐ 超高頻必考")
-        src_badge = v.get("source_badge", "📘 核心單字")
-        pri_reason = v.get("priority_reason", "⚡ 多益高頻核心")
-        pri_score = v.get("priority_score", 8.5)
-        err_cnt = int(v.get("error_count", 0))
+        colloc = v.get("collocations", "").strip()
+        trap = v.get("trap_note", "").strip()
+        example = v.get("example", "").strip()
+        ex_zh = v.get("example_zh", "").strip()
 
-        border_style = "border-left: 5px solid #dc2626;" if err_cnt > 0 else (
-            "border-left: 5px solid #2563eb;" if int(v.get("freq_tier", 2)) == 3 else "border-left: 5px solid #7c3aed;"
-        )
-        trap_html = f'<div class="alert-box">⚠️ <b>考點與易混淆陷阱：</b>{html.escape(trap)}</div>' if trap else ""
-
-        # 1. Example sentence with Chinese translation
-        ex_html = ""
+        bullet_items = ""
+        if colloc and colloc.lower() != word.lower() and len(colloc) > 3:
+            bullet_items += f"<li>💼 <b>常考搭配：</b>{html.escape(colloc)}</li>"
+        if trap:
+            bullet_items += f"<li>⚠️ <b>易混淆陷阱：</b>{html.escape(trap)}</li>"
         if example:
-            ex_zh = v.get("example_zh", "").strip()
-            if ex_zh:
-                ex_html = f"""
-                <div class="vocab-example">
-                    <div class="ex-en">📖 <b>商務例句：</b>{html.escape(example)}</div>
-                    <div class="ex-zh">📝 <b>例句中譯：</b>{html.escape(ex_zh)}</div>
-                </div>
-                """
-            else:
-                ex_html = f'<div class="vocab-example">📖 <b>商務例句：</b>{html.escape(example)}</div>'
+            zh_part = f'<br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 {html.escape(ex_zh)}</span>' if ex_zh else ''
+            bullet_items += f'<li>📖 <span class="ex-en">{html.escape(example)}</span>{zh_part}</li>'
 
-        # 3. Smart Collocation / Synonym detection (never say "必考搭配與同義替換", don't force if no point)
-        colloc_html = ""
-        raw_colloc = v.get("collocations", "").strip()
-        if raw_colloc and raw_colloc.lower() != word.lower() and len(raw_colloc) > 3:
-            # Filter out non-collocation meta descriptions
-            if not (raw_colloc.endswith("情境高頻。") or raw_colloc.endswith("動作描寫。") or raw_colloc.endswith("日常辦公營運指派。")):
-                has_syn = any(k in raw_colloc for k in ("同義", "=", "等同於", "換成", "synonym", "paraphrase"))
-                has_col = any(k in raw_colloc for k in ("搭配", "片語", "短語", "access", "figure", "to", "for", "with", "of", "in", "on", "at", "service", "policy", "roadmap", "layout", "regulations", "selection"))
-                if has_syn and not has_col:
-                    colloc_html = f'<div class="chunk-scenario">🔄 <b>同義詞：</b>{html.escape(raw_colloc)}</div>'
-                elif has_col and not has_syn:
-                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配：</b>{html.escape(raw_colloc)}</div>'
-                elif has_syn and has_col:
-                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配與同義詞：</b>{html.escape(raw_colloc)}</div>'
-                else:
-                    colloc_html = f'<div class="chunk-scenario">💼 <b>常考搭配：</b>{html.escape(raw_colloc)}</div>'
-
-        # 5. Changed "核心字義：" to "中文："
-        # 2. Removed "排程演算法說明：" entirely!
         cards_html += f"""
-        <div class="chunk-card" style="{border_style}">
-            <div class="vocab-badge-row">
-                <span class="chunk-num">單字 #{idx}</span>
-                <span class="freq-badge">{html.escape(freq_stars)}</span>
-                <span class="src-badge">{html.escape(src_badge)}</span>
-                <span class="srs-score-badge" title="演算法優先級權重">權重 P={pri_score}</span>
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#{idx} {html.escape(word)}</span>
+                <span class="sbc-pos">[{html.escape(pos)}]</span>
+                <span class="sbc-meaning">{html.escape(meaning)}</span>
             </div>
-            <div class="chunk-header" style="margin-top:6px;">
-                <span class="chunk-title">{html.escape(word)}</span>
-                <span class="pos-badge">{html.escape(pos)}</span>
-            </div>
-            <div class="chunk-meaning">💡 <b>中文：</b>{html.escape(meaning)}</div>
-            {colloc_html}
-            {ex_html}
-            {trap_html}
+            <ul class="bullet-list-study">
+                {bullet_items}
+            </ul>
         </div>
         """
 
-    total_db = srs_stats.get("total_unique_vocab", 168)
     return f"""
-    <section class="section-container" id="sec-part1">
-        <div class="section-title">📚 第一部分：單字表詳細介紹（⚡ 21天高頻衝刺 · 本場排程 {len(vocab_list)} 字 ／ 精準核心庫 {total_db} 字）</div>
-        <div class="part-intro-banner">
-            🎯 <b>21天倒數高頻衝刺模式：</b>已全面過濾邊緣生僻詞彙！本期練習嚴選<b>多益最常考超高頻核心單字（Tier 3）與您的實戰弱點單字</b>，依權重由高排到低呈現，將寶貴時間 100% 聚焦於真正能突破 860+ 金色證書的必考關鍵題！
-        </div>
+    <div class="ref-sub-section" id="sec-part1">
+        <div class="ref-sub-title">📚 本日核心單字速查表 ({len(vocab_list)} 字)</div>
         {cards_html}
-    </section>
+    </div>
     """
 
 
@@ -808,66 +763,46 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
     anchor_html = ""
     if anchor and anchor.get("title"):
         anchor_html = f"""
-        <div class="anchor-card">
-            <div class="anchor-badge">⚡ 本日視覺秒殺錨點 (Visual Anchor)</div>
-            <h3 class="anchor-title">{html.escape(anchor.get('title', ''))}</h3>
-            <p class="anchor-rule">🔹 {html.escape(anchor.get('rule_1', ''))}</p>
-            <p class="anchor-rule">🔹 {html.escape(anchor.get('rule_2', ''))}</p>
-            <div class="golden-banner">🏆 {html.escape(anchor.get('golden_rule', ''))}</div>
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：{html.escape(anchor.get('title', ''))}</div>
+            <ul class="bullet-list-study">
+                <li>🔹 {html.escape(anchor.get('rule_1', ''))}</li>
+                <li>🔹 {html.escape(anchor.get('rule_2', ''))}</li>
+                {f"<li>🏆 <b>法則：</b>{html.escape(anchor.get('golden_rule', ''))}</li>" if anchor.get('golden_rule') else ""}
+            </ul>
         </div>
         """
 
     mods_html = ""
     for m_idx, mod in enumerate(grammar_mods, 1):
-        pts_html = ""
-        for pt in mod.get("points", []):
-            pts_html += f"""
-            <div class="grammar-point-box">
-                <div class="gp-label">📌 {html.escape(pt.get('label', ''))}</div>
-                <div class="gp-detail">{html.escape(pt.get('detail', ''))}</div>
-                <div class="gp-compare">
-                    <div class="gp-correct">{html.escape(pt.get('correct_ex', ''))}</div>
-                    <div class="gp-wrong">{html.escape(pt.get('wrong_ex', ''))}</div>
-                </div>
-            </div>
-            """
-
-        # 4. Fixed formula and explanation, correct example, and wrong trap with high-contrast classes
         formula_text = (mod.get("formula") or mod.get("core_formula") or mod.get("rule") or "").strip()
-        formula_html = f'<div class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(formula_text)}</div>' if formula_text else ""
         expl_text = mod.get("explanation", "").strip()
-        expl_html = f'<div class="gm-expl">💡 <b>觀念解析：</b>{html.escape(expl_text)}</div>' if expl_text else ""
         ex_correct = mod.get("correct_example", "").strip()
         ex_wrong = mod.get("wrong_trap", "").strip()
-        compare_html = ""
-        if ex_correct or ex_wrong:
-            compare_html = f"""
-            <div class="gp-compare" style="margin-top:10px;">
-                {f'<div class="gp-correct-box">✅ <b>正確示範：</b>{html.escape(ex_correct)}</div>' if ex_correct else ''}
-                {f'<div class="gp-wrong-box">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</div>' if ex_wrong else ''}
-            </div>
-            """
+
+        points_list = ""
+        for pt in mod.get("points", []):
+            points_list += f"<li>📌 <b>{html.escape(pt.get('label', ''))}</b>：{html.escape(pt.get('detail', ''))}</li>"
 
         mods_html += f"""
-        <div class="grammar-mod-card">
-            <div class="gm-header">
-                <span class="gm-cat">{html.escape(mod.get('category', '860+ 核心文法模組'))}</span>
-                <span class="gm-id">Module #{m_idx}</span>
-            </div>
-            <h3 class="gm-title">{html.escape(mod.get('title', ''))}</h3>
-            {formula_html}
-            {expl_html}
-            {compare_html}
-            {pts_html}
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #{m_idx}：{html.escape(mod.get('title', ''))}</div>
+            <ul class="bullet-list-study">
+                {f'<li class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(formula_text)}</li>' if formula_text else ""}
+                {f'<li class="gm-expl">💡 <b>觀念解析：</b>{html.escape(expl_text)}</li>' if expl_text else ""}
+                {f'<li class="gp-correct-box">✅ <b>正確示範：</b>{html.escape(ex_correct)}</li>' if ex_correct else ""}
+                {f'<li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</li>' if ex_wrong else ""}
+                {points_list}
+            </ul>
         </div>
         """
 
     return f"""
-    <section class="section-container" id="sec-part2">
-        <div class="section-title">📐 第二部分：文法詳細介紹（微觀訊號 · 一山不容二虎 · 假設語氣 · 易混淆辨析）</div>
+    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
+        <div class="ref-sub-title">📐 本日核心文法速記</div>
         {anchor_html}
         {mods_html}
-    </section>
+    </div>
     """
 
 
@@ -877,15 +812,14 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     opts = q.get("options", {})
     ans = q.get("answer", "A")
     ans_word = opts.get(ans, "")
-    rule_ref = q.get("rule_ref") or q.get("trap_point") or q.get("radar") or "多益 860+ 核心句構與商務搭配"
+    rule_ref = q.get("rule_ref") or q.get("trap_point") or q.get("radar") or "多益 860+ 核心考點"
     opt_details = q.get("option_details") or {}
     trans_text = q.get("translation", "").strip()
-    opt_bd_html = _render_option_details_html(q)
-    trans_html = (
-        f'<div class="ans-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</div>'
-        if trans_text
-        else ""
-    )
+
+    # Extract clean, concise 1-2 sentence core analysis
+    core_analysis = extract_clean_core_analysis(q.get("analysis", ""))
+
+    ans_info = extract_clean_option_info(opt_details.get(ans, ""))
 
     opt_labels_html = ""
     for opt_key in ("A", "B", "C", "D"):
@@ -893,31 +827,28 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         is_ans = (opt_key == ans)
         data_type = "correct" if is_ans else "wrong"
 
-        chosen_detail = opt_details.get(opt_key, "").strip()
-        correct_detail = opt_details.get(ans, "").strip()
+        chosen_info = extract_clean_option_info(opt_details.get(opt_key, ""))
 
         if is_ans:
-            formatted_chosen = format_option_detail_categorized(chosen_detail, is_correct=True)
             feedback_html = f"""
-            <span class="opt-instant-feedback opt-feedback-correct">
-                <span class="fb-correct-congrats">🎉 <b>太棒了！您選擇的 ({opt_key}) 是正確答案！</b></span>
-                <span class="fb-heading fb-heading-correct">✅ <b>為什麼 ({opt_key}) 是對的：</b></span>
-                <span class="fb-correct-detail">{formatted_chosen}</span>
-                {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
-            </span>
+            <div class="opt-instant-feedback opt-feedback-correct">
+                <ul class="clean-bullet-list">
+                    <li>✅ <b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span> {f'— {html.escape(ans_info["reason"])}' if ans_info["reason"] else ''}</li>
+                    {f'<li>💡 <b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
+                    {f'<li>📝 <b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
+                </ul>
+            </div>
             """
         else:
-            formatted_chosen = format_option_detail_categorized(chosen_detail, is_correct=False)
-            formatted_correct = format_option_detail_categorized(correct_detail, is_correct=True)
             feedback_html = f"""
-            <span class="opt-instant-feedback opt-feedback-wrong">
-                <span class="fb-wrong-tag">❌ <b>您選擇的 ({opt_key}) 是錯誤選項</b></span>
-                <span class="fb-heading fb-heading-wrong">⚠️ <b>為什麼您選的 ({opt_key}) 是錯的：</b></span>
-                <span class="fb-wrong-detail">{formatted_chosen}</span>
-                <span class="fb-heading fb-heading-correct">✅ <b>正確答案是 ({ans}) {html.escape(ans_word)}，為什麼對：</b></span>
-                <span class="fb-correct-detail">{formatted_correct}</span>
-                {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
-            </span>
+            <div class="opt-instant-feedback opt-feedback-wrong">
+                <ul class="clean-bullet-list">
+                    <li>❌ <b>為什麼您選的 ({opt_key}) 是錯的</b>：<b>{html.escape(opt_val)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(chosen_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(chosen_info['meaning'])}</span></span> — {html.escape(chosen_info['reason'])}</li>
+                    <li>✅ <b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span></li>
+                    {f'<li>💡 <b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
+                    {f'<li>📝 <b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
+                </ul>
+            </div>
             """
 
         opt_labels_html += f"""
@@ -928,30 +859,45 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
             </label>
         """
 
+    # Clean spoiler for all 4 options quick reference (bullet list)
+    options_summary_items = ""
+    for k in ("A", "B", "C", "D"):
+        k_val = opts.get(k, "")
+        k_info = extract_clean_option_info(opt_details.get(k, ""))
+        is_k_ans = (k == ans)
+        marker = "✅" if is_k_ans else "・"
+        meaning_str = f"[{html.escape(k_info['pos'])}] {html.escape(k_info['meaning'])}" if k_info["meaning"] else ""
+        options_summary_items += f"""
+        <li>
+            <span>{marker}</span>
+            <div><b>({k}) {html.escape(k_val)}</b> {meaning_str}</div>
+        </li>
+        """
+
+    spoiler_html = f"""
+    <details class="spoiler-card">
+        <summary class="spoiler-summary">
+            <span>🔍 展開四選項中譯速查</span>
+        </summary>
+        <div class="spoiler-body">
+            <ul class="bullet-list-sm">
+                {options_summary_items}
+            </ul>
+        </div>
+    </details>
+    """
+
     return f"""
     <div class="question-block" id="q-block-{qid}" data-part="{part_key}" data-word="{html.escape(ans_word)}" data-rule="{html.escape(rule_ref)}">
         <div class="q-header">
             <span class="q-tag">第 {qid} 題 / 共 {total_q} 題 · {html.escape(badge_label)}</span>
-            <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ 限時 {sec} 秒 ▶</span>
+            <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ {sec} 秒</span>
         </div>
         <div class="q-text">{html.escape(q.get('question', ''))}</div>
         <div class="options-grid" data-answer="{ans}">
             {opt_labels_html}
         </div>
-
-        <details class="spoiler-card">
-            <summary class="spoiler-summary">
-                <span>🛡️ 查看第 {qid} 題完整四選項對照表與文法考點剖析</span>
-                <span class="tap-hint">完整對照</span>
-            </summary>
-            <div class="spoiler-body">
-                <div class="ans-badge"><b>正解：({ans}) {html.escape(ans_word)}</b></div>
-                <div class="trap-point">🎯 <b>對應考點／弱點規則：</b>{html.escape(rule_ref)}</div>
-                <div class="ans-analysis">💡 <b>秒殺句構與上下文解析：</b>{html.escape(q.get('analysis', ''))}</div>
-                {opt_bd_html}
-                {trans_html}
-            </div>
-        </details>
+        {spoiler_html}
     </div>
     """
 
@@ -997,14 +943,11 @@ def render_day_html(
     # 3. Part 3 HTML (25 Single-Sentence Vocabulary & Grammar Multiple-Choice Questions)
     p3_q_html = ""
     for q in part3_mc:
-        p3_q_html += _render_question_card_html(q, total_q, "part3", "第三部分：單字與文法選擇題", default_sec=15)
+        p3_q_html += _render_question_card_html(q, total_q, "part3", "單字與文法選擇題", default_sec=15)
 
     part3_html = f"""
     <section class="section-container" id="sec-part3">
-        <div class="section-title">⚡ 第三部分：選擇題練習 — 單字與文法實戰（第 1 ～ {len(part3_mc)} 題，共 {len(part3_mc)} 題）</div>
-        <div class="part-intro-banner">
-            🎯 <b>命題演算法說明：</b>本區共 <b>{len(part3_mc)} 題高複雜度多子句單選題</b>，優先涵蓋全單字庫核心字彙、高頻短字及您曾答錯的弱點規則，每題均附 <code>(A)(B)(C)(D)</code> 四個選項之詞性、字義與正誤原因詳解。
-        </div>
+        <div class="section-title">⚡ 第一部分：單字與文法選擇題（第 1 ～ {len(part3_mc)} 題）</div>
         {p3_q_html}
     </section>
     """
@@ -1023,7 +966,7 @@ def render_day_html(
         )
         p4_blocks_html += f"""
         <div class="p7-doc" style="border-left-color: #d97706;">
-            <div class="p7-doc-type" style="color: #d97706;">🧩 第四部分：克漏字段落填空（篇章 {p_idx} / 共 {len(part4_cloze)} 篇）· {html.escape(pas.get('text_type', 'Part 6 Passage'))}</div>
+            <div class="p7-doc-type" style="color: #d97706;">🧩 段落填空（篇章 {p_idx} / 共 {len(part4_cloze)} 篇）· {html.escape(pas.get('text_type', 'Part 6 Passage'))}</div>
             <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
             <div class="p7-doc-body">{formatted_body}</div>
         </div>
@@ -1034,16 +977,13 @@ def render_day_html(
                 cq,
                 total_q,
                 "part4",
-                f"第四部分：填空選擇題 (篇章 {p_idx} · 空格 {b_num})",
+                f"填空題 (篇章 {p_idx} · 空格 {b_num})",
                 default_sec=20,
             )
 
     part4_html = f"""
     <section class="section-container" id="sec-part4">
-        <div class="section-title">🧩 第四部分：填空選擇題 — 段落克漏字實戰（第 {cloze_start} ～ {cloze_end} 題，共 {counts['part4_cloze']} 題）</div>
-        <div class="part-intro-banner">
-            💡 <b>克漏字弱點突破特訓：</b>本區包含 <b>{len(part4_cloze)} 篇完整商務文本、共 {counts['part4_cloze']} 題段落填空選擇題（超過 10 題高強度要求）</b>，專門訓練前後文語意連貫、轉折副詞（<code>nonetheless / thereby / namely</code>）與微觀訊號搭配！
-        </div>
+        <div class="section-title">🧩 第二部分：段落克漏字填空（第 {cloze_start} ～ {cloze_end} 題）</div>
         {p4_blocks_html}
     </section>
     """
@@ -1061,7 +1001,7 @@ def render_day_html(
         )
         p5_blocks_html += f"""
         <div class="p7-doc">
-            <div class="p7-doc-type">📄 第五部分：商務長文閱讀（文本 {r_idx} / 共 {len(part5_reading)} 篇）· {html.escape(pas.get('text_type', 'Business Document'))}</div>
+            <div class="p7-doc-type">📄 商務長文閱讀（文本 {r_idx} / 共 {len(part5_reading)} 篇）· {html.escape(pas.get('text_type', 'Business Document'))}</div>
             <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
             <div class="p7-doc-body">{formatted_body}</div>
         </div>
@@ -1071,16 +1011,13 @@ def render_day_html(
                 rq,
                 total_q,
                 "part5",
-                f"第五部分：閱讀測驗 (文本 {r_idx})",
+                f"閱讀測驗 (文本 {r_idx})",
                 default_sec=35,
             )
 
     part5_html = f"""
     <section class="section-container" id="sec-part5">
-        <div class="section-title">📑 第五部分：閱讀測驗 — 多篇商務長文實戰（第 {read_start} ～ {read_end} 題，共 {counts['part5_reading']} 題）</div>
-        <div class="part-intro-banner">
-            🔍 <b>長文防漏看雷達：</b>鎖定星號註腳（<code>*</code>）、但書條件（<code>provided that / subject to</code>）與跨段同義字替換，每題皆附四選項正誤詳解。
-        </div>
+        <div class="section-title">📑 第三部分：商務長文閱讀測驗（第 {read_start} ～ {read_end} 題）</div>
         {p5_blocks_html}
     </section>
     """
@@ -1108,21 +1045,21 @@ def render_day_html(
             <div class="sub-stat-grid">
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>⚡ 第三部分：單字與文法 ({counts['part3_mc']} 題)</span>
+                        <span>⚡ 選擇題 ({counts['part3_mc']} 題)</span>
                         <b id="stat-part3-text">0 / 0 對 (0%)</b>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="stat-part3-bar" style="width:0%;"></div></div>
                 </div>
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>🧩 第四部分：段落填空選擇題 ({counts['part4_cloze']} 題)</span>
+                        <span>🧩 段落填空 ({counts['part4_cloze']} 題)</span>
                         <b id="stat-part4-text">0 / 0 對 (0%)</b>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="stat-part4-bar" style="width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);"></div></div>
                 </div>
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>📑 第五部分：商務長文閱讀 ({counts['part5_reading']} 題)</span>
+                        <span>📑 長文閱讀 ({counts['part5_reading']} 題)</span>
                         <b id="stat-part5-text">0 / 0 對 (0%)</b>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="stat-part5-bar" style="width:0%;background:linear-gradient(90deg,#2563eb,#6366f1);"></div></div>
@@ -1130,46 +1067,36 @@ def render_day_html(
             </div>
 
             <div class="weakness-radar-panel">
-                <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">🩺 本場即時偵測之錯題單字與文法弱點：</div>
+                <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">🩺 本場即時偵測之錯題弱點：</div>
                 <div id="live-weakness-list" style="font-size:13.5px;line-height:1.6;">
-                    <span style="color:var(--text-sub);">尚未產生錯題。開始作答後，系統將即時捕捉您答錯的單字與文法規則並顯示於此。</span>
+                    <span style="color:var(--text-sub);">尚未產生錯題。作答後將即時捕捉答錯之單字與文法考點。</span>
                 </div>
-            </div>
-
-            <div class="weakness-radar-panel" style="margin-top:10px;background:rgba(37,99,235,0.06);">
-                <div style="font-weight:800;font-size:14px;margin-bottom:4px;">🧠 遠端 Agent 演算法記憶庫（SM-2 間隔重複 ＋ 頻率與錯題指數加權）：</div>
-                <div style="font-size:13px;color:var(--text-sub);margin-bottom:6px;">
-                    已去重總單字數：<b>{srs_stats['total_unique_vocab']} 字</b>（含 ⭐⭐⭐ 超高頻短字 <b>{srs_stats['tier3_ultra_freq']} 字</b>、⭐⭐ 商務核心 <b>{srs_stats['tier2_high_freq']} 字</b>、⭐ 860+ 進階 <b>{srs_stats['tier1_advanced_860']} 字</b>）｜已追蹤個人弱點字：<b>{srs_stats['tracked_weak_words']} 字</b>
-                </div>
-                <div>{weak_history_badges}</div>
             </div>
 
             <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
-                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵回傳本場錯題給遠端 Agent（演算法加權＋生成專屬特訓卷）</button>
-                <button type="button" class="action-btn-sm" style="background:#1d4ed8;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendNewVocabToAgent()">📥 傳送新單字給遠端 Agent（自動去重擴充題庫）</button>
-                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('微觀訊號與介系詞搭配')">⚡ 加練：微觀訊號 (Signals 1-4)</button>
-                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('一山不容二虎與分詞構句')">⚡ 加練：一山不容二虎與分詞</button>
-                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('重要性假設語氣與條件句')">⚡ 加練：假設語氣與條件句</button>
-                <button type="button" class="action-btn-sm" onclick="requestAgentTopicDrill('段落填空克漏字特訓')">⚡ 加練：第四部分段落填空</button>
+                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendWrongToRemoteAgent()">🤖 回傳錯題給遠端 Agent 生成專屬加練卷</button>
+                <button type="button" class="action-btn-sm" style="background:#1d4ed8;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendNewVocabToAgent()">📥 傳送新單字擴充題庫</button>
             </div>
         </div>
     </section>
     """
 
+    vocab_grammar_section = f"""
+    <section class="section-container" id="sec-reference" style="margin-top:28px;">
+        <details class="ref-accordion">
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>展開本日核心單字與文法速記重點</b>（{len(part1_vocab)} 字 · {len(part2_grammar)} 文法模組）</span>
+                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
+            </summary>
+            <div class="ref-accordion-body">
+                {part1_html}
+                {part2_html}
+            </div>
+        </details>
+    </section>
+    """
+
     body_content = f"""
-    <!-- Quick Section Jump Pills -->
-    <div class="quick-nav-bar">
-        <a href="#sec-part1" class="qnav-pill">1️⃣ 單字表 ({counts['vocab_items']})</a>
-        <a href="#sec-part2" class="qnav-pill">2️⃣ 文法詳解 ({counts['grammar_modules']})</a>
-        <a href="#sec-part3" class="qnav-pill">3️⃣ 單字文法題 ({counts['part3_mc']})</a>
-        <a href="#sec-part4" class="qnav-pill">4️⃣ 填空選擇題 ({counts['part4_cloze']})</a>
-        <a href="#sec-part5" class="qnav-pill">5️⃣ 閱讀測驗 ({counts['part5_reading']})</a>
-        <a href="#sec-analytics" class="qnav-pill">📊 統計與Agent</a>
-    </div>
-
-    {part1_html}
-    {part2_html}
-
     <!-- Sticky Progress Toolbar -->
     <div class="sticky-control-bar" id="live-score-bar">
         <div class="bar-top-row">
@@ -1181,9 +1108,10 @@ def render_day_html(
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
-                <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(true)" title="展開全部題目解析">👁️ 全開</button>
-                <button type="button" class="action-btn-sm" onclick="toggleAllSpoilers(false)" title="收合全部題目解析">🙈 全收</button>
-                <button type="button" class="action-btn-sm" onclick="sendWrongToRemoteAgent()" title="將錯題回傳給遠端 Agent 動態生成客製特訓卷">🤖 Agent 加練</button>
+                <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-{len(part3_mc)})</a>
+                <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 ({cloze_start}-{cloze_end})</a>
+                <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 ({read_start}-{read_end})</a>
+                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
@@ -1195,13 +1123,14 @@ def render_day_html(
     {part4_html}
     {part5_html}
 
+    {vocab_grammar_section}
+
     <div id="final-summary-card" class="summary-card" style="display: none;">
         <div class="summary-icon">🏆</div>
-        <h3 class="summary-title">本日{session_label}（五大模組 · 實戰 {total_q} 題）全數完成！</h3>
+        <h3 class="summary-title">本日{session_label}（實戰 {total_q} 題）全數完成！</h3>
         <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_q} (0%)</b></div>
-        <div class="summary-tip">點擊下方按鈕將本場錯題回傳給遠端 AI Agent，演算法將自動調升弱點單字與文法規則之複習頻率！</div>
         <div style="margin-top: 12px;">
-            <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 一鍵傳送錯題給遠端 Agent 生成專屬加練卷</button>
+            <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 傳送錯題生成加練卷</button>
         </div>
     </div>
 
@@ -1258,81 +1187,47 @@ def render_day_html(
         .hero-banner {{
             background: linear-gradient(135deg, {badge_color}, #1d4ed8);
             color: #ffffff;
-            padding: 22px 18px;
-            border-radius: 18px;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-            margin-bottom: 14px;
+            padding: 12px 16px;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
         }}
 
         .mobile-tip-banner {{
-            background: rgba(99, 102, 241, 0.08);
-            border: 1px solid rgba(99, 102, 241, 0.25);
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: var(--text-main);
-            margin-bottom: 14px;
+            display: none;
         }}
 
         .hero-top {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
-            opacity: 0.95;
-            margin-bottom: 8px;
+            font-size: 14.5px;
+            margin-bottom: 4px;
         }}
 
-        .phase-badge {{
-            background: rgba(255, 255, 255, 0.25);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 13px;
-        }}
-
-        .hero-title {{
-            font-size: 21px;
+        .hero-day-tag {{
             font-weight: 800;
-            letter-spacing: -0.3px;
-            margin-bottom: 6px;
+            font-size: 15px;
+            letter-spacing: -0.2px;
+        }}
+
+        .portal-pill {{
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.35);
         }}
 
         .hero-topic {{
-            font-size: 14.5px;
-            opacity: 0.98;
-            line-height: 1.5;
-        }}
-
-        .quick-nav-bar {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 18px;
-        }}
-
-        .qnav-pill {{
-            text-decoration: none;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            font-size: 12.5px;
-            font-weight: 700;
-            padding: 5px 10px;
-            border-radius: 999px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-        }}
-
-        .part-intro-banner {{
-            background: rgba(37, 99, 235, 0.08);
-            border-left: 4px solid var(--primary);
-            padding: 10px 12px;
-            border-radius: 0 10px 10px 0;
-            font-size: 14px;
-            color: var(--text-main);
-            margin-bottom: 14px;
-            line-height: 1.55;
+            font-size: 13.5px;
+            opacity: 0.96;
+            line-height: 1.45;
         }}
 
         .sticky-control-bar {{
@@ -2209,6 +2104,173 @@ def render_day_html(
             line-height: 1.55;
         }}
 
+        /* Clean Bulleted Explanations (Focus on Questions, Zero Fluff) */
+        .clean-bullet-list {{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }}
+
+        .clean-bullet-list li {{
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: var(--text-main);
+        }}
+
+        .clean-bullet-list b {{
+            color: var(--text-main);
+        }}
+
+        .bullet-list-sm {{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }}
+
+        .bullet-list-sm li {{
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-main);
+            padding: 4px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }}
+
+        .bullet-list-sm li:last-child {{
+            border-bottom: none;
+        }}
+
+        /* Reference Accordion for Vocab & Grammar */
+        .ref-accordion {{
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }}
+
+        .ref-accordion-summary {{
+            padding: 13px 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(37, 99, 235, 0.05);
+            color: var(--text-main);
+            user-select: none;
+        }}
+
+        .ref-toggle-hint {{
+            font-size: 12.5px;
+            color: var(--primary);
+            font-weight: 600;
+        }}
+
+        .ref-accordion-body {{
+            padding: 14px;
+            border-top: 1px solid var(--border-color);
+        }}
+
+        .ref-sub-section {{
+            margin-bottom: 18px;
+        }}
+
+        .ref-sub-title {{
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.2);
+        }}
+
+        .study-bullet-card {{
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+        }}
+
+        .study-bullet-head {{
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }}
+
+        .study-word {{
+            font-size: 16.5px;
+            font-weight: 800;
+            color: var(--primary);
+        }}
+
+        .study-meaning {{
+            font-weight: 700;
+            color: var(--text-main);
+        }}
+
+        .bullet-list-study {{
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }}
+
+        .bullet-list-study li {{
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }}
+
+        .bullet-list-study .st-colloc {{
+            color: #4338ca;
+        }}
+
+        .bullet-list-study .st-trap {{
+            color: #b45309;
+        }}
+
+        .bullet-list-study .st-ex {{
+            color: var(--text-sub);
+            padding-top: 2px;
+        }}
+
+        .bullet-list-study .gm-formula {{
+            font-size: 14px;
+            color: var(--primary);
+            font-weight: 700;
+            background: rgba(37, 99, 235, 0.08);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }}
+
+        .bullet-list-study .gm-expl {{
+            color: var(--text-main);
+        }}
+
+        .bullet-list-study .gp-correct-box {{
+            color: #047857;
+        }}
+
+        .bullet-list-study .gp-wrong-box {{
+            color: #b91c1c;
+        }}
+
         @media (prefers-color-scheme: dark) {{
             .opt-radio[data-type="correct"]:checked + .opt-btn-content,
             .opt-btn-content.opt-correct, .opt-btn.opt-correct {{
@@ -2274,6 +2336,35 @@ def render_day_html(
             .fb-trans {{
                 color: #cbd5e1 !important;
                 border-top-color: rgba(148, 163, 184, 0.3) !important;
+            }}
+            .clean-bullet-list li, .clean-bullet-list b {{
+                color: #f1f5f9 !important;
+            }}
+            .bullet-list-sm li {{
+                color: #f1f5f9 !important;
+            }}
+            .study-meaning {{
+                color: #f1f5f9 !important;
+            }}
+            .bullet-list-study .st-colloc {{
+                color: #a5b4fc !important;
+            }}
+            .bullet-list-study .st-trap {{
+                color: #fde047 !important;
+            }}
+            .bullet-list-study .gm-formula {{
+                color: #93c5fd !important;
+                background: rgba(37, 99, 235, 0.25) !important;
+            }}
+            .bullet-list-study .gp-correct-box {{
+                color: #6ee7b7 !important;
+            }}
+            .bullet-list-study .gp-wrong-box {{
+                color: #fca5a5 !important;
+            }}
+            .ref-accordion-summary {{
+                background: rgba(37, 99, 235, 0.15) !important;
+                color: #f1f5f9 !important;
             }}
         }}
 
@@ -2511,19 +2602,16 @@ def render_day_html(
 <body data-day="{day}" data-session="{session.lower()}">
     <header class="hero-banner">
         <div class="hero-top">
-            <span class="phase-badge">Phase {phase} · {phase_name}</span>
+            <span class="hero-day-tag">Day {day}/25 · {session_label}</span>
             <div style="display:flex; align-items:center; gap:8px;">
-                <span>{date_str} (Day {day}/25)</span>
-                <a href="index.html" class="portal-pill" style="display:inline-flex; align-items:center; background:rgba(255,255,255,0.22); color:#ffffff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:700; text-decoration:none; border:1px solid rgba(255,255,255,0.35); box-shadow:0 1px 3px rgba(0,0,0,0.1);">📚 全地圖</a>
+                <span style="font-size:12.5px; opacity:0.9;">{date_str}</span>
+                <a href="index.html" class="portal-pill">📚 全地圖</a>
             </div>
         </div>
-        <h1 class="hero-title">{session_title}</h1>
-        <div class="hero-topic">🎯 {topic}</div>
+        <div class="hero-topic">🎯 <b>核心考點：</b>{topic}</div>
     </header>
 
-    <div class="mobile-tip-banner">
-        📱 <b>手機作答專屬升級</b>：點擊任一選項即會<b>立即直接展開詳解</b>（包含您選的選項為什麼錯、正確答案為什麼對與全句中譯）！亦可點擊右上角「<b>📚 全地圖</b>」切換各天特訓，隨時掌握 25 天衝刺進度。若在 Telegram 預覽想使用計分板與語音朗讀，可點擊右上角分享按鈕「<b>以 Safari 或 Chrome 開啟</b>」。
-    </div>
+    <div class="mobile-tip-banner" style="display:none;"></div>
 
     {body_content}
 

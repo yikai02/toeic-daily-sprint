@@ -67,6 +67,21 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         """HTML must render a clear mobile tip banner for iPhone Telegram preview users."""
         self.assertIn('mobile-tip-banner', self.html)
 
+    def test_questions_positioned_before_reference_accordion(self):
+        """Practice questions must appear first right below sticky bar; vocab/grammar in collapsible reference at bottom."""
+        p3_pos = self.html.find('id="sec-part3"')
+        ref_pos = self.html.find('id="sec-reference"')
+        self.assertNotEqual(p3_pos, -1)
+        self.assertNotEqual(ref_pos, -1)
+        self.assertLess(p3_pos, ref_pos, "Questions (Part 3) must be rendered before reference accordion!")
+
+    def test_bulleted_explanations_and_no_fluff_banners(self):
+        """Feedback must be concise bullet lists and bloated intro banners eliminated."""
+        self.assertIn('clean-bullet-list', self.html)
+        self.assertIn('重點考點', self.html)
+        self.assertIn('全句中譯', self.html)
+        self.assertNotIn('part-intro-banner', self.html)
+
 
 if __name__ == "__main__":
     unittest.main()
