@@ -433,7 +433,7 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
                 ex_html = f"""
                 <div class="vocab-example">
                     <div class="ex-en">📖 <b>商務例句：</b>{html.escape(example)}</div>
-                    <div class="ex-zh">🇹🇼 <b>例句中譯：</b>{html.escape(ex_zh)}</div>
+                    <div class="ex-zh">📝 <b>例句中譯：</b>{html.escape(ex_zh)}</div>
                 </div>
                 """
             else:
@@ -470,7 +470,7 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
                 <span class="chunk-title">{html.escape(word)}</span>
                 <span class="pos-badge">{html.escape(pos)}</span>
             </div>
-            <div class="chunk-meaning">🇹🇼 <b>中文：</b>{html.escape(meaning)}</div>
+            <div class="chunk-meaning">💡 <b>中文：</b>{html.escape(meaning)}</div>
             {colloc_html}
             {ex_html}
             {trap_html}
@@ -565,7 +565,7 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     rule_ref = q.get("rule_ref") or q.get("trap_point") or q.get("radar") or "多益 860+ 核心句構與商務搭配"
     opt_bd_html = _render_option_details_html(q)
     trans_html = (
-        f'<div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q["translation"])}</div>'
+        f'<div class="ans-trans">📝 <b>全句中譯：</b>{html.escape(q["translation"])}</div>'
         if q.get("translation")
         else ""
     )
@@ -1162,27 +1162,31 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
         }}
 
         .vocab-example {{
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-main);
-            margin-top: 7px;
-            line-height: 1.55;
-            padding: 8px 12px;
-            border-left: 3px solid #3b82f6;
-            background: rgba(59, 130, 246, 0.05);
-            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+            line-height: 1.6;
+            padding: 10px 14px;
+            border-left: 4px solid #2563eb;
+            background: rgba(37, 99, 235, 0.08);
+            border-radius: 0 10px 10px 0;
         }}
 
         .ex-en {{
-            color: #1e293b;
-            font-weight: 500;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.6;
         }}
 
         .ex-zh {{
-            color: #475569;
-            margin-top: 4px;
-            font-size: 13.5px;
-            padding-top: 4px;
-            border-top: 1px dashed rgba(148, 163, 184, 0.3);
+            color: #1d4ed8;
+            margin-top: 6px;
+            font-size: 14.5px;
+            font-weight: 600;
+            padding-top: 6px;
+            border-top: 1px solid rgba(37, 99, 235, 0.2);
+            line-height: 1.55;
         }}
 
         .alert-box {{
@@ -1348,6 +1352,21 @@ def render_day_html(day_data: dict, session: str = "morning", payload: dict = No
             .freq-badge {{ color: #fcd34d; }}
             .src-badge {{ color: #6ee7b7; }}
             .alert-box {{ color: #fca5a5; }}
+            .vocab-example {{
+                background: rgba(30, 58, 138, 0.35) !important;
+                border-left-color: #60a5fa !important;
+            }}
+            .ex-en {{
+                color: #f8fafc !important;
+            }}
+            .ex-zh {{
+                color: #93c5fd !important;
+                border-top-color: rgba(147, 197, 253, 0.3) !important;
+            }}
+            .ans-trans {{
+                background: rgba(99, 102, 241, 0.2) !important;
+                color: #e0e7ff !important;
+            }}
         }}
 
         /* Question Blocks */

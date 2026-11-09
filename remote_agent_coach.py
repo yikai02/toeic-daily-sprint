@@ -295,7 +295,7 @@ def render_agent_custom_html(
                     <div style="font-size:14px;color:#d97706;font-weight:700;">🎯 <b>對應考點與規則：</b>{html.escape(rule_ref)}</div>
                     <div class="ans-analysis">💡 <b>秒殺解析：</b>{html.escape(q.get('analysis', ''))}</div>
                     {opt_bd_html}
-                    <div class="ans-trans">🇹🇼 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
+                    <div class="ans-trans">📝 <b>全句中譯：</b>{html.escape(q.get('translation', ''))}</div>
                 </div>
             </details>
         </div>
