@@ -39,6 +39,14 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         """JavaScript must define window.handleOptSelect or function handleOptSelect."""
         self.assertIn('handleOptSelect', self.html)
 
+    def test_instant_feedback_reveals_why_chosen_option_wrong_and_correct_option_right(self):
+        """Selecting an option must directly reveal why it is wrong/right and why correct answer is right."""
+        self.assertIn('.opt-radio:checked ~ .opt-instant-feedback', self.html)
+        self.assertIn('opt-instant-feedback opt-feedback-wrong', self.html)
+        self.assertIn('opt-instant-feedback opt-feedback-correct', self.html)
+        self.assertIn('為什麼您選的', self.html)
+        self.assertIn('為什麼對', self.html)
+
     def test_mobile_tip_banner_present(self):
         """HTML must render a clear mobile tip banner for iPhone Telegram preview users."""
         self.assertIn('mobile-tip-banner', self.html)

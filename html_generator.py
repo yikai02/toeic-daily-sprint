@@ -86,11 +86,6 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
             r.disabled = true;
         });
 
-        if (qBlock) {
-            const details = qBlock.querySelector('details.spoiler-card');
-            if (details) details.open = true;
-        }
-
         updateScoreBar();
         if (!skipSync) {
             saveProgress();
@@ -99,6 +94,9 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
     window.handleOptClick = window.handleOptSelect;
 
     document.addEventListener('click', (e) => {
+        // If clicking inside .opt-instant-feedback, do not re-trigger selection
+        if (e.target.closest('.opt-instant-feedback')) return;
+
         const label = e.target.closest('.opt-label');
         if (label) {
             const radio = label.querySelector('.opt-radio');
@@ -806,12 +804,52 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     ans = q.get("answer", "A")
     ans_word = opts.get(ans, "")
     rule_ref = q.get("rule_ref") or q.get("trap_point") or q.get("radar") or "多益 860+ 核心句構與商務搭配"
+    opt_details = q.get("option_details") or {}
+    trans_text = q.get("translation", "").strip()
     opt_bd_html = _render_option_details_html(q)
     trans_html = (
-        f'<div class="ans-trans">📝 <b>全句中譯：</b>{html.escape(q["translation"])}</div>'
-        if q.get("translation")
+        f'<div class="ans-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</div>'
+        if trans_text
         else ""
     )
+
+    opt_labels_html = ""
+    for opt_key in ("A", "B", "C", "D"):
+        opt_val = opts.get(opt_key, "")
+        is_ans = (opt_key == ans)
+        data_type = "correct" if is_ans else "wrong"
+
+        chosen_detail = opt_details.get(opt_key, "").strip()
+        correct_detail = opt_details.get(ans, "").strip()
+
+        if is_ans:
+            feedback_html = f"""
+            <span class="opt-instant-feedback opt-feedback-correct">
+                <span class="fb-correct-congrats">🎉 <b>太棒了！您選擇的 ({opt_key}) 是正確答案！</b></span>
+                <span class="fb-heading fb-heading-correct">✅ <b>為什麼 ({opt_key}) 是對的：</b></span>
+                <span class="fb-correct-detail">{html.escape(chosen_detail)}</span>
+                {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
+            </span>
+            """
+        else:
+            feedback_html = f"""
+            <span class="opt-instant-feedback opt-feedback-wrong">
+                <span class="fb-wrong-tag">❌ <b>您選擇的 ({opt_key}) 是錯誤選項</b></span>
+                <span class="fb-heading fb-heading-wrong">⚠️ <b>為什麼您選的 ({opt_key}) 是錯的：</b></span>
+                <span class="fb-wrong-detail">{html.escape(chosen_detail)}</span>
+                <span class="fb-heading fb-heading-correct">✅ <b>正確答案是 ({ans}) {html.escape(ans_word)}，為什麼對：</b></span>
+                <span class="fb-correct-detail">{html.escape(correct_detail)}</span>
+                {f'<span class="fb-trans">📝 <b>全句中譯：</b>{html.escape(trans_text)}</span>' if trans_text else ''}
+            </span>
+            """
+
+        opt_labels_html += f"""
+            <label class="opt-label" for="opt_{qid}_{opt_key}">
+                <input type="radio" name="q_{qid}" id="opt_{qid}_{opt_key}" class="opt-radio" data-opt="{opt_key}" onchange="handleOptSelect(this)" data-type="{data_type}">
+                <span class="opt-btn-content"><span class="opt-letter">{opt_key}</span> <span class="opt-txt">{html.escape(opt_val)}</span></span>
+                {feedback_html}
+            </label>
+        """
 
     return f"""
     <div class="question-block" id="q-block-{qid}" data-part="{part_key}" data-word="{html.escape(ans_word)}" data-rule="{html.escape(rule_ref)}">
@@ -821,28 +859,13 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         </div>
         <div class="q-text">{html.escape(q.get('question', ''))}</div>
         <div class="options-grid" data-answer="{ans}">
-            <label class="opt-label" for="opt_{qid}_A">
-                <input type="radio" name="q_{qid}" id="opt_{qid}_A" class="opt-radio" data-opt="A" onchange="handleOptSelect(this)">
-                <span class="opt-btn-content"><span class="opt-letter">A</span> <span class="opt-txt">{html.escape(opts.get('A', ''))}</span></span>
-            </label>
-            <label class="opt-label" for="opt_{qid}_B">
-                <input type="radio" name="q_{qid}" id="opt_{qid}_B" class="opt-radio" data-opt="B" onchange="handleOptSelect(this)">
-                <span class="opt-btn-content"><span class="opt-letter">B</span> <span class="opt-txt">{html.escape(opts.get('B', ''))}</span></span>
-            </label>
-            <label class="opt-label" for="opt_{qid}_C">
-                <input type="radio" name="q_{qid}" id="opt_{qid}_C" class="opt-radio" data-opt="C" onchange="handleOptSelect(this)">
-                <span class="opt-btn-content"><span class="opt-letter">C</span> <span class="opt-txt">{html.escape(opts.get('C', ''))}</span></span>
-            </label>
-            <label class="opt-label" for="opt_{qid}_D">
-                <input type="radio" name="q_{qid}" id="opt_{qid}_D" class="opt-radio" data-opt="D" onchange="handleOptSelect(this)">
-                <span class="opt-btn-content"><span class="opt-letter">D</span> <span class="opt-txt">{html.escape(opts.get('D', ''))}</span></span>
-            </label>
+            {opt_labels_html}
         </div>
 
         <details class="spoiler-card">
             <summary class="spoiler-summary">
-                <span>🛡️ 點擊查看第 {qid} 題答案、規則定位與四選項詳解</span>
-                <span class="tap-hint">詳解揭曉</span>
+                <span>🛡️ 查看第 {qid} 題完整四選項對照表與文法考點剖析</span>
+                <span class="tap-hint">完整對照</span>
             </summary>
             <div class="spoiler-body">
                 <div class="ans-badge"><b>正解：({ans}) {html.escape(ans_word)}</b></div>
@@ -1850,18 +1873,39 @@ def render_day_html(
 
         /* Pure CSS selected state (works 100% even without JavaScript in iOS Quick Look!) */
         .opt-radio:checked + .opt-btn-content {{
-            background: rgba(37, 99, 235, 0.12);
             border-color: var(--primary);
-            color: var(--primary);
             font-weight: 700;
         }}
 
-        .opt-radio:checked + .opt-btn-content::after {{
-            content: "👈 已選取";
+        .opt-radio[data-type="correct"]:checked + .opt-btn-content {{
+            background: #ecfdf5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+            font-weight: 700;
+        }}
+
+        .opt-radio[data-type="correct"]:checked + .opt-btn-content::after {{
+            content: "✓ 正確" !important;
             margin-left: auto;
             font-size: 13px;
+            font-weight: 800;
+            color: #059669;
+            padding-left: 8px;
+        }}
+
+        .opt-radio[data-type="wrong"]:checked + .opt-btn-content {{
+            background: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
             font-weight: 700;
-            color: var(--primary);
+        }}
+
+        .opt-radio[data-type="wrong"]:checked + .opt-btn-content::after {{
+            content: "✗ 錯誤" !important;
+            margin-left: auto;
+            font-size: 13px;
+            font-weight: 800;
+            color: #dc2626;
             padding-left: 8px;
         }}
 
@@ -1897,16 +1941,157 @@ def render_day_html(
             padding-left: 8px;
         }}
 
+        /* Instant Personalized Feedback Box (Works instantly in iOS Quick Look offline & browsers!) */
+        .opt-instant-feedback {{
+            display: none;
+            width: 100%;
+            margin-top: 8px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: left;
+            box-sizing: border-box;
+            cursor: default;
+            user-select: text;
+            -webkit-user-select: text;
+            animation: fadeInFeedback 0.2s ease-out;
+        }}
+
+        @keyframes fadeInFeedback {{
+            from {{ opacity: 0; transform: translateY(-4px); }}
+            to {{ opacity: 1; transform: translateY(0); }}
+        }}
+
+        .opt-radio:checked ~ .opt-instant-feedback {{
+            display: block;
+        }}
+
+        .opt-feedback-wrong {{
+            background: #fff5f5;
+            border: 1.5px solid #fecaca;
+            border-left: 5px solid #ef4444;
+            color: #1e293b;
+        }}
+
+        .fb-wrong-tag {{
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #dc2626;
+            margin-bottom: 6px;
+        }}
+
+        .fb-heading {{
+            display: block;
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }}
+
+        .fb-heading-wrong {{
+            color: #991b1b;
+        }}
+
+        .fb-wrong-detail {{
+            display: block;
+            background: rgba(239, 68, 68, 0.08);
+            border-radius: 6px;
+            padding: 8px 10px;
+            color: #7f1d1d;
+            font-size: 13.5px;
+            line-height: 1.55;
+            margin-bottom: 10px;
+        }}
+
+        .fb-heading-correct {{
+            color: #047857;
+        }}
+
+        .fb-correct-detail {{
+            display: block;
+            background: rgba(16, 185, 129, 0.08);
+            border-radius: 6px;
+            padding: 8px 10px;
+            color: #064e3b;
+            font-size: 13.5px;
+            line-height: 1.55;
+            margin-bottom: 8px;
+        }}
+
+        .opt-feedback-correct {{
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            border-left: 5px solid #10b981;
+            color: #1e293b;
+        }}
+
+        .fb-correct-congrats {{
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #059669;
+            margin-bottom: 6px;
+        }}
+
+        .fb-trans {{
+            display: block;
+            font-size: 13px;
+            color: #334155;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 8px;
+            margin-top: 6px;
+            line-height: 1.55;
+        }}
+
         @media (prefers-color-scheme: dark) {{
+            .opt-radio[data-type="correct"]:checked + .opt-btn-content,
             .opt-btn-content.opt-correct, .opt-btn.opt-correct {{
                 background: #064e3b !important;
                 border-color: #10b981 !important;
                 color: #a7f3d0 !important;
             }}
+            .opt-radio[data-type="wrong"]:checked + .opt-btn-content,
             .opt-btn-content.opt-wrong, .opt-btn.opt-wrong {{
                 background: #7f1d1d !important;
                 border-color: #ef4444 !important;
                 color: #fecaca !important;
+            }}
+            .opt-feedback-wrong {{
+                background: rgba(69, 10, 10, 0.6) !important;
+                border-color: rgba(239, 68, 68, 0.4) !important;
+                border-left-color: #ef4444 !important;
+                color: #f8fafc !important;
+            }}
+            .fb-wrong-tag {{
+                color: #fca5a5 !important;
+            }}
+            .fb-heading-wrong {{
+                color: #fca5a5 !important;
+            }}
+            .fb-wrong-detail {{
+                background: rgba(127, 29, 29, 0.45) !important;
+                color: #fecaca !important;
+            }}
+            .fb-heading-correct {{
+                color: #6ee7b7 !important;
+            }}
+            .fb-correct-detail {{
+                background: rgba(6, 78, 59, 0.45) !important;
+                color: #a7f3d0 !important;
+            }}
+            .opt-feedback-correct {{
+                background: rgba(6, 78, 59, 0.55) !important;
+                border-color: rgba(16, 185, 129, 0.4) !important;
+                border-left-color: #34d399 !important;
+                color: #f8fafc !important;
+            }}
+            .fb-correct-congrats {{
+                color: #6ee7b7 !important;
+            }}
+            .fb-trans {{
+                color: #cbd5e1 !important;
+                border-top-color: rgba(148, 163, 184, 0.3) !important;
             }}
         }}
 
@@ -2152,7 +2337,7 @@ def render_day_html(
     </header>
 
     <div class="mobile-tip-banner">
-        📱 <b>手機作答溫馨提示</b>：若在 iPhone / iPad Telegram 點開檔案發現無法直接點擊選項（iOS 檔案快速預覽預設停用腳本），請點擊右上角「<b>分享圖示 ➔ 選擇以 Safari 或 Chrome 開啟</b>」，即可 100% 享受即時算分、正誤秒回饋、秒殺倒數與 Telegram 錯題回傳功能！
+        📱 <b>手機作答專屬升級</b>：點擊任一選項即會<b>立即直接展開詳解</b>（包含您選的選項為什麼錯、正確答案為什麼對與全句中譯）！若在 iPhone / iPad Telegram 預覽想享受動態計分板與 Telegram 錯題回傳，亦可點擊右上角「<b>分享圖示 ➔ 以 Safari 或 Chrome 開啟</b>」！
     </div>
 
     {body_content}
