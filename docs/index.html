@@ -3,29 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="多益 860+ 金色證書 25 天每日衝刺特訓系統全真地圖與進度導覽。">
     <title>多益 860+ 25天黃金衝刺特訓網站</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Hallmark · v2.0.0 · theme: editorial-minimalist · material: words+controls · job: practice-portal · copy: verbatim · shape: app screen · redesign: polish */
+        /* critique: eliminate emoji noise, replace raw hex with semantic tokens, strict 4px vertical rhythm */
+
         :root {
             --bg-canvas: #121314;
             --surface-container: #1A1C1E;
             --surface-subtle: #24272A;
-            --surface-hover: #2E3236;
+            --surface-hover: #2C3034;
             --border-hairline: rgba(255, 255, 255, 0.08);
             --border-subtle: rgba(255, 255, 255, 0.12);
-            --border-focus: rgba(255, 255, 255, 0.35);
+            --border-focus: rgba(255, 255, 255, 0.45);
             --text-primary: #EAE6E1;
             --text-secondary: #9E9B96;
-            --text-muted: #656668;
+            --text-muted: #6E6C68;
             --accent-correct: #5C7866;
+            --accent-correct-badge: #789882;
+            --accent-correct-border: rgba(92, 120, 102, 0.6);
+            --accent-correct-subtle: rgba(92, 120, 102, 0.08);
             --accent-wrong: #9E5757;
             --accent-gold: #D7AB7A;
+            --primary: #8EAF9D;
+            --today-chip-bg: rgba(158, 87, 87, 0.15);
+            --today-chip-color: #fca5a5;
+            --today-chip-border: rgba(158, 87, 87, 0.3);
             --card-bg: #1A1C1E;
             --border-color: rgba(255, 255, 255, 0.08);
             --text-main: #EAE6E1;
             --text-sub: #9E9B96;
+            --font-serif: "Newsreader", "Lora", "Songti TC", "Noto Serif TC", serif;
+            --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            --font-caps: "Cinzel", "Plus Jakarta Sans", sans-serif;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
         }
 
         * {
@@ -35,14 +52,18 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            overflow-x: clip;
+        }
+
         body {
-            font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            font-family: var(--font-sans);
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            font-size: 15.5px;
-            line-height: 1.7;
-            padding: 16px 14px 60px 14px;
-            max-width: 780px;
+            font-size: 15px;
+            line-height: 1.75;
+            padding: 16px 16px 64px 16px;
+            max-width: 800px;
             margin: 0 auto;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -54,20 +75,38 @@
             }
         }
 
+        :focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+
+        :disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
         .portal-hero {
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             padding: 24px 20px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-align: center;
+            color: var(--text-primary);
         }
 
         .hero-badge {
             display: inline-block;
-            font-family: "Cinzel", sans-serif;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+            font-family: var(--font-caps);
             font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
@@ -75,7 +114,7 @@
         }
 
         .hero-title {
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 24px;
             font-weight: 500;
             letter-spacing: -0.01em;
@@ -91,7 +130,7 @@
         }
 
         .hero-subtitle b {
-            color: #ffffff;
+            color: var(--text-primary);
             font-feature-settings: "tnum";
             font-variant-numeric: tabular-nums;
         }
@@ -99,42 +138,42 @@
         .quick-launch-card {
             background: var(--surface-container);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 18px 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }
 
         .ql-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border-hairline);
         }
 
         .ql-title {
-            font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-family: var(--font-serif);
+            font-size: 18px;
             font-weight: 500;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .ql-topic {
             font-size: 13.5px;
             color: var(--text-secondary);
-            margin-bottom: 14px;
-            line-height: 1.5;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }
 
         .ql-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .cta-btn {
@@ -142,12 +181,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px 10px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.15s ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
             background: var(--surface-subtle);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
@@ -156,15 +195,15 @@
         .cta-btn:hover {
             background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
         }
 
         .cta-morning {
-            border-left: 3px solid var(--accent-correct);
+            border-color: var(--accent-correct);
         }
 
         .cta-afternoon {
-            border-left: 3px solid #7E786B;
+            border-color: var(--accent-gold);
         }
 
         .cta-btn:active {
@@ -172,9 +211,9 @@
         }
 
         .cta-sub {
-            font-size: 11.5px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-top: 3px;
+            margin-top: 4px;
         }
 
         .phase-group {
@@ -184,28 +223,30 @@
         .phase-header {
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-left: 3px solid var(--text-secondary);
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-bottom: 10px;
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: var(--text-primary);
         }
 
+        .phase-badge-1 { background: var(--accent-correct-badge); color: var(--bg-canvas); }
+        .phase-badge-2 { background: var(--text-secondary); color: var(--bg-canvas); }
+        .phase-badge-3 { background: var(--accent-gold); color: var(--bg-canvas); }
+        .phase-badge-4 { background: var(--primary); color: var(--bg-canvas); }
+
         .phase-num-badge {
-            font-family: "Cinzel", sans-serif;
+            font-family: var(--font-caps);
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #ffffff;
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
         }
 
         .phase-title {
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 15px;
             font-weight: 500;
             color: var(--text-primary);
@@ -214,15 +255,16 @@
         .days-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
         }
 
         .day-card {
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 6px;
-            padding: 14px 16px;
-            transition: all 0.15s ease;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            color: var(--text-primary);
+            transition: border-color 150ms ease;
         }
 
         .day-card:hover {
@@ -230,27 +272,26 @@
         }
 
         .current-day-highlight {
-            border-color: rgba(92, 120, 102, 0.6) !important;
-            background: rgba(92, 120, 102, 0.06);
+            border-color: var(--accent-correct-border) !important;
+            background: var(--accent-correct-subtle);
         }
 
         .day-head {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .day-num {
-            font-family: "Cinzel", sans-serif;
+            font-family: var(--font-caps);
             font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.05em;
             color: var(--text-primary);
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            padding: 2px 7px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
         }
 
         .day-date {
@@ -261,24 +302,18 @@
         .today-chip {
             font-size: 11px;
             font-weight: 600;
-            background: rgba(158, 87, 87, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(158, 87, 87, 0.3);
-            padding: 1px 7px;
-            border-radius: 4px;
-            animation: pulseChip 2s infinite;
-        }
-
-        @keyframes pulseChip {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            background: var(--today-chip-bg);
+            color: var(--today-chip-color);
+            border: 1px solid var(--today-chip-border);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
         }
 
         .day-topic {
             font-size: 13.5px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.6;
         }
 
         .day-links {
@@ -289,30 +324,40 @@
 
         .session-btn {
             text-align: center;
-            padding: 7px 8px;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
             text-decoration: none;
             font-size: 12.5px;
             font-weight: 500;
             border: 1px solid var(--border-hairline);
             background: var(--surface-subtle);
             color: var(--text-primary);
-            transition: all 0.15s ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
         }
 
         .session-btn:hover {
             background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
+        }
+
+        .roadmap-title {
+            font-family: var(--font-caps);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .portal-footer {
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
             margin-top: 40px;
-            padding-top: 18px;
+            padding-top: 16px;
             border-top: 1px solid var(--border-hairline);
             line-height: 1.8;
         }
@@ -320,42 +365,42 @@
 </head>
 <body>
     <header class="portal-hero">
-        <div class="hero-badge">TOEIC 860+ MASTER PORTAL</div>
+        <div class="hero-badge">Toeic 860+ Master Portal</div>
         <h1 class="hero-title">多益 25 天黃金衝刺特訓地圖</h1>
-        <div class="hero-subtitle">考前倒數 <b id="portal-countdown">19</b> 天 ｜ 早晚雙軌 43 題高頻題庫 · 點擊直接作答</div>
+        <div class="hero-subtitle">考前倒數 <b id="portal-countdown">18</b> 天 ｜ 早晚雙軌 43 題高頻題庫 · 點擊直接作答</div>
     </header>
 
     <!-- Today's Quick Launch -->
     <section class="quick-launch-card">
         <div class="ql-header">
-            <div class="ql-title" id="ql-title">Day 07 · 今日進度直達</div>
-            <span class="today-chip">🔥 進行中</span>
+            <div class="ql-title" id="ql-title">Day 08 / 今日進度直達</div>
+            <span class="today-chip">進行中</span>
         </div>
         <div class="ql-topic" id="ql-topic">
-            🎯 <b>核心考點：</b>不完全及物動詞 (find + O + OC) ｜ 規章遵守與超時加班
+            <b>核心考點：</b>名詞動詞同形誤判 (damage) ｜ 差旅與服裝規範
         </div>
         <div class="ql-buttons">
-            <a href="TOEIC_Day07_Morning.html" id="ql-btn-m" class="cta-btn cta-morning">
-                <span>☀️ 上午特訓</span>
-                <span class="cta-sub">43 題 · 實戰衝刺 ▶</span>
+            <a href="TOEIC_Day08_Morning.html" id="ql-btn-m" class="cta-btn cta-morning">
+                <span>上午特訓</span>
+                <span class="cta-sub">43 題 / 實戰衝刺 ↗</span>
             </a>
-            <a href="TOEIC_Day07_Afternoon.html" id="ql-btn-a" class="cta-btn cta-afternoon">
-                <span>🌤️ 下午特訓</span>
-                <span class="cta-sub">43 題 · 深度複習 ▶</span>
+            <a href="TOEIC_Day08_Afternoon.html" id="ql-btn-a" class="cta-btn cta-afternoon">
+                <span>下午特訓</span>
+                <span class="cta-sub">43 題 / 深度複習 ↗</span>
             </a>
         </div>
     </section>
 
     <!-- Full 25-Day Roadmap -->
     <section class="roadmap-section">
-        <div style="font-family: 'Cinzel', serif; font-size: 13.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-            📚 25-Day Curriculum Roadmap
+        <div class="roadmap-title">
+            25-Day Curriculum Roadmap
         </div>
         
         <div class="phase-group">
-            <div class="phase-header" style="border-left-color: #5C7866;">
-                <span class="phase-num-badge" style="background: #5C7866;">Phase 1</span>
-                <span class="phase-title">基礎高頻鞏固與訊號反射 (Day 1–7)</span>
+            <div class="phase-header phase-head-1">
+                <span class="phase-num-badge phase-badge-1">Phase 1</span>
+                <span class="phase-title">基礎高頻鞏固與訊號反射 (Day 1 至 7)</span>
             </div>
             <div class="days-grid">
                 
@@ -365,10 +410,10 @@
                     <span class="day-date">11/04</span>
                     
                 </div>
-                <div class="day-topic">🎯 連介秒殺 ｜ 監督 vs. 疏忽 ｜ 資格與授權語塊</div>
+                <div class="day-topic">連介秒殺 ｜ 監督 vs. 疏忽 ｜ 資格與授權語塊</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day01_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day01_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day01_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day01_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -378,10 +423,10 @@
                     <span class="day-date">11/05</span>
                     
                 </div>
-                <div class="day-topic">🎯 原因與轉折結構 ｜ proceed vs. procedure ｜ 堅持與組成</div>
+                <div class="day-topic">原因與轉折結構 ｜ proceed vs. procedure ｜ 堅持與組成</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day02_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day02_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day02_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day02_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -391,10 +436,10 @@
                     <span class="day-date">11/06</span>
                     
                 </div>
-                <div class="day-topic">🎯 條件假設連接詞 ｜ intent vs. intention ｜ 評估與顧問</div>
+                <div class="day-topic">條件假設連接詞 ｜ intent vs. intention ｜ 評估與顧問</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day03_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day03_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day03_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day03_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -404,10 +449,10 @@
                     <span class="day-date">11/07</span>
                     
                 </div>
-                <div class="day-topic">🎯 分詞修飾名詞 (V-ing vs V-ed) ｜ 召回、庫存與保險範圍</div>
+                <div class="day-topic">分詞修飾名詞 (V-ing vs V-ed) ｜ 召回、庫存與保險範圍</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day04_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day04_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day04_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day04_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -417,10 +462,10 @@
                     <span class="day-date">11/08</span>
                     
                 </div>
-                <div class="day-topic">🎯 減化子句與分詞構句 (while + V-ing) ｜ 政策規範與熟練搭配</div>
+                <div class="day-topic">減化子句與分詞構句 (while + V-ing) ｜ 政策規範與熟練搭配</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day05_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day05_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day05_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day05_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -430,23 +475,23 @@
                     <span class="day-date">11/09</span>
                     
                 </div>
-                <div class="day-topic">🎯 詞性秒殺 (will + adv. + V) ｜ 職務交接與承擔</div>
+                <div class="day-topic">詞性秒殺 (will + adv. + V) ｜ 職務交接與承擔</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day06_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day06_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day06_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day06_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
-            <div class="day-card current-day-highlight" data-day="7">
+            <div class="day-card" data-day="7">
                 <div class="day-head">
                     <span class="day-num">Day 07</span>
                     <span class="day-date">11/10</span>
-                    <span class="today-chip">🔥 今日進度</span>
+                    
                 </div>
-                <div class="day-topic">🎯 不完全及物動詞 (find + O + OC) ｜ 規章遵守與超時加班</div>
+                <div class="day-topic">不完全及物動詞 (find + O + OC) ｜ 規章遵守與超時加班</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day07_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day07_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day07_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day07_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -454,22 +499,22 @@
         </div>
         
         <div class="phase-group">
-            <div class="phase-header" style="border-left-color: #7E786B;">
-                <span class="phase-num-badge" style="background: #7E786B;">Phase 2</span>
-                <span class="phase-title">核心句構與考點盲區突破 (Day 8–14)</span>
+            <div class="phase-header phase-head-2">
+                <span class="phase-num-badge phase-badge-2">Phase 2</span>
+                <span class="phase-title">核心句構與考點盲區突破 (Day 8 至 14)</span>
             </div>
             <div class="days-grid">
                 
-            <div class="day-card" data-day="8">
+            <div class="day-card current-day-highlight" data-day="8">
                 <div class="day-head">
                     <span class="day-num">Day 08</span>
                     <span class="day-date">11/11</span>
-                    
+                    <span class="today-chip">今日進度</span>
                 </div>
-                <div class="day-topic">🎯 名詞動詞同形誤判 (damage) ｜ 差旅與服裝規範</div>
+                <div class="day-topic">名詞動詞同形誤判 (damage) ｜ 差旅與服裝規範</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day08_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day08_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day08_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day08_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -479,10 +524,10 @@
                     <span class="day-date">11/12</span>
                     
                 </div>
-                <div class="day-topic">🎯 不定代名詞範圍判定 ｜ 文宣手冊與容量承載</div>
+                <div class="day-topic">不定代名詞範圍判定 ｜ 文宣手冊與容量承載</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day09_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day09_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day09_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day09_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -492,10 +537,10 @@
                     <span class="day-date">11/13</span>
                     
                 </div>
-                <div class="day-topic">🎯 Phase 1 綜合驗收 ｜ 表揚、全面與當代商務</div>
+                <div class="day-topic">Phase 1 綜合驗收 ｜ 表揚、全面與當代商務</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day10_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day10_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day10_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day10_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -505,10 +550,10 @@
                     <span class="day-date">11/14</span>
                     
                 </div>
-                <div class="day-topic">🎯 轉折副詞秒殺 (otherwise / therefore / however) ｜ 扣除、分派與可靠性</div>
+                <div class="day-topic">轉折副詞秒殺 (otherwise / therefore / however) ｜ 扣除、分派與可靠性</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day11_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day11_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day11_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day11_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -518,10 +563,10 @@
                     <span class="day-date">11/15</span>
                     
                 </div>
-                <div class="day-topic">🎯 同義字大替換 ｜ 翻新、改善與急件處理</div>
+                <div class="day-topic">同義字大替換 ｜ 翻新、改善與急件處理</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day12_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day12_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day12_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day12_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -531,10 +576,10 @@
                     <span class="day-date">11/16</span>
                     
                 </div>
-                <div class="day-topic">🎯 條件讓步結構 (even if vs as though) ｜ 強化、專屬與高層決策</div>
+                <div class="day-topic">條件讓步結構 (even if vs as though) ｜ 強化、專屬與高層決策</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day13_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day13_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day13_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day13_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -544,10 +589,10 @@
                     <span class="day-date">11/17</span>
                     
                 </div>
-                <div class="day-topic">🎯 關係子句簡化 ｜ 履行承諾、加盟與迫切情勢</div>
+                <div class="day-topic">關係子句簡化 ｜ 履行承諾、加盟與迫切情勢</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day14_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day14_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day14_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day14_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -555,9 +600,9 @@
         </div>
         
         <div class="phase-group">
-            <div class="phase-header" style="border-left-color: #D7AB7A;">
-                <span class="phase-num-badge" style="background: #D7AB7A;">Phase 3</span>
-                <span class="phase-title">長文閱讀與極限秒殺特訓 (Day 15–21)</span>
+            <div class="phase-header phase-head-3">
+                <span class="phase-num-badge phase-badge-3">Phase 3</span>
+                <span class="phase-title">長文閱讀與極限秒殺特訓 (Day 15 至 21)</span>
             </div>
             <div class="days-grid">
                 
@@ -567,10 +612,10 @@
                     <span class="day-date">11/18</span>
                     
                 </div>
-                <div class="day-topic">🎯 隱藏除外條款 ｜ 發起、親密與高利潤法規</div>
+                <div class="day-topic">隱藏除外條款 ｜ 發起、親密與高利潤法規</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day15_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day15_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day15_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day15_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -580,10 +625,10 @@
                     <span class="day-date">11/19</span>
                     
                 </div>
-                <div class="day-topic">🎯 時間軸與變更陷阱 ｜ 取得、佔用與新生訓練</div>
+                <div class="day-topic">時間軸與變更陷阱 ｜ 取得、佔用與新生訓練</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day16_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day16_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day16_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day16_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -593,10 +638,10 @@
                     <span class="day-date">11/20</span>
                     
                 </div>
-                <div class="day-topic">🎯 星號小字與折扣資格 ｜ 聲望、地緣親近與精確</div>
+                <div class="day-topic">星號小字與折扣資格 ｜ 聲望、地緣親近與精確</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day17_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day17_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day17_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day17_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -606,10 +651,10 @@
                     <span class="day-date">11/21</span>
                     
                 </div>
-                <div class="day-topic">🎯 Phase 2 大驗收 ｜ 諮詢、限制與嚴格規範</div>
+                <div class="day-topic">Phase 2 大驗收 ｜ 諮詢、限制與嚴格規範</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day18_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day18_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day18_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day18_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -619,10 +664,10 @@
                     <span class="day-date">11/22</span>
                     
                 </div>
-                <div class="day-topic">🎯 Part 5 極速衝刺 ｜ 策略計畫、部門板塊與唯一依據</div>
+                <div class="day-topic">Part 5 極速衝刺 ｜ 策略計畫、部門板塊與唯一依據</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day19_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day19_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day19_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day19_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -632,10 +677,10 @@
                     <span class="day-date">11/23</span>
                     
                 </div>
-                <div class="day-topic">🎯 Part 6 插入句前後脈絡 ｜ 有形資產、門檻與承租人</div>
+                <div class="day-topic">Part 6 插入句前後脈絡 ｜ 有形資產、門檻與承租人</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day20_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day20_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day20_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day20_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -645,10 +690,10 @@
                     <span class="day-date">11/24</span>
                     
                 </div>
-                <div class="day-topic">🎯 Part 7 雙篇交叉比對 ｜ 騰空撤離、有效期限與供應商</div>
+                <div class="day-topic">Part 7 雙篇交叉比對 ｜ 騰空撤離、有效期限與供應商</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day21_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day21_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day21_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day21_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -656,9 +701,9 @@
         </div>
         
         <div class="phase-group">
-            <div class="phase-header" style="border-left-color: #8EAF9D;">
-                <span class="phase-num-badge" style="background: #8EAF9D;">Phase 4</span>
-                <span class="phase-title">全真衝刺與終極覆盤驗收 (Day 22–25)</span>
+            <div class="phase-header phase-head-4">
+                <span class="phase-num-badge phase-badge-4">Phase 4</span>
+                <span class="phase-title">全真衝刺與終極覆盤驗收 (Day 22 至 25)</span>
             </div>
             <div class="days-grid">
                 
@@ -668,10 +713,10 @@
                     <span class="day-date">11/25</span>
                     
                 </div>
-                <div class="day-topic">🎯 多義詞情境切換 ｜ coverage, condition, stock, conduct</div>
+                <div class="day-topic">多義詞情境切換 ｜ coverage, condition, stock, conduct</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day22_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day22_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day22_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day22_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -681,10 +726,10 @@
                     <span class="day-date">11/26</span>
                     
                 </div>
-                <div class="day-topic">🎯 Part 7 三篇閱讀獵殺 ｜ 資訊定位與反向排除</div>
+                <div class="day-topic">Part 7 三篇閱讀獵殺 ｜ 資訊定位與反向排除</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day23_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day23_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day23_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day23_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -694,10 +739,10 @@
                     <span class="day-date">11/27</span>
                     
                 </div>
-                <div class="day-topic">🎯 考前 48 小時錯題庫極速回放 ｜ 4 大盲區極速自檢</div>
+                <div class="day-topic">考前 48 小時錯題庫極速回放 ｜ 4 大盲區極速自檢</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day24_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day24_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day24_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day24_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -707,10 +752,10 @@
                     <span class="day-date">11/28</span>
                     
                 </div>
-                <div class="day-topic">🎯 考前 24 小時金色證書配速心法與實戰答題手冊</div>
+                <div class="day-topic">考前 24 小時金色證書配速心法與實戰答題手冊</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day25_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day25_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day25_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day25_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             
@@ -720,7 +765,7 @@
     </section>
 
     <footer class="portal-footer">
-        TOEIC 860+ DAILY SPRINT · EDITORIAL STUDY SYSTEM<br>
+        TOEIC 860+ DAILY SPRINT / EDITORIAL STUDY SYSTEM<br>
         免下載 · 跨裝置雲端進度同步 · 金色必達
     </footer>
 

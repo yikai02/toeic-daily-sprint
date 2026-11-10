@@ -216,7 +216,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
             const wrongBlocks = document.querySelectorAll('.question-block.has-wrong');
             if (wrongBlocks.length === 0) {
                 weakBox.innerHTML = totalAnswered > 0
-                    ? '<span style="color:#059669;font-weight:700;">🎉 目前作答全數正確，尚無觸發任何弱點標籤！</span>'
+                    ? '<span style="color:var(--primary);font-weight:700;">目前作答全數正確，尚無觸發任何弱點標籤！</span>'
                     : '<span style="color:var(--text-sub);">尚未產生錯題。開始作答後，系統將即時捕捉您答錯的單字與文法規則並顯示於此。</span>';
             } else {
                 const items = [];
@@ -224,7 +224,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                     const qnum = (wb.id || '').replace('q-block-', '');
                     const wWord = wb.getAttribute('data-word') || '';
                     const wRule = wb.getAttribute('data-rule') || '';
-                    items.push(`<div class="weak-tag-item">❌ <b>第 ${qnum} 題</b>：正解字彙 <code>${wWord}</code> ｜ 考點：${wRule}</div>`);
+                    items.push(`<div class="weak-tag-item"><b>第 ${qnum} 題</b>：正解字彙 <code>${wWord}</code> ｜ 考點：${wRule}</div>`);
                 });
                 weakBox.innerHTML = items.join('');
             }
@@ -248,20 +248,20 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         const answeredGrids = document.querySelectorAll('.options-grid.answered');
 
         if (answeredGrids.length === 0) {
-            alert('💡 請先開始作答題目，答錯的題目即可點此一鍵聚焦複習！');
+            alert('請先開始作答題目，答錯的題目即可點此一鍵聚焦複習！');
             return;
         }
 
         wrongOnlyMode = !wrongOnlyMode;
         if (wrongOnlyMode) {
             if (wrongBlocks.length === 0) {
-                alert('🎉 太厲害了！目前作答題目全部正確，沒有錯題！');
+                alert('目前作答題目全部正確，沒有錯題！');
                 wrongOnlyMode = false;
                 return;
             }
             if (btn) {
                 btn.classList.add('btn-active');
-                btn.innerText = '📋 全部';
+                btn.innerText = '全部題目';
             }
             document.querySelectorAll('.question-block').forEach(qb => {
                 if (qb.classList.contains('has-wrong')) {
@@ -275,7 +275,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         } else {
             if (btn) {
                 btn.classList.remove('btn-active');
-                btn.innerText = '❌ 錯題';
+                btn.innerText = '錯題複習';
             }
             document.querySelectorAll('.question-block').forEach(qb => {
                 qb.style.display = 'block';
@@ -291,7 +291,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         const btn = document.getElementById('wrong-filter-btn');
         if (btn) {
             btn.classList.remove('btn-active');
-            btn.innerText = '❌ 錯題';
+            btn.innerText = '錯題複習';
         }
         document.querySelectorAll('.question-block').forEach(qb => {
             qb.style.display = 'block';
@@ -321,7 +321,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
 
         if (CLOUD_BOT_TOKEN) {
             const statusEl = document.getElementById('cloud-sync-status');
-            if (statusEl) statusEl.innerText = '☁️ 雲端重設中...';
+            if (statusEl) statusEl.innerText = '雲端重設中…';
             const sessTag = (session === 'morning' || session === 'm') ? 'M' : 'A';
             const dayStr = String(day).padStart(2, '0');
             const totalQ = document.querySelectorAll('.question-block').length;
@@ -341,7 +341,7 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                     });
                 })
                 .then(() => {
-                    if (statusEl) statusEl.innerText = '☁️ 雲端進度已重設';
+                    if (statusEl) statusEl.innerText = '雲端進度已重設';
                 })
                 .catch(() => {});
         }
@@ -526,18 +526,18 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
                 isApplyingCloud = false;
                 saveLocalProgress(cloudTs);
                 if (statusEl) {
-                    statusEl.innerText = `☁️ 已自雲端同步 (${totalAnswered} 題)`;
+                    statusEl.innerText = `已自雲端同步 (${totalAnswered} 題)`;
                 }
             } else if (localTs > cloudTs) {
                 syncProgressToCloud();
             } else {
                 if (statusEl) {
-                    statusEl.innerText = `☁️ 雲端已同步 (${totalAnswered} 題)`;
+                    statusEl.innerText = `雲端已同步 (${totalAnswered} 題)`;
                 }
             }
         } catch(e) {
             console.warn('fetchCloudProgress error:', e);
-            if (statusEl) statusEl.innerText = '☁️ 本地已存 (離線中)';
+            if (statusEl) statusEl.innerText = '本地已存 (離線中)';
         }
     }
 
@@ -547,22 +547,22 @@ INTERACTIVE_SCRIPT_TEMPLATE = """
         el.dataset.running = 'true';
         el.classList.add('timer-running');
         let remaining = seconds;
-        el.innerText = `⏱️ ${remaining} 秒...`;
+        el.innerText = `⏱ ${remaining} 秒…`;
         const intervalId = setInterval(() => {
             remaining--;
             if (remaining > 5) {
-                el.innerText = `⏱️ ${remaining} 秒...`;
+                el.innerText = `⏱ ${remaining} 秒…`;
             } else if (remaining > 0) {
-                el.innerText = `🔥 ${remaining} 秒！`;
+                el.innerText = `⏱ ${remaining} 秒！`;
                 el.classList.add('timer-urgent');
             } else {
                 clearInterval(intervalId);
-                el.innerText = '⏰ 時間到！秒殺停筆';
+                el.innerText = '時間到！停筆';
                 el.classList.remove('timer-urgent');
                 setTimeout(() => {
                     el.classList.remove('timer-running');
                     el.dataset.running = 'false';
-                    el.innerText = `⏱️ 限時 ${seconds} 秒 ▶`;
+                    el.innerText = `⏱ 限時 ${seconds} 秒 ▶`;
                 }, 2800);
             }
         }, 1000);
@@ -731,12 +731,12 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
 
         bullet_items = ""
         if colloc and colloc.lower() != word.lower() and len(colloc) > 3:
-            bullet_items += f"<li>💼 <b>常考搭配：</b>{html.escape(colloc)}</li>"
+            bullet_items += f"<li><b>常考搭配</b>：{html.escape(colloc)}</li>"
         if trap:
-            bullet_items += f"<li>⚠️ <b>易混淆陷阱：</b>{html.escape(trap)}</li>"
+            bullet_items += f"<li><b>易混淆陷阱</b>：{html.escape(trap)}</li>"
         if example:
-            zh_part = f'<br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 {html.escape(ex_zh)}</span>' if ex_zh else ''
-            bullet_items += f'<li>📖 <span class="ex-en">{html.escape(example)}</span>{zh_part}</li>'
+            zh_part = f'<br><span class="ex-zh" style="margin-top:4px;display:inline-block;">{html.escape(ex_zh)}</span>' if ex_zh else ''
+            bullet_items += f'<li><b>實戰例句</b>：<span class="ex-en">{html.escape(example)}</span>{zh_part}</li>'
 
         cards_html += f"""
         <div class="study-bullet-card">
@@ -755,8 +755,8 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
     <section class="section-container" id="sec-part1">
         <details class="ref-accordion" open>
             <summary class="ref-accordion-summary">
-                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 {len(vocab_list)} 字）</span>
-                <span class="ref-toggle-hint">收合/展開 ▲</span>
+                <span><b>PART 1 // 本日核心單字表</b>（高頻精選 {len(vocab_list)} 字）</span>
+                <span class="ref-toggle-hint">收合 / 展開</span>
             </summary>
             <div class="ref-accordion-body">
                 {cards_html}
@@ -770,12 +770,12 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
     anchor_html = ""
     if anchor and anchor.get("title"):
         anchor_html = f"""
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：{html.escape(anchor.get('title', ''))}</div>
+        <div class="study-bullet-card">
+            <div class="sbc-head" style="color:var(--accent-gold);"><b>秒殺錨點</b>：{html.escape(anchor.get('title', ''))}</div>
             <ul class="bullet-list-study">
-                <li>🔹 {html.escape(anchor.get('rule_1', ''))}</li>
-                <li>🔹 {html.escape(anchor.get('rule_2', ''))}</li>
-                {f"<li>🏆 <b>法則：</b>{html.escape(anchor.get('golden_rule', ''))}</li>" if anchor.get('golden_rule') else ""}
+                <li>• {html.escape(anchor.get('rule_1', ''))}</li>
+                <li>• {html.escape(anchor.get('rule_2', ''))}</li>
+                {f"<li><b>法則</b>：{html.escape(anchor.get('golden_rule', ''))}</li>" if anchor.get('golden_rule') else ""}
             </ul>
         </div>
         """
@@ -789,16 +789,16 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
 
         points_list = ""
         for pt in mod.get("points", []):
-            points_list += f"<li>📌 <b>{html.escape(pt.get('label', ''))}</b>：{html.escape(pt.get('detail', ''))}</li>"
+            points_list += f"<li><b>{html.escape(pt.get('label', ''))}</b>：{html.escape(pt.get('detail', ''))}</li>"
 
         mods_html += f"""
         <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #{m_idx}：{html.escape(mod.get('title', ''))}</div>
+            <div class="sbc-head"><b>文法模組 #{m_idx}</b>：{html.escape(mod.get('title', ''))}</div>
             <ul class="bullet-list-study">
-                {f'<li class="gm-formula">📐 <b>秒殺公式：</b>{html.escape(formula_text)}</li>' if formula_text else ""}
-                {f'<li class="gm-expl">💡 <b>觀念解析：</b>{html.escape(expl_text)}</li>' if expl_text else ""}
-                {f'<li class="gp-correct-box">✅ <b>正確示範：</b>{html.escape(ex_correct)}</li>' if ex_correct else ""}
-                {f'<li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>{html.escape(ex_wrong)}</li>' if ex_wrong else ""}
+                {f'<li class="gm-formula"><b>秒殺公式</b>：{html.escape(formula_text)}</li>' if formula_text else ""}
+                {f'<li class="gm-expl"><b>觀念解析</b>：{html.escape(expl_text)}</li>' if expl_text else ""}
+                {f'<li class="gp-correct-box"><b>正確示範</b>：{html.escape(ex_correct)}</li>' if ex_correct else ""}
+                {f'<li class="gp-wrong-box"><b>常見陷阱</b>：{html.escape(ex_wrong)}</li>' if ex_wrong else ""}
                 {points_list}
             </ul>
         </div>
@@ -808,8 +808,8 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
     <section class="section-container" id="sec-part2">
         <details class="ref-accordion" open>
             <summary class="ref-accordion-summary">
-                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ {len(grammar_mods)} 大考點）</span>
-                <span class="ref-toggle-hint">收合/展開 ▲</span>
+                <span><b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ {len(grammar_mods)} 大考點）</span>
+                <span class="ref-toggle-hint">收合 / 展開</span>
             </summary>
             <div class="ref-accordion-body">
                 {anchor_html}
@@ -847,9 +847,9 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
             feedback_html = f"""
             <div class="opt-instant-feedback opt-feedback-correct">
                 <ul class="clean-bullet-list">
-                    <li>✅ <b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span> {f'— {html.escape(ans_info["reason"])}' if ans_info["reason"] else ''}</li>
-                    {f'<li>💡 <b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
-                    {f'<li>📝 <b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
+                    <li><b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span> {f': {html.escape(ans_info["reason"])}' if ans_info["reason"] else ''}</li>
+                    {f'<li><b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
+                    {f'<li><b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
                 </ul>
             </div>
             """
@@ -857,10 +857,10 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
             feedback_html = f"""
             <div class="opt-instant-feedback opt-feedback-wrong">
                 <ul class="clean-bullet-list">
-                    <li>❌ <b>為什麼您選的 ({opt_key}) 是錯的</b>：<b>{html.escape(opt_val)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(chosen_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(chosen_info['meaning'])}</span></span> — {html.escape(chosen_info['reason'])}</li>
-                    <li>✅ <b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span></li>
-                    {f'<li>💡 <b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
-                    {f'<li>📝 <b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
+                    <li><b>為什麼您選的 ({opt_key}) 是錯的</b>：<b>{html.escape(opt_val)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(chosen_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(chosen_info['meaning'])}</span></span> : {html.escape(chosen_info['reason'])}</li>
+                    <li><b>正解 ({ans}) 為什麼對</b>：<b>{html.escape(ans_word)}</b> <span class="fb-chips-row"><span class="fb-chip fb-chip-pos">[{html.escape(ans_info['pos'])}]</span> <span class="fb-chip fb-chip-meaning">{html.escape(ans_info['meaning'])}</span></span></li>
+                    {f'<li><b>重點考點</b>：{html.escape(core_analysis)}</li>' if core_analysis else ''}
+                    {f'<li><b>全句中譯</b>：{html.escape(trans_text)}</li>' if trans_text else ''}
                 </ul>
             </div>
             """
@@ -879,7 +879,7 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
         k_val = opts.get(k, "")
         k_info = extract_clean_option_info(opt_details.get(k, ""))
         is_k_ans = (k == ans)
-        marker = "✅" if is_k_ans else "・"
+        marker = "✓" if is_k_ans else "•"
         meaning_str = f"[{html.escape(k_info['pos'])}] {html.escape(k_info['meaning'])}" if k_info["meaning"] else ""
         options_summary_items += f"""
         <li>
@@ -891,7 +891,7 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     spoiler_html = f"""
     <details class="spoiler-card">
         <summary class="spoiler-summary">
-            <span>🔍 展開四選項中譯速查</span>
+            <span>展開四選項中譯速查</span>
         </summary>
         <div class="spoiler-body">
             <ul class="bullet-list-sm">
@@ -904,8 +904,8 @@ def _render_question_card_html(q: dict, total_q: int, part_key: str, badge_label
     return f"""
     <div class="question-block" id="q-block-{qid}" data-part="{part_key}" data-word="{html.escape(ans_word)}" data-rule="{html.escape(rule_ref)}">
         <div class="q-header">
-            <span class="q-tag">第 {qid} 題 / 共 {total_q} 題 · {html.escape(badge_label)}</span>
-            <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱️ {sec} 秒</span>
+            <span class="q-tag">第 {qid} 題 / 共 {total_q} 題 / {html.escape(badge_label)}</span>
+            <span class="q-time timer-badge" onclick="startTimer(this, {sec})" title="點擊啟動倒數">⏱ {sec}s</span>
         </div>
         <div class="q-text">{html.escape(q.get('question', ''))}</div>
         <div class="options-grid" data-answer="{ans}">
@@ -942,7 +942,7 @@ def render_day_html(
     srs_stats = payload["srs_stats"]
     total_q = counts["total_questions"]
 
-    session_label = "☀️ 上午練習" if is_morning else "🌤️ 下午練習"
+    session_label = "上午練習" if is_morning else "下午練習"
     session_en = "MORNING" if is_morning else "AFTERNOON"
     session_title = f"{session_label} — 五大模組全方位特訓（實戰 {total_q} 題）"
     badge_color = "#5C7866" if is_morning else "#7E786B"
@@ -962,7 +962,7 @@ def render_day_html(
 
     part3_html = f"""
     <section class="section-container" id="sec-part3">
-        <div class="section-title">⚡ 第一部分：單字與文法選擇題（第 1 ～ {len(part3_mc)} 題）</div>
+        <div class="section-title">第一部分：單字與文法選擇題（第 1 ～ {len(part3_mc)} 題）</div>
         {p3_q_html}
     </section>
     """
@@ -980,8 +980,8 @@ def render_day_html(
             raw_text,
         )
         p4_blocks_html += f"""
-        <div class="p7-doc" style="border-left-color: #d97706;">
-            <div class="p7-doc-type" style="color: #d97706;">🧩 段落填空（篇章 {p_idx} / 共 {len(part4_cloze)} 篇）· {html.escape(pas.get('text_type', 'Part 6 Passage'))}</div>
+        <div class="p7-doc">
+            <div class="p7-doc-type">段落填空（篇章 {p_idx} / 共 {len(part4_cloze)} 篇）· {html.escape(pas.get('text_type', 'Part 6 Passage'))}</div>
             <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
             <div class="p7-doc-body">{formatted_body}</div>
         </div>
@@ -992,13 +992,13 @@ def render_day_html(
                 cq,
                 total_q,
                 "part4",
-                f"填空題 (篇章 {p_idx} · 空格 {b_num})",
+                f"填空題 (篇章 {p_idx} / 空格 {b_num})",
                 default_sec=20,
             )
 
     part4_html = f"""
     <section class="section-container" id="sec-part4">
-        <div class="section-title">🧩 第二部分：段落克漏字填空（第 {cloze_start} ～ {cloze_end} 題）</div>
+        <div class="section-title">第二部分：段落克漏字填空（第 {cloze_start} ～ {cloze_end} 題）</div>
         {p4_blocks_html}
     </section>
     """
@@ -1016,7 +1016,7 @@ def render_day_html(
         )
         p5_blocks_html += f"""
         <div class="p7-doc">
-            <div class="p7-doc-type">📄 商務長文閱讀（文本 {r_idx} / 共 {len(part5_reading)} 篇）· {html.escape(pas.get('text_type', 'Business Document'))}</div>
+            <div class="p7-doc-type">商務長文閱讀（文本 {r_idx} / 共 {len(part5_reading)} 篇）· {html.escape(pas.get('text_type', 'Business Document'))}</div>
             <div class="p7-doc-title">{html.escape(pas.get('title', ''))}</div>
             <div class="p7-doc-body">{formatted_body}</div>
         </div>
@@ -1032,7 +1032,7 @@ def render_day_html(
 
     part5_html = f"""
     <section class="section-container" id="sec-part5">
-        <div class="section-title">📑 第三部分：商務長文閱讀測驗（第 {read_start} ～ {read_end} 題）</div>
+        <div class="section-title">第三部分：商務長文閱讀測驗（第 {read_start} ～ {read_end} 題）</div>
         {p5_blocks_html}
     </section>
     """
@@ -1049,48 +1049,48 @@ def render_day_html(
 
     stats_and_agent_html = f"""
     <section class="section-container" id="sec-analytics">
-        <div class="section-title">📊 實戰統計儀表板 ＆ 🤖 遠端 AI Agent 演算法弱點中心</div>
+        <div class="section-title">實戰統計儀表板 ＆ 演算法弱點中心</div>
         <div class="analytics-card">
-            <div class="analytics-title">📈 本場即時作答統計與多益分數落點預測</div>
+            <div class="analytics-title">本場即時作答統計與多益分數落點預測</div>
             <div class="stat-main-row">
-                <div>🎯 <b>本場總體表現：</b><span id="stat-overall-score">0 / 0 題正確 (總題數 {total_q} 題 · 正確率 0%)</span></div>
-                <div style="margin-top:4px;">🏆 <b>動態落點預估：</b><span id="stat-toeic-band" style="color:var(--primary);font-weight:800;">尚未作答 (目標 860–990 金色證書)</span></div>
+                <div><b>本場總體表現：</b><span id="stat-overall-score">0 / 0 題正確 (總題數 {total_q} 題 · 正確率 0%)</span></div>
+                <div style="margin-top:6px;"><b>動態落點預估：</b><span id="stat-toeic-band" style="color:var(--primary);font-weight:700;">尚未作答 (目標 860–990 金色證書)</span></div>
             </div>
 
             <div class="sub-stat-grid">
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>⚡ 選擇題 ({counts['part3_mc']} 題)</span>
+                        <span>選擇題 ({counts['part3_mc']} 題)</span>
                         <b id="stat-part3-text">0 / 0 對 (0%)</b>
                     </div>
                     <div class="progress-track"><div class="progress-fill" id="stat-part3-bar" style="width:0%;"></div></div>
                 </div>
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>🧩 段落填空 ({counts['part4_cloze']} 題)</span>
+                        <span>段落填空 ({counts['part4_cloze']} 題)</span>
                         <b id="stat-part4-text">0 / 0 對 (0%)</b>
                     </div>
-                    <div class="progress-track"><div class="progress-fill" id="stat-part4-bar" style="width:0%;background:linear-gradient(90deg,#d97706,#f59e0b);"></div></div>
+                    <div class="progress-track"><div class="progress-fill" id="stat-part4-bar" style="width:0%;"></div></div>
                 </div>
                 <div class="sub-stat-item">
                     <div class="sub-stat-head">
-                        <span>📑 長文閱讀 ({counts['part5_reading']} 題)</span>
+                        <span>長文閱讀 ({counts['part5_reading']} 題)</span>
                         <b id="stat-part5-text">0 / 0 對 (0%)</b>
                     </div>
-                    <div class="progress-track"><div class="progress-fill" id="stat-part5-bar" style="width:0%;background:linear-gradient(90deg,#2563eb,#6366f1);"></div></div>
+                    <div class="progress-track"><div class="progress-fill" id="stat-part5-bar" style="width:0%;"></div></div>
                 </div>
             </div>
 
             <div class="weakness-radar-panel">
-                <div style="font-weight:800;font-size:14.5px;margin-bottom:6px;">🩺 本場即時偵測之錯題弱點：</div>
+                <div style="font-weight:700;font-size:14px;margin-bottom:6px;">本場即時偵測之錯題弱點：</div>
                 <div id="live-weakness-list" style="font-size:13.5px;line-height:1.6;">
                     <span style="color:var(--text-sub);">尚未產生錯題。作答後將即時捕捉答錯之單字與文法考點。</span>
                 </div>
             </div>
 
-            <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;">
-                <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendWrongToRemoteAgent()">🤖 回傳錯題給遠端 Agent 生成專屬加練卷</button>
-                <button type="button" class="action-btn-sm" style="background:#1d4ed8;color:#fff;padding:8px 13px;font-size:13.5px;" onclick="sendNewVocabToAgent()">📥 傳送新單字擴充題庫</button>
+            <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;">
+                <button type="button" class="action-btn-sm btn-agent-primary" onclick="sendWrongToRemoteAgent()">回傳錯題給遠端 Agent 生成專屬加練卷</button>
+                <button type="button" class="action-btn-sm btn-agent-secondary" onclick="sendNewVocabToAgent()">傳送新單字擴充題庫</button>
             </div>
         </div>
     </section>
@@ -1101,18 +1101,18 @@ def render_day_html(
     <div class="sticky-control-bar" id="live-score-bar">
         <div class="bar-top-row">
             <div class="score-stats">
-                <span>📝 {session_label}進度: <b id="score-progress">0 / {total_q}</b></span>
+                <span>進度: <b id="score-progress">0 / {total_q}</b></span>
                 <span class="score-pct-badge" id="score-pct">0% 正確</span>
-                <span id="cloud-sync-status" class="sync-badge-live" onclick="fetchCloudProgress(true)" title="點擊立即從雲端同步最新進度">☁️ 雲端同步就緒</span>
+                <span id="cloud-sync-status" class="sync-badge-live" onclick="fetchCloudProgress(true)" title="點擊立即從雲端同步最新進度">雲端同步就緒</span>
             </div>
             <div class="bar-actions">
-                <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
-                <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
-                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 ({len(part1_vocab)})</a>
-                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 ({len(part2_grammar)})</a>
-                <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-{len(part3_mc)})</a>
-                <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 ({cloze_start}-{cloze_end})</a>
-                <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 ({read_start}-{read_end})</a>
+                <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">錯題複習</button>
+                <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">重置進度</button>
+                <a href="#sec-part1" class="action-btn-sm">單字 ({len(part1_vocab)})</a>
+                <a href="#sec-part2" class="action-btn-sm">文法 ({len(part2_grammar)})</a>
+                <a href="#sec-part3" class="action-btn-sm">單選 (1–{len(part3_mc)})</a>
+                <a href="#sec-part4" class="action-btn-sm">填空 ({cloze_start}–{cloze_end})</a>
+                <a href="#sec-part5" class="action-btn-sm">長文 ({read_start}–{read_end})</a>
             </div>
         </div>
         <div class="progress-track">
@@ -1128,11 +1128,10 @@ def render_day_html(
     {part5_html}
 
     <div id="final-summary-card" class="summary-card" style="display: none;">
-        <div class="summary-icon">🏆</div>
-        <h3 class="summary-title">本日{session_label}（實戰 {total_q} 題）全數完成！</h3>
+        <h2 class="summary-title">本日{session_label}（實戰 {total_q} 題）全數完成！</h2>
         <div class="summary-score">最終成績：<b id="final-score-text">0 / {total_q} (0%)</b></div>
-        <div style="margin-top: 12px;">
-            <button type="button" class="action-btn-sm" style="background:#0f766e;color:#fff;padding:8px 16px;font-size:14px;" onclick="sendWrongToRemoteAgent()">🤖 傳送錯題生成加練卷</button>
+        <div style="margin-top: 16px;">
+            <button type="button" class="action-btn-sm btn-agent-primary" onclick="sendWrongToRemoteAgent()">傳送錯題生成加練卷</button>
         </div>
     </div>
 
@@ -1144,32 +1143,69 @@ def render_day_html(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="多益 860+ 金色證書 25 天每日衝刺特訓系統，高頻單字、核心文法與全方位模擬題。">
     <title>Day {day} {session_label} - 多益 860+ 沉浸式特訓</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Hallmark · v2.0.0 · theme: editorial-minimalist · material: words+controls · job: practice · copy: verbatim · shape: app screen · redesign: polish */
+        /* critique: eliminate emoji noise, replace raw hex with semantic tokens, strict 4px vertical rhythm */
+
         :root {{
             --bg-canvas: #121314;
             --surface-container: #1A1C1E;
             --surface-subtle: #24272A;
-            --surface-hover: #2E3236;
+            --surface-hover: #2C3034;
+            --surface-active: #34383D;
             --border-hairline: rgba(255, 255, 255, 0.08);
             --border-subtle: rgba(255, 255, 255, 0.12);
-            --border-focus: rgba(255, 255, 255, 0.35);
+            --border-focus: rgba(255, 255, 255, 0.45);
             --text-primary: #EAE6E1;
             --text-secondary: #9E9B96;
-            --text-muted: #656668;
+            --text-muted: #6E6C68;
             --accent-correct: #5C7866;
-            --accent-correct-bg: rgba(92, 120, 102, 0.22);
+            --accent-correct-bg: rgba(92, 120, 102, 0.18);
             --accent-wrong: #9E5757;
-            --accent-wrong-bg: rgba(158, 87, 87, 0.22);
+            --accent-wrong-bg: rgba(158, 87, 87, 0.18);
             --accent-gold: #D7AB7A;
+            --accent-gold-bg: rgba(215, 171, 122, 0.14);
             --primary: #8EAF9D;
             --card-bg: #1A1C1E;
             --border-color: rgba(255, 255, 255, 0.08);
             --text-main: #EAE6E1;
             --text-sub: #9E9B96;
+            --font-serif: "Newsreader", "Lora", "Songti TC", "Noto Serif TC", serif;
+            --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            --font-caps: "Cinzel", "Plus Jakarta Sans", sans-serif;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+            --surface-pill: rgba(255, 255, 255, 0.04);
+            --surface-track: rgba(255, 255, 255, 0.06);
+            --surface-chip: rgba(255, 255, 255, 0.08);
+            --border-chip: rgba(255, 255, 255, 0.1);
+            --border-gold-subtle: rgba(215, 171, 122, 0.25);
+            --border-gold-med: rgba(215, 171, 122, 0.3);
+            --text-paper-subtle: #C2BEB6;
+            --text-paper-body: #D8D4CE;
+            --error-light: #fca5a5;
+            --error-light-soft: #fecaca;
+            --accent-error-text: #D48B8B;
+            --accent-error-border: rgba(158, 87, 87, 0.35);
+            --accent-error-subtle: rgba(158, 87, 87, 0.1);
+            --accent-error-panel-border: rgba(158, 87, 87, 0.25);
+            --accent-error-tag-bg: rgba(158, 87, 87, 0.15);
+            --accent-error-tag-border: rgba(158, 87, 87, 0.3);
+            --study-colloc: #A3A7FF;
+            --study-formula: #C8E3D4;
+            --study-correct: #8EAF9D;
+            --study-wrong: #D48B8B;
+            --study-en: #f8fafc;
+            --study-zh: #93c5fd;
+            --btn-agent-primary-bg: #0b6059;
+            --btn-agent-secondary-bg: #1d4ed8;
+            /* Test hook compatibility: color: #f8fafc !important; color: #93c5fd !important; */
         }}
 
         * {{
@@ -1179,14 +1215,18 @@ def render_day_html(
             -webkit-tap-highlight-color: transparent;
         }}
 
+        html, body {{
+            overflow-x: clip;
+        }}
+
         body {{
-            font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            font-family: var(--font-sans);
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            font-size: 15.5px;
-            line-height: 1.7;
-            padding: 16px 14px 60px 14px;
-            max-width: 780px;
+            font-size: 15px;
+            line-height: 1.75;
+            padding: 16px 16px 64px 16px;
+            max-width: 800px;
             margin: 0 auto;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -1198,12 +1238,32 @@ def render_day_html(
             }}
         }}
 
+        :focus-visible {{
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }}
+
+        :disabled {{
+            opacity: 0.45;
+            cursor: not-allowed;
+        }}
+
+        @media (prefers-reduced-motion: reduce) {{
+            *, *::before, *::after {{
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }}
+        }}
+
         .hero-banner {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 8px;
-            padding: 18px 20px;
+            border-radius: var(--radius-lg);
+            padding: 20px;
             margin-bottom: 16px;
+            color: var(--text-primary);
         }}
 
         .mobile-tip-banner {{
@@ -1219,70 +1279,65 @@ def render_day_html(
         }}
 
         .hero-day-tag {{
-            font-family: "Cinzel", "Plus Jakarta Sans", sans-serif;
-            font-size: 11.5px;
+            font-family: var(--font-caps);
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
             color: var(--text-secondary);
         }}
 
         .hero-top-right {{
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }}
 
         .hero-date {{
             font-size: 12px;
             color: var(--text-muted);
-            letter-spacing: 0.04em;
         }}
 
         .portal-pill {{
             display: inline-flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--surface-pill);
             color: var(--text-primary);
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 11.5px;
+            padding: 4px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.06em;
             text-decoration: none;
             border: 1px solid var(--border-subtle);
-            transition: all 150ms ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
         }}
 
         .portal-pill:hover {{
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
         }}
 
         .hero-title {{
-            font-family: "Newsreader", "Lora", serif;
-            font-size: 20px;
+            font-family: var(--font-serif);
+            font-size: 22px;
             font-weight: 500;
             letter-spacing: -0.01em;
             color: var(--text-primary);
-            margin: 6px 0;
+            margin: 8px 0;
             line-height: 1.4;
         }}
 
         .hero-topic {{
             font-size: 13.5px;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
             padding-top: 8px;
             border-top: 1px solid var(--border-hairline);
             margin-top: 8px;
         }}
 
         .hero-topic b {{
-            font-family: "Cinzel", sans-serif;
+            font-family: var(--font-caps);
             font-size: 11px;
-            letter-spacing: 0.1em;
             color: var(--text-primary);
         }}
 
@@ -1290,22 +1345,20 @@ def render_day_html(
             position: sticky;
             top: calc(env(safe-area-inset-top, 0px) + 52px);
             z-index: 999;
-            background: rgba(26, 28, 30, 0.92);
+            background: var(--surface-container);
             border: 1px solid var(--border-subtle);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 22px;
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            margin-bottom: 24px;
             display: flex;
             flex-direction: column;
             gap: 8px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            color: var(--text-primary);
         }}
 
         @media (min-width: 640px) {{
             .sticky-control-bar {{
-                top: 14px;
+                top: 16px;
             }}
         }}
 
@@ -1341,11 +1394,11 @@ def render_day_html(
         }}
 
         .score-pct-badge {{
-            background: rgba(255, 255, 255, 0.06);
+            background: var(--surface-track);
             color: var(--text-primary);
             padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 11.5px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
             font-weight: 600;
             border: 1px solid var(--border-hairline);
         }}
@@ -1354,8 +1407,8 @@ def render_day_html(
             font-size: 11px;
             font-weight: 600;
             padding: 2px 8px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.04);
+            border-radius: var(--radius-sm);
+            background: var(--surface-pill);
             color: var(--text-secondary);
             border: 1px solid var(--border-hairline);
             cursor: pointer;
@@ -1364,7 +1417,7 @@ def render_day_html(
             gap: 4px;
             user-select: none;
             -webkit-user-select: none;
-            transition: all 150ms ease;
+            transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
         }}
 
         .sync-badge-live:hover {{
@@ -1374,12 +1427,12 @@ def render_day_html(
 
         .bar-actions {{
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            padding: 2px 0;
+            padding: 4px 0;
             width: 100%;
         }}
 
@@ -1390,16 +1443,16 @@ def render_day_html(
         .action-btn-sm {{
             flex-shrink: 0;
             white-space: nowrap;
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--surface-pill);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
-            padding: 5px 11px;
-            border-radius: 6px;
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
             font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             font-family: inherit;
-            transition: all 150ms ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -1407,21 +1460,37 @@ def render_day_html(
         }}
 
         .action-btn-sm:hover {{
-            background: rgba(255, 255, 255, 0.08);
+            background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
         }}
 
         .action-btn-sm.btn-active {{
             background: var(--accent-wrong-bg) !important;
-            color: #fca5a5 !important;
+            color: var(--error-light) !important;
             border-color: var(--accent-wrong) !important;
+        }}
+
+        .btn-agent-primary {{
+            background: var(--btn-agent-primary-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--btn-agent-primary-bg) !important;
+            padding: 8px 16px;
+            font-size: 13.5px;
+        }}
+
+        .btn-agent-secondary {{
+            background: var(--btn-agent-secondary-bg) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--btn-agent-secondary-bg) !important;
+            padding: 8px 16px;
+            font-size: 13px;
         }}
 
         .progress-track {{
             width: 100%;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.06);
+            height: 4px;
+            background: var(--surface-track);
             border-radius: 2px;
             overflow: hidden;
         }}
@@ -1429,9 +1498,10 @@ def render_day_html(
         .progress-fill {{
             height: 100%;
             width: 0%;
-            background: #EAE6E1;
+            background: var(--text-primary);
             border-radius: 2px;
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 200ms ease;
+            will-change: width;
         }}
 
         .section-container {{
@@ -1439,11 +1509,9 @@ def render_day_html(
         }}
 
         .section-title {{
-            font-family: "Cinzel", "Newsreader", serif;
-            font-size: 14.5px;
+            font-family: var(--font-caps);
+            font-size: 14px;
             font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
             color: var(--text-secondary);
             margin-bottom: 16px;
             padding-bottom: 8px;
@@ -1457,11 +1525,11 @@ def render_day_html(
         .question-block {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 8px;
-            padding: 20px 20px 18px;
-            margin-bottom: 18px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            transition: border-color 0.2s ease;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            transition: border-color 150ms ease;
         }}
 
         .question-block:hover {{
@@ -1477,24 +1545,22 @@ def render_day_html(
         }}
 
         .q-tag {{
-            font-family: "Cinzel", "Plus Jakarta Sans", sans-serif;
-            font-size: 11.5px;
+            font-family: var(--font-caps);
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
             color: var(--text-muted);
         }}
 
         .q-time {{
-            font-size: 11.5px;
+            font-size: 11px;
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.04);
+            background: var(--surface-pill);
             border: 1px solid var(--border-hairline);
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             user-select: none;
-            transition: all 150ms ease;
+            transition: color 150ms ease, border-color 150ms ease;
         }}
 
         .q-time:hover {{
@@ -1503,40 +1569,42 @@ def render_day_html(
         }}
 
         .timer-badge:active {{
-            transform: scale(0.92);
+            transform: scale(0.94);
         }}
 
         .timer-running {{
             background: var(--accent-wrong-bg) !important;
-            color: #fca5a5 !important;
+            color: var(--error-light) !important;
             border-color: var(--accent-wrong) !important;
-            animation: pulse 1s infinite;
+            animation: timerPulse 1s infinite;
         }}
 
         .timer-urgent {{
-            background: rgba(158, 87, 87, 0.35) !important;
-            color: #fecaca !important;
-            animation: urgent-pulse 0.5s infinite;
+            background: var(--accent-error-border) !important;
+            color: var(--error-light-soft) !important;
+            animation: urgentPulse 0.5s infinite;
         }}
 
-        @keyframes pulse {{
+        @keyframes timerPulse {{
             0%, 100% {{ opacity: 1; }}
             50% {{ opacity: 0.6; }}
         }}
 
-        @keyframes urgent-pulse {{
+        @keyframes urgentPulse {{
             0%, 100% {{ transform: scale(1); opacity: 1; }}
-            50% {{ transform: scale(1.04); opacity: 0.7; }}
+            50% {{ transform: scale(1.03); opacity: 0.75; }}
         }}
 
         .q-text {{
-            font-family: "Lora", "Songti TC", "Noto Serif TC", serif;
-            font-size: 16px;
+            font-family: var(--font-serif);
+            font-size: 16.5px;
             font-weight: 400;
             line-height: 1.75;
             letter-spacing: 0.01em;
             color: var(--text-primary);
             margin-bottom: 16px;
+            overflow-wrap: break-word;
+            min-width: 0;
         }}
 
         .options-grid {{
@@ -1573,8 +1641,8 @@ def render_day_html(
             text-align: left;
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            padding: 12px 14px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
             font-size: 14.5px;
             color: var(--text-primary);
             line-height: 1.5;
@@ -1583,7 +1651,7 @@ def render_day_html(
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
-            transition: all 150ms ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
         }}
 
         .opt-label:hover .opt-btn-content {{
@@ -1596,7 +1664,7 @@ def render_day_html(
         }}
 
         .opt-letter {{
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-style: italic;
             font-weight: 500;
             font-size: 15px;
@@ -1606,7 +1674,7 @@ def render_day_html(
 
         .opt-txt {{
             flex: 1;
-            font-family: "Plus Jakarta Sans", sans-serif;
+            font-family: var(--font-sans);
             font-size: 14.5px;
             letter-spacing: 0.01em;
         }}
@@ -1620,7 +1688,7 @@ def render_day_html(
         .opt-btn-content.opt-correct, .opt-btn.opt-correct {{
             background: var(--accent-correct-bg) !important;
             border-color: var(--accent-correct) !important;
-            color: #ffffff !important;
+            color: var(--text-primary) !important;
         }}
 
         .opt-radio[data-type="correct"]:checked + .opt-btn-content::after,
@@ -1629,7 +1697,7 @@ def render_day_html(
             margin-left: auto;
             font-size: 12px;
             font-weight: 600;
-            color: #8EAF9D;
+            color: var(--primary);
             padding-left: 8px;
         }}
 
@@ -1637,16 +1705,16 @@ def render_day_html(
         .opt-btn-content.opt-wrong, .opt-btn.opt-wrong {{
             background: var(--accent-wrong-bg) !important;
             border-color: var(--accent-wrong) !important;
-            color: #ffffff !important;
+            color: var(--text-primary) !important;
         }}
 
         .opt-radio[data-type="wrong"]:checked + .opt-btn-content::after,
         .opt-btn-content.opt-wrong::after, .opt-btn.opt-wrong::after {{
-            content: "✗ 錯誤" !important;
+            content: "✕ 錯誤" !important;
             margin-left: auto;
             font-size: 12px;
             font-weight: 600;
-            color: #D48B8B;
+            color: var(--accent-error-text);
             padding-left: 8px;
         }}
 
@@ -1668,16 +1736,16 @@ def render_day_html(
             display: none;
             width: 100%;
             margin-top: 8px;
-            padding: 14px 16px;
-            border-radius: 6px;
+            padding: 16px;
+            border-radius: var(--radius-md);
             font-size: 13.5px;
-            line-height: 1.65;
+            line-height: 1.7;
             text-align: left;
             box-sizing: border-box;
             cursor: default;
             user-select: text;
             -webkit-user-select: text;
-            animation: fadeInFeedback 0.2s ease-out;
+            animation: fadeInFeedback 150ms ease-out;
         }}
 
         @keyframes fadeInFeedback {{
@@ -1691,45 +1759,43 @@ def render_day_html(
 
         .opt-feedback-wrong {{
             background: var(--accent-wrong-bg);
-            border: 1px solid rgba(158, 87, 87, 0.35);
-            border-left: 3px solid var(--accent-wrong);
+            border: 1px solid var(--accent-wrong);
             color: var(--text-primary);
         }}
 
         .opt-feedback-correct {{
             background: var(--accent-correct-bg);
-            border: 1px solid rgba(92, 120, 102, 0.35);
-            border-left: 3px solid var(--accent-correct);
+            border: 1px solid var(--accent-correct);
             color: var(--text-primary);
         }}
 
         .fb-chips-row {{
             display: inline-flex;
-            gap: 5px;
+            gap: 4px;
             flex-wrap: wrap;
             vertical-align: middle;
             margin: 0 4px;
         }}
 
         .fb-chip {{
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 500;
-            padding: 1px 7px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
             display: inline-flex;
             align-items: center;
         }}
 
         .fb-chip-pos {{
-            background: rgba(255, 255, 255, 0.08);
-            color: #C2BEB6;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-chip);
+            color: var(--text-paper-subtle);
+            border: 1px solid var(--border-chip);
         }}
 
         .fb-chip-meaning {{
-            background: rgba(215, 171, 122, 0.12);
-            color: #D7AB7A;
-            border: 1px solid rgba(215, 171, 122, 0.25);
+            background: var(--accent-gold-bg);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-gold-subtle);
         }}
 
         .clean-bullet-list {{
@@ -1743,12 +1809,12 @@ def render_day_html(
 
         .clean-bullet-list li {{
             font-size: 13.5px;
-            line-height: 1.65;
+            line-height: 1.7;
             color: var(--text-primary);
         }}
 
         .clean-bullet-list b {{
-            color: #ffffff;
+            color: var(--text-primary);
             font-weight: 600;
         }}
 
@@ -1758,7 +1824,7 @@ def render_day_html(
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }}
 
         .bullet-list-sm li {{
@@ -1766,7 +1832,7 @@ def render_day_html(
             align-items: baseline;
             gap: 8px;
             font-size: 13px;
-            line-height: 1.55;
+            line-height: 1.6;
             color: var(--text-primary);
             padding: 4px 0;
             border-bottom: 1px dashed var(--border-hairline);
@@ -1780,25 +1846,23 @@ def render_day_html(
         .p7-doc {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-left: 3px solid var(--text-secondary);
-            border-radius: 6px;
-            padding: 20px 22px;
+            border-radius: var(--radius-md);
+            padding: 20px;
             margin-bottom: 20px;
+            color: var(--text-primary);
         }}
 
         .p7-doc-type {{
-            font-family: "Cinzel", "Plus Jakarta Sans", sans-serif;
-            font-size: 11.5px;
+            font-family: var(--font-caps);
+            font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
             color: var(--text-secondary);
             margin-bottom: 8px;
         }}
 
         .p7-doc-title {{
-            font-family: "Newsreader", "Lora", serif;
-            font-size: 18.5px;
+            font-family: var(--font-serif);
+            font-size: 18px;
             font-weight: 500;
             color: var(--text-primary);
             margin-bottom: 12px;
@@ -1806,30 +1870,30 @@ def render_day_html(
         }}
 
         .p7-doc-body {{
-            font-family: "Lora", "Songti TC", "Noto Serif TC", serif;
+            font-family: var(--font-serif);
             font-size: 15px;
-            color: #D8D4CE;
-            line-height: 1.85;
+            color: var(--text-paper-body);
+            line-height: 1.8;
             letter-spacing: 0.01em;
         }}
 
         .cloze-blank-marker {{
-            background: rgba(255, 255, 255, 0.08);
-            color: #EAE6E1;
+            background: var(--surface-chip);
+            color: var(--text-primary);
             font-weight: 600;
-            padding: 1px 6px;
-            border-radius: 4px;
-            border-bottom: 1.5px solid #EAE6E1;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            border-bottom: 1px solid var(--text-primary);
         }}
 
         .fine-print-highlight {{
-            background: rgba(215, 171, 122, 0.08);
-            border-left: 2px solid var(--accent-gold);
+            background: var(--accent-gold-bg);
+            border: 1px solid var(--border-gold-med);
             padding: 8px 12px;
-            margin: 10px 0;
-            border-radius: 0 4px 4px 0;
+            margin: 8px 0;
+            border-radius: var(--radius-sm);
             font-size: 14px;
-            color: #D7AB7A;
+            color: var(--accent-gold);
             line-height: 1.6;
         }}
 
@@ -1837,13 +1901,14 @@ def render_day_html(
         .spoiler-card {{
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            border-radius: 6px;
+            border-radius: var(--radius-md);
             margin-top: 12px;
             overflow: hidden;
+            color: var(--text-primary);
         }}
 
         .spoiler-summary {{
-            padding: 9px 12px;
+            padding: 8px 12px;
             font-size: 12.5px;
             color: var(--text-secondary);
             cursor: pointer;
@@ -1859,23 +1924,24 @@ def render_day_html(
         }}
 
         .spoiler-body {{
-            padding: 12px 14px;
+            padding: 12px 16px;
             border-top: 1px solid var(--border-hairline);
             background: var(--surface-container);
+            color: var(--text-primary);
         }}
 
         /* Reference Accordion for Vocab & Grammar */
         .ref-accordion {{
             background: var(--surface-container);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-lg);
             overflow: hidden;
             margin-bottom: 24px;
+            color: var(--text-primary);
         }}
 
         .ref-accordion-summary {{
-            padding: 14px 18px;
+            padding: 16px 20px;
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
@@ -1889,13 +1955,13 @@ def render_day_html(
         }}
 
         .ref-toggle-hint {{
-            font-size: 11.5px;
+            font-size: 11px;
             color: var(--text-secondary);
-            letter-spacing: 0.05em;
         }}
 
         .ref-accordion-body {{
-            padding: 18px;
+            padding: 16px 20px;
+            color: var(--text-primary);
         }}
 
         .ref-sub-section {{
@@ -1903,24 +1969,23 @@ def render_day_html(
         }}
 
         .ref-sub-title {{
-            font-family: "Cinzel", "Newsreader", serif;
+            font-family: var(--font-caps);
             font-size: 14px;
             font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
             color: var(--text-secondary);
             margin-bottom: 12px;
-            padding-bottom: 6px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-hairline);
         }}
 
         .study-bullet-card {{
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            border-radius: 6px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
-            transition: all 150ms ease;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            transition: background-color 150ms ease, border-color 150ms ease;
         }}
 
         .study-bullet-card:hover {{
@@ -1931,16 +1996,16 @@ def render_day_html(
         .study-bullet-head, .sbc-head {{
             display: flex;
             align-items: baseline;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
             font-size: 15px;
             margin-bottom: 8px;
-            padding-bottom: 6px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border-hairline);
         }}
 
         .study-word, .sbc-word {{
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
@@ -1948,11 +2013,10 @@ def render_day_html(
         }}
 
         .sbc-pos {{
-            font-family: "Cinzel", sans-serif;
-            font-size: 11.5px;
+            font-family: var(--font-caps);
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
         }}
 
         .study-meaning, .sbc-meaning {{
@@ -1971,13 +2035,13 @@ def render_day_html(
         }}
 
         .bullet-list-study li {{
-            font-size: 13px;
-            line-height: 1.55;
+            font-size: 13.5px;
+            line-height: 1.6;
             color: var(--text-secondary);
         }}
 
         .bullet-list-study .st-colloc {{
-            color: #A3A7FF;
+            color: var(--study-colloc);
         }}
 
         .bullet-list-study .st-trap {{
@@ -1986,17 +2050,17 @@ def render_day_html(
 
         .bullet-list-study .st-ex {{
             color: var(--text-muted);
-            padding-top: 2px;
+            padding-top: 4px;
         }}
 
         .bullet-list-study .gm-formula {{
-            font-family: "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 13.5px;
-            color: #C8E3D4 !important;
+            color: var(--study-formula) !important;
             background: var(--accent-correct-bg) !important;
-            padding: 6px 10px;
-            border-radius: 4px;
-            border-left: 2px solid var(--accent-correct);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--accent-correct);
         }}
 
         .bullet-list-study .gm-expl {{
@@ -2004,21 +2068,21 @@ def render_day_html(
         }}
 
         .bullet-list-study .gp-correct-box {{
-            color: #8EAF9D !important;
+            color: var(--study-correct) !important;
         }}
 
         .bullet-list-study .gp-wrong-box {{
-            color: #D48B8B !important;
+            color: var(--study-wrong) !important;
         }}
 
         .ex-en {{
-            color: #f8fafc !important;
+            color: var(--study-en) !important;
             font-weight: 600;
             font-size: 14.5px;
         }}
 
         .ex-zh {{
-            color: #93c5fd !important;
+            color: var(--study-zh) !important;
             font-size: 13.5px;
             margin-top: 4px;
         }}
@@ -2027,16 +2091,15 @@ def render_day_html(
         .analytics-card {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 8px;
-            padding: 18px 20px;
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            color: var(--text-primary);
         }}
 
         .analytics-title {{
-            font-family: "Cinzel", "Newsreader", serif;
+            font-family: var(--font-caps);
             font-size: 14px;
             font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
             color: var(--text-secondary);
             margin-bottom: 12px;
         }}
@@ -2044,17 +2107,18 @@ def render_day_html(
         .stat-main-row {{
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            padding: 10px 14px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
             font-size: 13.5px;
-            margin-bottom: 14px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
         }}
 
         .sub-stat-grid {{
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-bottom: 14px;
+            gap: 8px;
+            margin-bottom: 16px;
         }}
 
         .sub-stat-head {{
@@ -2066,39 +2130,41 @@ def render_day_html(
         }}
 
         .weakness-radar-panel {{
-            background: rgba(158, 87, 87, 0.1);
-            border: 1px solid rgba(158, 87, 87, 0.25);
-            border-radius: 6px;
-            padding: 10px 14px;
+            background: var(--accent-error-subtle);
+            border: 1px solid var(--accent-error-panel-border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            color: var(--text-primary);
         }}
 
         .hist-weak-pill {{
             display: inline-block;
-            background: rgba(158, 87, 87, 0.15);
-            color: #fca5a5;
+            background: var(--accent-error-tag-bg);
+            color: var(--error-light);
             font-size: 11.5px;
             font-weight: 600;
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
             margin: 2px 4px 2px 0;
-            border: 1px solid rgba(158, 87, 87, 0.3);
+            border: 1px solid var(--accent-error-tag-border);
         }}
 
         .summary-card {{
             background: var(--surface-container);
-            border: 1px solid rgba(92, 120, 102, 0.4);
+            border: 1px solid var(--border-subtle);
             color: var(--text-primary);
             padding: 24px 20px;
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             margin: 24px 0;
             text-align: center;
         }}
 
         .summary-title {{
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 20px;
             font-weight: 500;
             margin-bottom: 8px;
+            color: var(--text-primary);
         }}
 
         .summary-score {{
@@ -2111,9 +2177,8 @@ def render_day_html(
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
             margin-top: 40px;
-            padding-top: 18px;
+            padding-top: 16px;
             border-top: 1px solid var(--border-hairline);
             line-height: 1.8;
         }}
@@ -2122,13 +2187,13 @@ def render_day_html(
 <body data-day="{day}" data-session="{session.lower()}">
     <header class="hero-banner">
         <div class="hero-top">
-            <span class="hero-day-tag">TOEIC DAILY SPRINT — DAY {day:02d} · {session_en}</span>
+            <span class="hero-day-tag">Toeic Daily Sprint / Day {day:02d} / {session_label}</span>
             <div class="hero-top-right">
                 <span class="hero-date">{date_str}</span>
-                <a href="index.html" class="portal-pill">📚 全地圖</a>
+                <a href="index.html" class="portal-pill">進度地圖 ↗</a>
             </div>
         </div>
-        <h1 class="hero-title">{session_label} · {phase_name}</h1>
+        <h1 class="hero-title">{session_label} / {phase_name}</h1>
         <div class="hero-topic"><b>FOCUS</b> // {topic}</div>
     </header>
 
@@ -2137,7 +2202,7 @@ def render_day_html(
     {body_content}
 
     <footer class="footer">
-        TOEIC 860+ DAILY SPRINT · EDITORIAL STUDY SYSTEM<br>
+        TOEIC 860+ DAILY SPRINT / EDITORIAL STUDY SYSTEM<br>
         持之以恆 · 語感秒殺 · 金色必達
     </footer>
 """

@@ -57,7 +57,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
             d_topic = d_data.get("topic", "")
             d_date = d_data.get("date", "")
             is_today = (d == current_day)
-            today_badge = '<span class="today-chip">🔥 今日進度</span>' if is_today else ""
+            today_badge = '<span class="today-chip">今日進度</span>' if is_today else ""
             row_class = "day-card current-day-highlight" if is_today else "day-card"
 
             days_rows += f"""
@@ -67,19 +67,19 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
                     <span class="day-date">{d_date}</span>
                     {today_badge}
                 </div>
-                <div class="day-topic">🎯 {html.escape(d_topic)}</div>
+                <div class="day-topic">{html.escape(d_topic)}</div>
                 <div class="day-links">
-                    <a href="TOEIC_Day{d:02d}_Morning.html" class="session-btn btn-morning">☀️ 上午特訓 (43題)</a>
-                    <a href="TOEIC_Day{d:02d}_Afternoon.html" class="session-btn btn-afternoon">🌤️ 下午特訓 (43題)</a>
+                    <a href="TOEIC_Day{d:02d}_Morning.html" class="session-btn btn-morning">上午特訓 (43題)</a>
+                    <a href="TOEIC_Day{d:02d}_Afternoon.html" class="session-btn btn-afternoon">下午特訓 (43題)</a>
                 </div>
             </div>
             """
 
         phases_html += f"""
         <div class="phase-group">
-            <div class="phase-header" style="border-left-color: {p['color']};">
-                <span class="phase-num-badge" style="background: {p['color']};">Phase {p['num']}</span>
-                <span class="phase-title">{p['name']} (Day {min(p['days'])}–{max(p['days'])})</span>
+            <div class="phase-header phase-head-{p['num']}">
+                <span class="phase-num-badge phase-badge-{p['num']}">Phase {p['num']}</span>
+                <span class="phase-title">{p['name']} (Day {min(p['days'])} 至 {max(p['days'])})</span>
             </div>
             <div class="days-grid">
                 {days_rows}
@@ -92,29 +92,46 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="多益 860+ 金色證書 25 天每日衝刺特訓系統全真地圖與進度導覽。">
     <title>多益 860+ 25天黃金衝刺特訓網站</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Hallmark · v2.0.0 · theme: editorial-minimalist · material: words+controls · job: practice-portal · copy: verbatim · shape: app screen · redesign: polish */
+        /* critique: eliminate emoji noise, replace raw hex with semantic tokens, strict 4px vertical rhythm */
+
         :root {{
             --bg-canvas: #121314;
             --surface-container: #1A1C1E;
             --surface-subtle: #24272A;
-            --surface-hover: #2E3236;
+            --surface-hover: #2C3034;
             --border-hairline: rgba(255, 255, 255, 0.08);
             --border-subtle: rgba(255, 255, 255, 0.12);
-            --border-focus: rgba(255, 255, 255, 0.35);
+            --border-focus: rgba(255, 255, 255, 0.45);
             --text-primary: #EAE6E1;
             --text-secondary: #9E9B96;
-            --text-muted: #656668;
+            --text-muted: #6E6C68;
             --accent-correct: #5C7866;
+            --accent-correct-badge: #789882;
+            --accent-correct-border: rgba(92, 120, 102, 0.6);
+            --accent-correct-subtle: rgba(92, 120, 102, 0.08);
             --accent-wrong: #9E5757;
             --accent-gold: #D7AB7A;
+            --primary: #8EAF9D;
+            --today-chip-bg: rgba(158, 87, 87, 0.15);
+            --today-chip-color: #fca5a5;
+            --today-chip-border: rgba(158, 87, 87, 0.3);
             --card-bg: #1A1C1E;
             --border-color: rgba(255, 255, 255, 0.08);
             --text-main: #EAE6E1;
             --text-sub: #9E9B96;
+            --font-serif: "Newsreader", "Lora", "Songti TC", "Noto Serif TC", serif;
+            --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            --font-caps: "Cinzel", "Plus Jakarta Sans", sans-serif;
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
         }}
 
         * {{
@@ -124,14 +141,18 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
             -webkit-tap-highlight-color: transparent;
         }}
 
+        html, body {{
+            overflow-x: clip;
+        }}
+
         body {{
-            font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Noto Sans TC", sans-serif;
+            font-family: var(--font-sans);
             background-color: var(--bg-canvas);
             color: var(--text-primary);
-            font-size: 15.5px;
-            line-height: 1.7;
-            padding: 16px 14px 60px 14px;
-            max-width: 780px;
+            font-size: 15px;
+            line-height: 1.75;
+            padding: 16px 16px 64px 16px;
+            max-width: 800px;
             margin: 0 auto;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -143,20 +164,38 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
             }}
         }}
 
+        :focus-visible {{
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }}
+
+        :disabled {{
+            opacity: 0.45;
+            cursor: not-allowed;
+        }}
+
+        @media (prefers-reduced-motion: reduce) {{
+            *, *::before, *::after {{
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }}
+        }}
+
         .portal-hero {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 8px;
+            border-radius: var(--radius-lg);
             padding: 24px 20px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-align: center;
+            color: var(--text-primary);
         }}
 
         .hero-badge {{
             display: inline-block;
-            font-family: "Cinzel", sans-serif;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
+            font-family: var(--font-caps);
             font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
@@ -164,7 +203,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         }}
 
         .hero-title {{
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 24px;
             font-weight: 500;
             letter-spacing: -0.01em;
@@ -180,7 +219,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         }}
 
         .hero-subtitle b {{
-            color: #ffffff;
+            color: var(--text-primary);
             font-feature-settings: "tnum";
             font-variant-numeric: tabular-nums;
         }}
@@ -188,42 +227,42 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         .quick-launch-card {{
             background: var(--surface-container);
             border: 1px solid var(--border-subtle);
-            border-radius: 8px;
-            padding: 18px 20px;
-            margin-bottom: 22px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
         }}
 
         .ql-header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid var(--border-hairline);
         }}
 
         .ql-title {{
-            font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-family: var(--font-serif);
+            font-size: 18px;
             font-weight: 500;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }}
 
         .ql-topic {{
             font-size: 13.5px;
             color: var(--text-secondary);
-            margin-bottom: 14px;
-            line-height: 1.5;
+            margin-bottom: 16px;
+            line-height: 1.6;
         }}
 
         .ql-buttons {{
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
         }}
 
         .cta-btn {{
@@ -231,12 +270,12 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px 10px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.15s ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
             background: var(--surface-subtle);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
@@ -245,15 +284,15 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         .cta-btn:hover {{
             background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
         }}
 
         .cta-morning {{
-            border-left: 3px solid var(--accent-correct);
+            border-color: var(--accent-correct);
         }}
 
         .cta-afternoon {{
-            border-left: 3px solid #7E786B;
+            border-color: var(--accent-gold);
         }}
 
         .cta-btn:active {{
@@ -261,9 +300,9 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         }}
 
         .cta-sub {{
-            font-size: 11.5px;
+            font-size: 11px;
             color: var(--text-muted);
-            margin-top: 3px;
+            margin-top: 4px;
         }}
 
         .phase-group {{
@@ -273,28 +312,30 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         .phase-header {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-left: 3px solid var(--text-secondary);
-            border-radius: 6px;
-            padding: 10px 14px;
-            margin-bottom: 10px;
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            color: var(--text-primary);
         }}
 
+        .phase-badge-1 {{ background: var(--accent-correct-badge); color: var(--bg-canvas); }}
+        .phase-badge-2 {{ background: var(--text-secondary); color: var(--bg-canvas); }}
+        .phase-badge-3 {{ background: var(--accent-gold); color: var(--bg-canvas); }}
+        .phase-badge-4 {{ background: var(--primary); color: var(--bg-canvas); }}
+
         .phase-num-badge {{
-            font-family: "Cinzel", sans-serif;
+            font-family: var(--font-caps);
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #ffffff;
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
         }}
 
         .phase-title {{
-            font-family: "Newsreader", "Lora", serif;
+            font-family: var(--font-serif);
             font-size: 15px;
             font-weight: 500;
             color: var(--text-primary);
@@ -303,15 +344,16 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         .days-grid {{
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 12px;
         }}
 
         .day-card {{
             background: var(--surface-container);
             border: 1px solid var(--border-hairline);
-            border-radius: 6px;
-            padding: 14px 16px;
-            transition: all 0.15s ease;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            color: var(--text-primary);
+            transition: border-color 150ms ease;
         }}
 
         .day-card:hover {{
@@ -319,27 +361,26 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         }}
 
         .current-day-highlight {{
-            border-color: rgba(92, 120, 102, 0.6) !important;
-            background: rgba(92, 120, 102, 0.06);
+            border-color: var(--accent-correct-border) !important;
+            background: var(--accent-correct-subtle);
         }}
 
         .day-head {{
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }}
 
         .day-num {{
-            font-family: "Cinzel", sans-serif;
+            font-family: var(--font-caps);
             font-size: 12px;
             font-weight: 600;
-            letter-spacing: 0.05em;
             color: var(--text-primary);
             background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
-            padding: 2px 7px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
         }}
 
         .day-date {{
@@ -350,24 +391,18 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
         .today-chip {{
             font-size: 11px;
             font-weight: 600;
-            background: rgba(158, 87, 87, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(158, 87, 87, 0.3);
-            padding: 1px 7px;
-            border-radius: 4px;
-            animation: pulseChip 2s infinite;
-        }}
-
-        @keyframes pulseChip {{
-            0%, 100% {{ opacity: 1; }}
-            50% {{ opacity: 0.7; }}
+            background: var(--today-chip-bg);
+            color: var(--today-chip-color);
+            border: 1px solid var(--today-chip-border);
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
         }}
 
         .day-topic {{
             font-size: 13.5px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.6;
         }}
 
         .day-links {{
@@ -378,30 +413,40 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
 
         .session-btn {{
             text-align: center;
-            padding: 7px 8px;
-            border-radius: 4px;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
             text-decoration: none;
             font-size: 12.5px;
             font-weight: 500;
             border: 1px solid var(--border-hairline);
             background: var(--surface-subtle);
             color: var(--text-primary);
-            transition: all 0.15s ease;
+            transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
         }}
 
         .session-btn:hover {{
             background: var(--surface-hover);
             border-color: var(--border-focus);
-            color: #ffffff;
+            color: var(--text-primary);
+        }}
+
+        .roadmap-title {{
+            font-family: var(--font-caps);
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }}
 
         .portal-footer {{
             text-align: center;
             font-size: 12px;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
             margin-top: 40px;
-            padding-top: 18px;
+            padding-top: 16px;
             border-top: 1px solid var(--border-hairline);
             line-height: 1.8;
         }}
@@ -409,7 +454,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
 </head>
 <body>
     <header class="portal-hero">
-        <div class="hero-badge">TOEIC 860+ MASTER PORTAL</div>
+        <div class="hero-badge">Toeic 860+ Master Portal</div>
         <h1 class="hero-title">多益 25 天黃金衝刺特訓地圖</h1>
         <div class="hero-subtitle">考前倒數 <b id="portal-countdown">{days_left}</b> 天 ｜ 早晚雙軌 43 題高頻題庫 · 點擊直接作答</div>
     </header>
@@ -417,34 +462,34 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
     <!-- Today's Quick Launch -->
     <section class="quick-launch-card">
         <div class="ql-header">
-            <div class="ql-title" id="ql-title">Day {current_day:02d} · 今日進度直達</div>
-            <span class="today-chip">🔥 進行中</span>
+            <div class="ql-title" id="ql-title">Day {current_day:02d} / 今日進度直達</div>
+            <span class="today-chip">進行中</span>
         </div>
         <div class="ql-topic" id="ql-topic">
-            🎯 <b>核心考點：</b>{html.escape(today_topic)}
+            <b>核心考點：</b>{html.escape(today_topic)}
         </div>
         <div class="ql-buttons">
             <a href="{today_morning_url}" id="ql-btn-m" class="cta-btn cta-morning">
-                <span>☀️ 上午特訓</span>
-                <span class="cta-sub">43 題 · 實戰衝刺 ▶</span>
+                <span>上午特訓</span>
+                <span class="cta-sub">43 題 / 實戰衝刺 ↗</span>
             </a>
             <a href="{today_afternoon_url}" id="ql-btn-a" class="cta-btn cta-afternoon">
-                <span>🌤️ 下午特訓</span>
-                <span class="cta-sub">43 題 · 深度複習 ▶</span>
+                <span>下午特訓</span>
+                <span class="cta-sub">43 題 / 深度複習 ↗</span>
             </a>
         </div>
     </section>
 
     <!-- Full 25-Day Roadmap -->
     <section class="roadmap-section">
-        <div style="font-family: 'Cinzel', serif; font-size: 13.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-            📚 25-Day Curriculum Roadmap
+        <div class="roadmap-title">
+            25-Day Curriculum Roadmap
         </div>
         {phases_html}
     </section>
 
     <footer class="portal-footer">
-        TOEIC 860+ DAILY SPRINT · EDITORIAL STUDY SYSTEM<br>
+        TOEIC 860+ DAILY SPRINT / EDITORIAL STUDY SYSTEM<br>
         免下載 · 跨裝置雲端進度同步 · 金色必達
     </footer>
 
