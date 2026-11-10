@@ -184,6 +184,59 @@ class TestDispatchScheduling(unittest.TestCase):
             self.assertNotIn("🇹🇼", caption)
             self.assertNotIn("🇺🇸", caption)
 
+    def test_delayed_afternoon_cron_at_midnight_is_rejected_by_time_window_guard(self):
+        """A delayed afternoon cron arriving at 00:11 midnight must be dropped without sending."""
+        midnight_time = datetime(2026, 11, 10, 0, 11, tzinfo=TZ)
+        with patch("dispatch_runner.datetime") as mock_dt, \
+             patch("dispatch_runner.dispatch_report") as mock_dispatch:
+            mock_dt.now.return_value = midnight_time
+            mock_dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
+            # Simulate GitHub Actions schedule event delayed to midnight
+            res = dispatch_runner.run_dispatch(
+                session="auto",
+                target_day=None,
+                dry_run=False,
+                force=False,
+                cron_expr="0 6 * * *",
+            )
+            self.assertTrue(res)
+            # Must NOT dispatch document at midnight!
+            mock_dispatch.assert_not_called()
+
+    def test_delayed_morning_cron_in_afternoon_is_rejected(self):
+        """A delayed morning cron arriving in afternoon (e.g. 13:30) must be dropped."""
+        late_time = datetime(2026, 11, 10, 13, 30, tzinfo=TZ)
+        with patch("dispatch_runner.datetime") as mock_dt, \
+             patch("dispatch_runner.dispatch_report") as mock_dispatch:
+            mock_dt.now.return_value = late_time
+            mock_dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
+            res = dispatch_runner.run_dispatch(
+                session="auto",
+                target_day=None,
+                dry_run=False,
+                force=False,
+                cron_expr="0 0 * * *",
+            )
+            self.assertTrue(res)
+            mock_dispatch.assert_not_called()
+
+    def test_forced_run_bypasses_time_window_guard(self):
+        """Manual test runs with force=True bypass the time window guard."""
+        midnight_time = datetime(2026, 11, 10, 0, 11, tzinfo=TZ)
+        with patch("dispatch_runner.datetime") as mock_dt, \
+             patch("dispatch_runner.get_credentials", return_value=("fake_token", "fake_chat_id")), \
+             patch("dispatch_runner.dispatch_report", return_value=True) as mock_dispatch:
+            mock_dt.now.return_value = midnight_time
+            mock_dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
+            res = dispatch_runner.run_dispatch(
+                session="morning",
+                target_day=6,
+                dry_run=True,
+                force=True,
+                cron_expr="0 0 * * *",
+            )
+            self.assertTrue(res)
+
 
 if __name__ == "__main__":
     unittest.main()

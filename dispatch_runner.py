@@ -47,6 +47,36 @@ def determine_session(now: datetime = None) -> str:
     return "afternoon" if now.hour >= 12 else "morning"
 
 
+def is_in_dispatch_window(session: str, now: datetime = None) -> tuple[bool, str]:
+    """Validates whether current Taipei time is within an acceptable execution window."""
+    now = now or datetime.now(TZ)
+    h = now.hour
+    m = now.minute
+    total_minutes = h * 60 + m
+
+    # 1. Night-time absolute silence: 21:00 ~ 07:00 (1260 mins ~ 420 mins)
+    if total_minutes >= 21 * 60 or total_minutes < 7 * 60:
+        return False, f"夜間防打擾保護 (目前台北時間 {now.strftime('%H:%M')}，非作答時段，自動丟棄延遲排程)"
+
+    # 2. Morning window: 07:30 ~ 12:15 (450 ~ 735 mins)
+    if session == "morning":
+        if total_minutes < 7 * 60 + 30:
+            return False, f"上午練習時段尚未開始 (目前時間 {now.strftime('%H:%M')}，目標 08:00)"
+        if total_minutes > 12 * 60 + 15:
+            return False, f"上午練習排程嚴重延遲 (目前時間 {now.strftime('%H:%M')} 已超過 12:15)，自動丟棄避免與下午衝堂"
+        return True, ""
+
+    # 3. Afternoon window: 13:30 ~ 19:30 (810 ~ 1170 mins)
+    if session == "afternoon":
+        if total_minutes < 13 * 60 + 30:
+            return False, f"下午練習時段尚未開始 (目前時間 {now.strftime('%H:%M')}，目標 14:00)"
+        if total_minutes > 19 * 60 + 30:
+            return False, f"下午練習排程嚴重延遲 (目前時間 {now.strftime('%H:%M')} 已超過 19:30)，自動丟棄避免夜間擾民"
+        return True, ""
+
+    return True, ""
+
+
 def resolve_effective_session(
     requested_session: str = "auto",
     now: datetime = None,
@@ -126,6 +156,18 @@ def run_dispatch(
     tag = "Morning" if session == "morning" else "Afternoon"
     zh_label = "上午練習" if session == "morning" else "下午練習"
 
+    force_env = os.environ.get("FORCE_RESEND", "").lower() in ("1", "true", "yes")
+    # Only treat as forced if explicitly forced or if testing a different day than current calendar day
+    is_forced = force or force_env or (target_day is not None and target_day != current_cal_day)
+
+    # Stale/delayed schedule guardrail: prevent nighttime or severely delayed crons from sending
+    is_scheduled = bool(cron_expr) or (os.environ.get("GITHUB_EVENT_NAME", "").strip() == "schedule")
+    if is_scheduled and not is_forced:
+        allowed, reason = is_in_dispatch_window(session, now)
+        if not allowed:
+            print(f"🛑 [排程時間防禦] {reason}。本次雲端排程已安全略過。")
+            return True
+
     token, _ = get_credentials()
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     # Build the session payload ONCE so the HTML and the saved question manifest are identical.
@@ -149,9 +191,6 @@ def run_dispatch(
         print(f"[遠端 Agent 同步略過] {exc}")
 
     token, _ = get_credentials()
-    force_env = os.environ.get("FORCE_RESEND", "").lower() in ("1", "true", "yes")
-    # Only treat as forced if explicitly forced or if testing a different day than current calendar day
-    is_forced = force or force_env or (target_day is not None and target_day != current_cal_day)
 
     claimed = False
     if not is_forced and token:
