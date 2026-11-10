@@ -288,15 +288,12 @@ def select_part3_mc_questions(
 ) -> List[dict]:
     """
     Build Part 3 (單字與文法單句選擇題 — 25 題, numbered 1..25):
-    Combines:
-    1. User weakness / error-boosted questions (if user has reported wrong questions in `profile`).
-    2. 8 bespoke questions from `QUESTIONS_860_BANK` testing `860_antigravity.md` vocabulary & grammar signals.
-    3. The session's core complex questions (`morning.part5` or `afternoon.spaced_traps`) + cross-day
-       high-frequency vocabulary questions matching `part1_vocab`.
-    All 25 questions are guaranteed to have unique stems, balanced (A)(B)(C)(D) answer keys,
-    `rule_ref`, `analysis`, and 4-option `option_details`.
+    Guarantees:
+    1. Zero duplicate questions between Morning and Afternoon on any day (completely disjoint pools).
+    2. Primary questions from today's curriculum are preserved (all 20 morning questions or all 14 afternoon traps).
+    3. Supplemented by bespoke 860-bank questions and distant calendar review questions.
+    4. Balanced answer key distribution and option details.
     """
-    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
     is_morning = session.lower().startswith("m")
     day_data = DAYS_DATA.get(day_num, DAYS_DATA[1])
 
@@ -316,57 +313,9 @@ def select_part3_mc_questions(
         seen_stems.add(stem)
         return True
 
-    # 1. Weakness injection: pull questions whose ANSWER is one of the user's most-missed words,
-    #    searching the whole pool (860 bank, cloze bank, 25-day curriculum). More errors => more questions.
-    weak_words = profile.get("weak_words", {})
-    if weak_words:
-        pool = list(QUESTIONS_860_BANK)
-        for pas in CLOZE_PASSAGES_BANK:
-            pool.extend(pas.get("questions", []))
-        for dd in range(1, 26):
-            pool.extend(DAYS_DATA[dd]["morning"]["part5"])
-            pool.extend(DAYS_DATA[dd]["afternoon"]["spaced_traps"])
-        by_answer: Dict[str, List[dict]] = {}
-        for q in pool:
-            by_answer.setdefault(normalize_key(q["options"].get(q.get("answer", ""), "")), []).append(q)
-        max_weak_q = 8
-        ranked = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
-        n_ranked = len(ranked)
-        rank_offset = (s_idx * 3) % n_ranked if n_ranked else 0
-        for i in range(n_ranked):
-            w, cnt = ranked[(rank_offset + i) % n_ranked]
-            cands = by_answer.get(w, [])
-            if not cands:
-                for q_item in pool:
-                    if w in normalize_key(q_item["question"]) or any(w in normalize_key(ov) for ov in q_item["options"].values()):
-                        cands.append(q_item)
-            # rotate so the same weak word is practised with a different sentence each session
-            for k in range(min(len(cands), 1 + (1 if cnt >= 2 else 0))):
-                cand = cands[(s_idx + k) % len(cands)]
-                _add_q(cand, cand.get("rule_ref", "🔥 錯題弱點演算法加權複習"))
-            if len(selected) >= max_weak_q:
-                break
-
-    # 2. Add 8 questions from `QUESTIONS_860_BANK` rotated by s_idx (prioritizing matches with today's Part 1 vocab)
-    p1_words_lower = {normalize_key(v["word"]) for v in part1_vocab}
-    n_860 = len(QUESTIONS_860_BANK)
-    # First pick questions in QUESTIONS_860_BANK that test today's Part 1 vocab
-    for i in range(n_860):
-        cand = QUESTIONS_860_BANK[(s_idx * 5 + i) % n_860]
-        ans_w = normalize_key(cand["options"].get(cand["answer"], ""))
-        if ans_w in p1_words_lower:
-            _add_q(cand)
-            if len(selected) >= 8:
-                break
-
-    # Fill up to 9 questions from QUESTIONS_860_BANK deterministically
-    for i in range(n_860):
-        if len(selected) >= 9:
-            break
-        cand = QUESTIONS_860_BANK[(s_idx * 7 + i) % n_860]
-        _add_q(cand)
-
-    # 3. Add today's primary session questions (Morning Part 5 or Afternoon Spaced Traps)
+    # 1. Primary pool: ALWAYS prioritize today's authored questions first!
+    # Morning: all 20 questions from morning part5
+    # Afternoon: all 14 questions from afternoon spaced_traps
     primary_pool = (
         day_data["morning"]["part5"]
         if is_morning
@@ -377,20 +326,80 @@ def select_part3_mc_questions(
             break
         _add_q(pq, pq.get("trap_point") or f"Day {day_num} 核心句構與單字實戰")
 
-    # 4. If still < target_count (e.g. afternoon has 14 traps + 9 from 860 bank = 23), fill from complementary pool
-    comp_day = DAYS_DATA.get((day_num % 25) + 1, DAYS_DATA[1])
-    comp_pool = (
-        day_data["afternoon"]["spaced_traps"]
+    # 2. Add bespoke 860 questions from disjoint banks:
+    # Morning exclusively uses even indices (24 questions); Afternoon exclusively uses odd indices (24 questions)
+    bank_860_pool = (
+        [QUESTIONS_860_BANK[i] for i in range(0, len(QUESTIONS_860_BANK), 2)]
         if is_morning
-        else comp_day["morning"]["part5"]
+        else [QUESTIONS_860_BANK[i] for i in range(1, len(QUESTIONS_860_BANK), 2)]
     )
-    for cq in comp_pool:
+    n_860 = len(bank_860_pool)
+    p1_words_lower = {normalize_key(v["word"]) for v in part1_vocab}
+    # Prioritize matching Part 1 vocab first
+    for i in range(n_860):
+        cand = bank_860_pool[(day_num * 2 + i) % n_860]
+        ans_w = normalize_key(cand["options"].get(cand["answer"], ""))
+        if ans_w in p1_words_lower:
+            _add_q(cand)
+            if len(selected) >= (22 if is_morning else 16):
+                break
+
+    # Add at least 2 questions from 860 pool
+    for i in range(n_860):
+        if len(selected) >= (22 if is_morning else 16):
+            break
+        cand = bank_860_pool[(day_num * 2 + i) % n_860]
+        _add_q(cand)
+
+    # 3. Weakness injection (partitioned to maintain strict disjointness):
+    weak_words = profile.get("weak_words", {})
+    if weak_words and len(selected) < target_count:
+        wk_pool = (
+            [q for dd in range(1, 26) for q in DAYS_DATA[dd]["morning"]["part5"]]
+            if is_morning
+            else [q for dd in range(1, 26) for q in DAYS_DATA[dd]["afternoon"]["spaced_traps"]]
+        )
+        ranked = sorted(weak_words.items(), key=lambda kv: kv[1], reverse=True)
+        for w, cnt in ranked[:4]:
+            for q_cand in wk_pool:
+                if w in normalize_key(q_cand["options"].get(q_cand.get("answer", ""), "")) or w in normalize_key(q_cand["question"]):
+                    _add_q(q_cand, "🔥 錯題弱點演算法加權複習")
+                    break
+            if len(selected) >= target_count:
+                break
+
+    # 4. Fill remaining slots to reach target_count (25) from disjoint calendar pools:
+    # Morning fills strictly from a distant morning part5 pool
+    # Afternoon fills strictly from a distant afternoon traps pool
+    comp_day = ((day_num + 11) % 25) + 1
+    comp_pool = (
+        DAYS_DATA[comp_day]["morning"]["part5"]
+        if is_morning
+        else DAYS_DATA[comp_day]["afternoon"]["spaced_traps"]
+    )
+    n_comp = len(comp_pool)
+    offset = (day_num * 3) % n_comp
+    for i in range(n_comp):
         if len(selected) >= target_count:
             break
-        _add_q(cq, cq.get("trap_point") or "跨日高頻核心單字與語法複習")
+        _add_q(comp_pool[(offset + i) % n_comp], "跨日高頻核心單字與語法複習")
 
-    # Number 1..25 consecutively and ensure balanced A/B/C/D keys
-    letters = ("A", "B", "C", "D")
+    # Secondary comp_day if needed
+    if len(selected) < target_count:
+        comp_day2 = ((day_num + 17) % 25) + 1
+        comp_pool2 = (
+            DAYS_DATA[comp_day2]["morning"]["part5"]
+            if is_morning
+            else DAYS_DATA[comp_day2]["afternoon"]["spaced_traps"]
+        )
+        n_comp2 = len(comp_pool2)
+        offset2 = (day_num * 5) % n_comp2
+        for i in range(n_comp2):
+            if len(selected) >= target_count:
+                break
+            _add_q(comp_pool2[(offset2 + i) % n_comp2], "跨日高頻核心單字與語法複習")
+
+    # Number 1..25 consecutively
     for idx, q in enumerate(selected[:target_count], 1):
         q["id"] = idx
         q["target_seconds"] = q.get("target_seconds", 15 if idx <= 18 else 20)
@@ -408,14 +417,18 @@ def select_part4_cloze_passages(
     """
     Select `passage_count` (3) Cloze passages × 4 blanks = 12 Cloze multiple-choice questions
     (numbered `26..37`, satisfying >= 10 Cloze questions per session).
+    Partitions passages into disjoint pools for morning and afternoon so they NEVER repeat on the same day.
     """
-    s_idx = (day_num - 1) * 2 + (0 if session.lower().startswith("m") else 1)
-    n_passages = len(CLOZE_PASSAGES_BANK)
+    is_morning = session.lower().startswith("m")
+    even_cloze = [CLOZE_PASSAGES_BANK[i] for i in range(0, len(CLOZE_PASSAGES_BANK), 2)]
+    odd_cloze = [CLOZE_PASSAGES_BANK[i] for i in range(1, len(CLOZE_PASSAGES_BANK), 2)]
+    pool = even_cloze if is_morning else odd_cloze
+    n_passages = len(pool)
 
     chosen_passages = []
     seen_titles = set()
     for i in range(n_passages):
-        cand = CLOZE_PASSAGES_BANK[(s_idx * 3 + i) % n_passages]
+        cand = pool[(day_num * 2 + i) % n_passages]
         if cand["title"] not in seen_titles:
             chosen_passages.append(copy.deepcopy(cand))
             seen_titles.add(cand["title"])
@@ -446,16 +459,18 @@ def select_part5_reading_passages(
     """
     Select 2 long-form multi-paragraph business reading comprehension passages (6 questions,
     numbered `38..43`) for Part 5 (閱讀測驗).
-    - Afternoon session uses `DAYS_DATA[day_num]["afternoon"]["part7"]["passages"]`.
-    - Morning session uses `DAYS_DATA[((day_num + 11) % 25) + 1]["afternoon"]["part7"]["passages"]`
-      so Morning and Afternoon on the same day have completely distinct reading comprehension passages!
+    - Morning exclusively uses Passage 0 of Day X and Day (X+11)%25+1.
+    - Afternoon exclusively uses Passage 1 of Day X and Day (X+11)%25+1.
+    Morning and Afternoon NEVER share any reading passages on the same day!
     """
     is_morning = session.lower().startswith("m")
-    source_day = ((day_num + 11) % 25) + 1 if is_morning else day_num
-    p7_obj = DAYS_DATA.get(source_day, DAYS_DATA[1])["afternoon"]["part7"]
-    raw_passages = p7_obj.get("passages", [])
+    p_idx = 0 if is_morning else 1
+    d1 = day_num
+    d2 = ((day_num + 11) % 25) + 1
+    raw1 = DAYS_DATA[d1]["afternoon"]["part7"]["passages"][p_idx]
+    raw2 = DAYS_DATA[d2]["afternoon"]["part7"]["passages"][p_idx]
 
-    passages = copy.deepcopy(raw_passages)
+    passages = [copy.deepcopy(raw1), copy.deepcopy(raw2)]
     q_cursor = start_q_id
     for pas in passages:
         for rq in pas.get("questions", []):
