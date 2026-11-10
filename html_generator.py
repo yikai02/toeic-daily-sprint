@@ -752,10 +752,17 @@ def _render_part1_vocab_html(vocab_list: List[dict], srs_stats: dict) -> str:
         """
 
     return f"""
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 ({len(vocab_list)} 字)</div>
-        {cards_html}
-    </div>
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 {len(vocab_list)} 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                {cards_html}
+            </div>
+        </details>
+    </section>
     """
 
 
@@ -798,11 +805,18 @@ def _render_part2_grammar_html(anchor: dict, grammar_mods: List[dict]) -> str:
         """
 
     return f"""
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        {anchor_html}
-        {mods_html}
-    </div>
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ {len(grammar_mods)} 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                {anchor_html}
+                {mods_html}
+            </div>
+        </details>
+    </section>
     """
 
 
@@ -1082,21 +1096,6 @@ def render_day_html(
     </section>
     """
 
-    vocab_grammar_section = f"""
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（{len(part1_vocab)} 字 · {len(part2_grammar)} 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                {part1_html}
-                {part2_html}
-            </div>
-        </details>
-    </section>
-    """
-
     body_content = f"""
     <!-- Sticky Progress Toolbar -->
     <div class="sticky-control-bar" id="live-score-bar">
@@ -1109,10 +1108,11 @@ def render_day_html(
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 ({len(part1_vocab)})</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 ({len(part2_grammar)})</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-{len(part3_mc)})</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 ({cloze_start}-{cloze_end})</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 ({read_start}-{read_end})</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
@@ -1120,11 +1120,12 @@ def render_day_html(
         </div>
     </div>
 
+    {part1_html}
+    {part2_html}
+
     {part3_html}
     {part4_html}
     {part5_html}
-
-    {vocab_grammar_section}
 
     <div id="final-summary-card" class="summary-card" style="display: none;">
         <div class="summary-icon">🏆</div>
@@ -1914,31 +1915,50 @@ def render_day_html(
         }}
 
         .study-bullet-card {{
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }}
 
-        .study-bullet-head {{
+        .study-bullet-card:hover {{
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }}
+
+        .study-bullet-head, .sbc-head {{
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }}
 
-        .study-word {{
+        .study-word, .sbc-word {{
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }}
 
-        .study-meaning {{
-            font-size: 13.5px;
+        .sbc-pos {{
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }}
+
+        .study-meaning, .sbc-meaning {{
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }}
 
         .bullet-list-study {{

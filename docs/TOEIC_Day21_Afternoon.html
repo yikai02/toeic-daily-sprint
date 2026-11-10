@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 conveyor</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">輸送帶、傳送設備 (廠房/機場高頻)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>baggage conveyor belt (行李輸送帶) ｜ assembly conveyor system</li><li>⚠️ <b>易混淆陷阱：</b>多益聽力 Part 1 與閱讀倉儲高頻場景詞，常接 belt 構成 conveyor belt。</li><li>📖 <span class="ex-en">Maintenance crews shut down the luggage conveyor belt for two hours to replace a worn motor.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 航廈維修工程人員將行李輸送帶暫停運作兩小時，以全面檢修並更換老舊磨損的驅動馬達。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 endeavor</span>
+                <span class="sbc-pos">[可數名詞 / 動詞 (n./v.)]</span>
+                <span class="sbc-meaning">努力、竭力、事業嘗試 (=effort/attempt)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>support our future commercial endeavors in foreign markets (支持海外商業拓展努力)</li><li>⚠️ <b>易混淆陷阱：</b>動詞時常接不定詞：endeavor to do sth（竭力做某事）。</li><li>📖 <span class="ex-en">The executive committee wished Mr. Tanaka great success in his future entrepreneurial endeavors.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體執行董事會成員同聲祝福田中先生在未來開拓海外市場的全新商業努力與創業嘗試中大獲成功。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 retrieve</span>
+                <span class="sbc-pos">[及物動詞 (v.)]</span>
+                <span class="sbc-meaning">取回、檢索 (資料/檔案)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>retrieve archived invoices from the cloud server (從雲端取回封存發票)</li><li>⚠️ <b>易混淆陷阱：</b>多益資訊系統題高頻詞，名詞為 retrieval（檢索取回）。</li><li>📖 <span class="ex-en">The updated accounting database enables staff to retrieve historical sales transactions in seconds.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全新升級後的雲端會計資料庫，讓財務同仁能夠在短短幾秒鐘之內立即檢索並取回歷史封存發票憑證。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 decisive</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">果斷的；決定性的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>take decisive action to curb inflation and budget deficits (採取果斷行動)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 decide；副詞 decisively（果斷地）；名詞 decision（決定）。</li><li>📖 <span class="ex-en">The board commended the CEO for taking decisive action during the recent supply chain crisis.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體監察人與董事會高度肯定執行長在面對突如其來的供應鏈中斷危機時，所迅速採取的果斷決策行動。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 tendency</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">傾向、趨勢 (=trend/inclination)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>display a tendency to overspend in the final quarter (呈現過度支出傾向)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 tend（tend to + V 傾向於做某事）；名詞常搭配介系詞 towards 或 to-V。</li><li>📖 <span class="ex-en">Consumer survey data shows a noticeable tendency among commuters to switch to electric vehicles.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 最新的市場消費行為分析報告顯示，年輕通勤族群正呈現出逐漸轉向選購純電動代步車輛的明顯趨勢傾向。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 conflict</span>
+                <span class="sbc-pos">[可數 / 不可數名詞、動詞 (n./v.)]</span>
+                <span class="sbc-meaning">衝突、牴觸、利益衝突</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>conflict of interest (利益衝突，合約審計高頻) ｜ schedule conflict (行程衝突)</li><li>⚠️ <b>易混淆陷阱：</b>多益商務審計必考片語：a conflict of interest（利益衝突）。</li><li>📖 <span class="ex-en">Employees must sign a disclosure agreement to prevent any potential conflict of interest.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有新進專業人員在簽約入職前均須完成簽署利益揭露書，以確保能全面杜絕日後任何潛在之商業利益衝突。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 arguably</span>
+                <span class="sbc-pos">[副詞 (adv.)]</span>
+                <span class="sbc-meaning">可以說、按理說、論證上（等於 reasonably）</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>arguably the most innovative financial technology platform (可說是最新穎的金融科技平台)</li><li>⚠️ <b>易混淆陷阱：</b>常用於修飾最高級形容詞（arguably the best / most effective）。</li><li>📖 <span class="ex-en">The newly opened medical research facility is arguably the most advanced center of its kind in Asia.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這座甫於上個月正式剪綵啟用的頂尖臨床醫學科技園區，論證上堪稱是全亞洲規模最龐大且設備最新穎的中心。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 informed</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">深思熟慮的、明智知情的；見多識廣的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>consult an advisor to make an informed financial decision (諮詢顧問以做出明智知情的財務決策)</li><li>⚠️ <b>易混淆陷阱：</b>多益必考搭配詞：make an informed decision / choice。informative 則是形容事物提供豐富資訊。</li><li>📖 <span class="ex-en">Consumers are encouraged to consult certified financial planners before making an informed investment decision.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 專業財經專家極力倡導，廣大投資人在簽署購買複雜金融商品前，務必諮詢持牌顧問以做出深思熟慮的明智決策。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 subject to</span>
+                <span class="sbc-pos">[形容詞片語 (phr.)]</span>
+                <span class="sbc-meaning">易受...影響；須經...核准；視...而定</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>The tour itinerary is subject to change without notice (行程如有變更恕不另行通知)</li><li>⚠️ <b>易混淆陷阱：</b>多益合約與通知最高頻片語！to 為介系詞，後接名詞（subject to approval / change）。</li><li>📖 <span class="ex-en">All discounted airfare rates are subject to seat availability and seasonal peak surcharges.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有促銷特惠機票的折扣費率均須視當下機位訂位狀況而定，且可能隨旺季附加費用隨時變動調整。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 negligence</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">疏忽、過失、失職</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>法律與品管考題高頻（如 gross negligence 嚴重過失）。 ｜ 使用者弱點語塊：gross negligence resulting in equipment malfunction (重大過失導致設備故障)</li><li>⚠️ <b>易混淆陷阱：</b>法律與品管考題高頻（如 gross negligence 嚴重過失）。 ｜ ⚠️ 弱點備忘：必考搭配 gross negligence（重大過失）；形容詞為 negligent（疏忽粗心的）。</li><li>📖 <span class="ex-en">The insurance claim was rejected because the water damage resulted from the tenant&#x27;s gross negligence.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 保險理賠申請遭到否決，因為該起漏水損害是由於承租人的重大過失所造成。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 as if</span>
+                <span class="sbc-pos">[conj.]</span>
+                <span class="sbc-meaning">彷彿、好像</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>等同於 as though，引導方式或假設子句。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 as though，引導方式或假設子句。</li><li>📖 <span class="ex-en">The newly renovated lobby looks as if it were designed by an award-winning contemporary architect.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全新翻修的接待大廳看起來宛如出自獲獎當代建築大師之手。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 task</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">任務、工作</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>日常辦公營運指派。</li><li>⚠️ <b>易混淆陷阱：</b>日常辦公營運指派。</li><li>📖 <span class="ex-en">The newly appointed compliance officer was immediately tasked with revising the data privacy manual.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 新上任的法規遵循主管立即被指派負責修訂企業數據隱私保護手冊。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 let alone</span>
+                <span class="sbc-pos">[連接片語 (phr.)]</span>
+                <span class="sbc-meaning">更不用說、何況 (專用於否定遞進)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>The firm cannot afford rent, let alone purchase equipment (公司連房租都付不起，更不用說買設備)</li><li>⚠️ <b>易混淆陷阱：</b>重要文法片語！出現在否定句或表缺乏（lack / barely）之後，強調更不可能發生的情況。</li><li>📖 <span class="ex-en">The cash-strapped startup could barely afford office rent, let alone hire full-time legal counsel.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家資金極度困窘的新創團隊目前連繳交共享辦公室租金都捉襟見肘，更不用說大手筆額外聘請常年法律顧問了。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 venue</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">活動會場、舉辦地點</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>多益 Part 3/4/7 會議、展覽、研討會最高頻地點詞。</li><li>⚠️ <b>易混淆陷阱：</b>多益 Part 3/4/7 會議、展覽、研討會最高頻地點詞。</li><li>📖 <span class="ex-en">Due to overwhelming ticket demand, organizers relocated the trade symposium to a larger downtown venue.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 由於購票需求極度熱烈，主辦單位將商務研討會移至市中心更大的會場舉行。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 spare</span>
+                <span class="sbc-pos">[adj. / v.]</span>
+                <span class="sbc-meaning">備用的；抽出/騰出</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>spare parts（備用零件）；spare time（抽空）。</li><li>⚠️ <b>易混淆陷阱：</b>spare parts（備用零件）；spare time（抽空）。</li><li>📖 <span class="ex-en">Field maintenance technicians always carry spare hydraulic valves in their service vans for emergency repairs.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 外勤維修技術人員總是在服務專車中攜帶備用液壓閥，以應對緊急搶修需求。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 temps</span>
+                <span class="sbc-pos">[n. pl.]</span>
+                <span class="sbc-meaning">臨時員工</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>等同於 temporary workers。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 temporary workers。</li><li>📖 <span class="ex-en">To handle the surge in year-end tax filings, the accounting firm hired fifteen certified seasonal temps.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 為了因應年底報稅季節激增的業務量，這家會計師事務所聘雇了十五名合格的兼職派遣人員。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 7 雙篇閱讀 (Double Passage) 交叉對照錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 看到題幹問「Why did ... hire / What requirement ...」➔ 100% 須跨篇比對（篇一規定 + 篇二帳單/回信）！</li>
+                <li>🔹 👀 注意到期與騰空詞彙：動詞「vacate」對應 leave/empty；名詞「expiration」對應 deadline！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：雙篇題必有一題考交叉資訊，鎖定金額、日期與星號條款對照！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 2：條件連接詞（provided that / as long as）vs. 範圍界定詞（as far as）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ provided that / providing that / as long as + S + V（只要……／在……條件下）  ｜  ✅ as far as + S + know / be concerned（就……範圍而言）</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益常將 provided that / as long as（表條件：只要……）與 as far as（表範圍程度：就……而言）放在同一組選項中。若句意為「只要滿足某項前提條件，即可執行某事」，必選 provided that 或 as long as；若句尾為 is concerned 或 I know，才選 as far as。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Full tuition reimbursement can be approved provided that both the department supervisor and human resources sign the authorization form. （只要部門主管與人資部雙方皆簽署授權表單，即可核准全額學費補助。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：中文都翻成「只要／就……」，誤用 as far as 引導條件子句。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 conveyor</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">輸送帶、傳送設備 (廠房/機場高頻)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>baggage conveyor belt (行李輸送帶) ｜ assembly conveyor system</li><li>⚠️ <b>易混淆陷阱：</b>多益聽力 Part 1 與閱讀倉儲高頻場景詞，常接 belt 構成 conveyor belt。</li><li>📖 <span class="ex-en">Maintenance crews shut down the luggage conveyor belt for two hours to replace a worn motor.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 航廈維修工程人員將行李輸送帶暫停運作兩小時，以全面檢修並更換老舊磨損的驅動馬達。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 endeavor</span>
-                <span class="sbc-pos">[可數名詞 / 動詞 (n./v.)]</span>
-                <span class="sbc-meaning">努力、竭力、事業嘗試 (=effort/attempt)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>support our future commercial endeavors in foreign markets (支持海外商業拓展努力)</li><li>⚠️ <b>易混淆陷阱：</b>動詞時常接不定詞：endeavor to do sth（竭力做某事）。</li><li>📖 <span class="ex-en">The executive committee wished Mr. Tanaka great success in his future entrepreneurial endeavors.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體執行董事會成員同聲祝福田中先生在未來開拓海外市場的全新商業努力與創業嘗試中大獲成功。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 retrieve</span>
-                <span class="sbc-pos">[及物動詞 (v.)]</span>
-                <span class="sbc-meaning">取回、檢索 (資料/檔案)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>retrieve archived invoices from the cloud server (從雲端取回封存發票)</li><li>⚠️ <b>易混淆陷阱：</b>多益資訊系統題高頻詞，名詞為 retrieval（檢索取回）。</li><li>📖 <span class="ex-en">The updated accounting database enables staff to retrieve historical sales transactions in seconds.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全新升級後的雲端會計資料庫，讓財務同仁能夠在短短幾秒鐘之內立即檢索並取回歷史封存發票憑證。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 decisive</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">果斷的；決定性的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>take decisive action to curb inflation and budget deficits (採取果斷行動)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 decide；副詞 decisively（果斷地）；名詞 decision（決定）。</li><li>📖 <span class="ex-en">The board commended the CEO for taking decisive action during the recent supply chain crisis.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體監察人與董事會高度肯定執行長在面對突如其來的供應鏈中斷危機時，所迅速採取的果斷決策行動。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 tendency</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">傾向、趨勢 (=trend/inclination)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>display a tendency to overspend in the final quarter (呈現過度支出傾向)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 tend（tend to + V 傾向於做某事）；名詞常搭配介系詞 towards 或 to-V。</li><li>📖 <span class="ex-en">Consumer survey data shows a noticeable tendency among commuters to switch to electric vehicles.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 最新的市場消費行為分析報告顯示，年輕通勤族群正呈現出逐漸轉向選購純電動代步車輛的明顯趨勢傾向。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 conflict</span>
-                <span class="sbc-pos">[可數 / 不可數名詞、動詞 (n./v.)]</span>
-                <span class="sbc-meaning">衝突、牴觸、利益衝突</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>conflict of interest (利益衝突，合約審計高頻) ｜ schedule conflict (行程衝突)</li><li>⚠️ <b>易混淆陷阱：</b>多益商務審計必考片語：a conflict of interest（利益衝突）。</li><li>📖 <span class="ex-en">Employees must sign a disclosure agreement to prevent any potential conflict of interest.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有新進專業人員在簽約入職前均須完成簽署利益揭露書，以確保能全面杜絕日後任何潛在之商業利益衝突。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 arguably</span>
-                <span class="sbc-pos">[副詞 (adv.)]</span>
-                <span class="sbc-meaning">可以說、按理說、論證上（等於 reasonably）</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>arguably the most innovative financial technology platform (可說是最新穎的金融科技平台)</li><li>⚠️ <b>易混淆陷阱：</b>常用於修飾最高級形容詞（arguably the best / most effective）。</li><li>📖 <span class="ex-en">The newly opened medical research facility is arguably the most advanced center of its kind in Asia.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這座甫於上個月正式剪綵啟用的頂尖臨床醫學科技園區，論證上堪稱是全亞洲規模最龐大且設備最新穎的中心。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 informed</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">深思熟慮的、明智知情的；見多識廣的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>consult an advisor to make an informed financial decision (諮詢顧問以做出明智知情的財務決策)</li><li>⚠️ <b>易混淆陷阱：</b>多益必考搭配詞：make an informed decision / choice。informative 則是形容事物提供豐富資訊。</li><li>📖 <span class="ex-en">Consumers are encouraged to consult certified financial planners before making an informed investment decision.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 專業財經專家極力倡導，廣大投資人在簽署購買複雜金融商品前，務必諮詢持牌顧問以做出深思熟慮的明智決策。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 subject to</span>
-                <span class="sbc-pos">[形容詞片語 (phr.)]</span>
-                <span class="sbc-meaning">易受...影響；須經...核准；視...而定</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>The tour itinerary is subject to change without notice (行程如有變更恕不另行通知)</li><li>⚠️ <b>易混淆陷阱：</b>多益合約與通知最高頻片語！to 為介系詞，後接名詞（subject to approval / change）。</li><li>📖 <span class="ex-en">All discounted airfare rates are subject to seat availability and seasonal peak surcharges.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有促銷特惠機票的折扣費率均須視當下機位訂位狀況而定，且可能隨旺季附加費用隨時變動調整。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 negligence</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">疏忽、過失、失職</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>法律與品管考題高頻（如 gross negligence 嚴重過失）。 ｜ 使用者弱點語塊：gross negligence resulting in equipment malfunction (重大過失導致設備故障)</li><li>⚠️ <b>易混淆陷阱：</b>法律與品管考題高頻（如 gross negligence 嚴重過失）。 ｜ ⚠️ 弱點備忘：必考搭配 gross negligence（重大過失）；形容詞為 negligent（疏忽粗心的）。</li><li>📖 <span class="ex-en">The insurance claim was rejected because the water damage resulted from the tenant&#x27;s gross negligence.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 保險理賠申請遭到否決，因為該起漏水損害是由於承租人的重大過失所造成。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 as if</span>
-                <span class="sbc-pos">[conj.]</span>
-                <span class="sbc-meaning">彷彿、好像</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>等同於 as though，引導方式或假設子句。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 as though，引導方式或假設子句。</li><li>📖 <span class="ex-en">The newly renovated lobby looks as if it were designed by an award-winning contemporary architect.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全新翻修的接待大廳看起來宛如出自獲獎當代建築大師之手。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 task</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">任務、工作</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>日常辦公營運指派。</li><li>⚠️ <b>易混淆陷阱：</b>日常辦公營運指派。</li><li>📖 <span class="ex-en">The newly appointed compliance officer was immediately tasked with revising the data privacy manual.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 新上任的法規遵循主管立即被指派負責修訂企業數據隱私保護手冊。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 let alone</span>
-                <span class="sbc-pos">[連接片語 (phr.)]</span>
-                <span class="sbc-meaning">更不用說、何況 (專用於否定遞進)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>The firm cannot afford rent, let alone purchase equipment (公司連房租都付不起，更不用說買設備)</li><li>⚠️ <b>易混淆陷阱：</b>重要文法片語！出現在否定句或表缺乏（lack / barely）之後，強調更不可能發生的情況。</li><li>📖 <span class="ex-en">The cash-strapped startup could barely afford office rent, let alone hire full-time legal counsel.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家資金極度困窘的新創團隊目前連繳交共享辦公室租金都捉襟見肘，更不用說大手筆額外聘請常年法律顧問了。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 venue</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">活動會場、舉辦地點</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>多益 Part 3/4/7 會議、展覽、研討會最高頻地點詞。</li><li>⚠️ <b>易混淆陷阱：</b>多益 Part 3/4/7 會議、展覽、研討會最高頻地點詞。</li><li>📖 <span class="ex-en">Due to overwhelming ticket demand, organizers relocated the trade symposium to a larger downtown venue.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 由於購票需求極度熱烈，主辦單位將商務研討會移至市中心更大的會場舉行。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 spare</span>
-                <span class="sbc-pos">[adj. / v.]</span>
-                <span class="sbc-meaning">備用的；抽出/騰出</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>spare parts（備用零件）；spare time（抽空）。</li><li>⚠️ <b>易混淆陷阱：</b>spare parts（備用零件）；spare time（抽空）。</li><li>📖 <span class="ex-en">Field maintenance technicians always carry spare hydraulic valves in their service vans for emergency repairs.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 外勤維修技術人員總是在服務專車中攜帶備用液壓閥，以應對緊急搶修需求。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 temps</span>
-                <span class="sbc-pos">[n. pl.]</span>
-                <span class="sbc-meaning">臨時員工</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>等同於 temporary workers。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 temporary workers。</li><li>📖 <span class="ex-en">To handle the surge in year-end tax filings, the accounting firm hired fifteen certified seasonal temps.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 為了因應年底報稅季節激增的業務量，這家會計師事務所聘雇了十五名合格的兼職派遣人員。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 7 雙篇閱讀 (Double Passage) 交叉對照錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 看到題幹問「Why did ... hire / What requirement ...」➔ 100% 須跨篇比對（篇一規定 + 篇二帳單/回信）！</li>
-                <li>🔹 👀 注意到期與騰空詞彙：動詞「vacate」對應 leave/empty；名詞「expiration」對應 deadline！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：雙篇題必有一題考交叉資訊，鎖定金額、日期與星號條款對照！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 2：條件連接詞（provided that / as long as）vs. 範圍界定詞（as far as）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ provided that / providing that / as long as + S + V（只要……／在……條件下）  ｜  ✅ as far as + S + know / be concerned（就……範圍而言）</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益常將 provided that / as long as（表條件：只要……）與 as far as（表範圍程度：就……而言）放在同一組選項中。若句意為「只要滿足某項前提條件，即可執行某事」，必選 provided that 或 as long as；若句尾為 is concerned 或 I know，才選 as far as。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Full tuition reimbursement can be approved provided that both the department supervisor and human resources sign the authorization form. （只要部門主管與人資部雙方皆簽署授權表單，即可核准全額學費補助。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：中文都翻成「只要／就……」，誤用 as far as 引導條件子句。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

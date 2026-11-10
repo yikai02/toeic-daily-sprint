@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 prior to expiration</span>
+                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
+                <span class="sbc-meaning">在到期之前</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>expiration = termination = end of term</li><li>⚠️ <b>易混淆陷阱：</b>動詞形式為 expire！</li><li>📖 <span class="ex-en">Renew your pass prior to expiration to avoid lapses.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「在到期之前」於職場之情境：Renew your pass prior to expiration to avoid lapses.</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 eligible for the award</span>
+                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
+                <span class="sbc-meaning">符合獲獎資格</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>eligible for = qualified for = entitled to</li><li>⚠️ <b>易混淆陷阱：</b>必考介系詞 for！</li><li>📖 <span class="ex-en">Only full-time staff are eligible for the award.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「符合獲獎資格」於職場之情境：Only full-time staff are eligible for the award.</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 accommodation</span>
+                <span class="sbc-pos">[名詞 (n.)]</span>
+                <span class="sbc-meaning">住宿膳宿；適應調解 (雙c雙m必考拼寫)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>provide premium hotel accommodations for overseas clients (提供頂級飯店住宿)</li><li>⚠️ <b>易混淆陷阱：</b>美式英語常以複數 accommodations 表住宿；注意拼法為雙 c 雙 m。</li><li>📖 <span class="ex-en">The conference registration fee covers admission to all breakout sessions and luxury hotel accommodations.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 本次國際論壇之全額報名費，已包含全天候分案專題演講入場資格與特約豪華五星飯店住宿膳宿。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 reimbursement</span>
+                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
+                <span class="sbc-meaning">費用核銷、代墊款報銷</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>submit receipts for travel expense reimbursement (提交單據以核銷差旅費)</li><li>⚠️ <b>易混淆陷阱：</b>及物動詞為 reimburse（核銷／退還）；reimburse sb for expenses。</li><li>📖 <span class="ex-en">Employees seeking travel expense reimbursement must attach original receipts to their claim forms.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡欲申請公出代墊差旅費用核銷之同仁，送件時務必檢附各項交通與餐飲之原始統一發票收據單據。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 appropriation</span>
+                <span class="sbc-pos">[可數 / 不可數名詞 (n.)]</span>
+                <span class="sbc-meaning">撥款、專款；挪用、佔用</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>government appropriation for public transit development (大眾運輸預算撥款)</li><li>⚠️ <b>易混淆陷阱：</b>動詞 appropriate 表「撥出款項」或「挪用」；形容詞 appropriate 表「適當的」。</li><li>📖 <span class="ex-en">The municipal legislature approved a special budget appropriation to modernize urban drainage systems.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 市政議會於昨晚表決通過了一筆特別公共預算撥款，專門用以加速推動老舊都會地下排水防洪工程現代化。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 miscellaneous</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">雜項的、形形色色的、混雜的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>allocate petty cash for miscellaneous office expenses (提撥零用金作為雜項辦公支出)</li><li>⚠️ <b>易混淆陷阱：</b>財務報表常用 miscellaneous expenses（雜支費用）。</li><li>📖 <span class="ex-en">The finance department allocated a modest fund for miscellaneous stationery and catering expenses.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司財務會計部門特別核准提撥了一筆零用金備用專款，以支應日常採購文具紙張與各項雜項辦公行政支出。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 prominent</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">顯著的、傑出的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>prominent figure（知名人士、政要）。</li><li>⚠️ <b>易混淆陷阱：</b>prominent figure（知名人士、政要）。</li><li>📖 <span class="ex-en">Dr. Evelyn Sato, a prominent macroeconomist, will deliver the opening keynote address at the Zurich summit.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 著名總體經濟學家佐藤博士將在蘇黎世高峰會發表開幕主題演講。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 deficient</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">缺乏的、有缺陷的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>對比：sufficient (adj. 充足的)；衍生：deficit (n. 赤字、虧損)。</li><li>⚠️ <b>易混淆陷阱：</b>對比：sufficient (adj. 充足的)；衍生：deficit (n. 赤字、虧損)。</li><li>📖 <span class="ex-en">The safety audit revealed that the warehouse ventilation system was severely deficient in air-filtration capacity.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 工安稽核顯示，該倉庫的通風系統在空氣過濾效能上嚴重不足。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 ascertain</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">查明、確定、弄清</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>例：ascertain the cause of delay；衍生：certain (adj. 確定的)。</li><li>⚠️ <b>易混淆陷阱：</b>例：ascertain the cause of delay；衍生：certain (adj. 確定的)。</li><li>📖 <span class="ex-en">Forensic accountants were retained to ascertain the exact cause of the third-quarter inventory discrepancy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司聘請鑑識會計師查明第三季存貨帳目不一致的確切原因。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 pervasive</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">無處不在的、遍布的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>常見於科技、文化或市場影響力主題（如 pervasive technology）。</li><li>⚠️ <b>易混淆陷阱：</b>常見於科技、文化或市場影響力主題（如 pervasive technology）。</li><li>📖 <span class="ex-en">With cloud-based collaboration tools becoming pervasive across the industry, remote auditing is now standard practice.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 隨著雲端協作工具在業界無處不在，遠端審計已成為標準作業流程。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 collision</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">碰撞、衝突</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生動詞：collide (v. 相撞)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：collide (v. 相撞)。</li><li>📖 <span class="ex-en">All fleet delivery trucks are now equipped with radar sensors designed to prevent rear-end collisions.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有物流貨車車隊現均已配備雷達感測器，旨在防止發生後方追撞事故。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 rehearsal</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">排練、彩排</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生動詞：rehearse (v. 彩排)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：rehearse (v. 彩排)。</li><li>📖 <span class="ex-en">All keynote speakers must attend the technical dress rehearsal in the main auditorium at 8:00 A.M.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有主講嘉賓皆必須參加上午八點在主大禮堂舉行的技術設備正式彩排。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 saturated</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">飽和的、浸透的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>saturated market（飽和市場）。</li><li>⚠️ <b>易混淆陷阱：</b>saturated market（飽和市場）。</li><li>📖 <span class="ex-en">Because the domestic smartphone market is already highly saturated, the brand is expanding into Latin America.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 由於國內智慧型手機市場已高度飽和，該品牌正加速拓展至拉丁美洲市場。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 editorial</span>
+                <span class="sbc-pos">[n. / adj.]</span>
+                <span class="sbc-meaning">社論；編輯的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>出版、新聞與媒體情境詞。</li><li>⚠️ <b>易混淆陷阱：</b>出版、新聞與媒體情境詞。</li><li>📖 <span class="ex-en">In Sunday&#x27;s lead editorial, the financial newspaper praised the central bank&#x27;s interest-rate policy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在週日刊登的頭條社論中，該財經報紙盛讚了中央銀行的利率調控政策。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 testament</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">證明、鐵證</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：a testament to one&#x27;s ability/effort（對某人能力的明證）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：a testament to one&#x27;s ability/effort（對某人能力的明證）。</li><li>📖 <span class="ex-en">Our98% client renewal rate is a clear testament to the reliability and responsiveness of our support team.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們高達98%的客戶續約率，正是我們支援團隊可靠性與迅速回應能力的最佳證明。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 succession</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">接替、繼承；連續</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：in succession（連續地）；形容詞：successive（連續的）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：in succession（連續地）；形容詞：successive（連續的）。</li><li>📖 <span class="ex-en">After winning the industry quality award for four years in succession, the plant expanded its production capacity.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在連續四年榮獲業界品質大獎後，該工廠進一步擴充了其生產產能。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：關係代名詞子句簡化 (Participle Reduction) 視覺錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 主格關代 + 主動動詞 [Those who attend] ➔ 簡化為「V-ing」[Those attending]！</li>
+                <li>🔹 👀 主格關代 + 被動動詞 [Items that were ordered] ➔ 簡化為「V-en」[Items ordered]！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：省掉 who/which，主動留 -ing，被動留 -ed！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 1：獨立分詞構句（Weather permitting / Time permitting）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 獨立主詞 (Weather / Time) + 現在分詞 V-ing (permitting), 主句 S + V...</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>英語句子遵循「一山不容二虎」原則：在沒有連接詞（如 if / because / as）的情況下，逗號前的附屬結構絕不可填入真動詞（有限動詞）。Weather permitting（若天氣允許的話，原為 If weather permits）中，因省略了連接詞 If，主詞 weather 與主動動詞 permit 必須轉為現在分詞 permitting。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Weather permitting, the annual charity awards banquet will be held on the rooftop terrace overlooking the harbor. （若天氣允許的話，年度慈善頒獎晚宴將於俯瞰海港的頂樓露台舉行。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數名詞 Weather 就反射性選第三人稱單數真動詞 permits，造成無連接詞卻有兩個真動詞的致命錯誤。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Signals 1：be critical of + N vs. criticize + O（形容詞與及物動詞之介系詞訊號）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ be + critical + of + 名詞受詞  ｜  ✅ criticize + 名詞受詞（絕不可加 of）</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>看到空格位於 be 動詞（was / were / remain）之後，且空格後方緊接介系詞 of 時，必須秒選形容詞 critical（對……持批評態度的）。反之，若空格為主要動詞且後方直接接名詞受詞（無介系詞 of），才選及物動詞 criticize。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>The head of marketing was openly critical of the board&#x27;s decision to reduce digital advertising expenditure. （行銷主管公開對董事會削減數位廣告支出的決定持批評態度。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 was criticized of（criticize 為及物動詞，被動語態應為 was criticized by/for，主動亦不可加 of）。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 prior to expiration</span>
-                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
-                <span class="sbc-meaning">在到期之前</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>expiration = termination = end of term</li><li>⚠️ <b>易混淆陷阱：</b>動詞形式為 expire！</li><li>📖 <span class="ex-en">Renew your pass prior to expiration to avoid lapses.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「在到期之前」於職場之情境：Renew your pass prior to expiration to avoid lapses.</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 eligible for the award</span>
-                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
-                <span class="sbc-meaning">符合獲獎資格</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>eligible for = qualified for = entitled to</li><li>⚠️ <b>易混淆陷阱：</b>必考介系詞 for！</li><li>📖 <span class="ex-en">Only full-time staff are eligible for the award.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「符合獲獎資格」於職場之情境：Only full-time staff are eligible for the award.</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 accommodation</span>
-                <span class="sbc-pos">[名詞 (n.)]</span>
-                <span class="sbc-meaning">住宿膳宿；適應調解 (雙c雙m必考拼寫)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>provide premium hotel accommodations for overseas clients (提供頂級飯店住宿)</li><li>⚠️ <b>易混淆陷阱：</b>美式英語常以複數 accommodations 表住宿；注意拼法為雙 c 雙 m。</li><li>📖 <span class="ex-en">The conference registration fee covers admission to all breakout sessions and luxury hotel accommodations.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 本次國際論壇之全額報名費，已包含全天候分案專題演講入場資格與特約豪華五星飯店住宿膳宿。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 reimbursement</span>
-                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
-                <span class="sbc-meaning">費用核銷、代墊款報銷</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>submit receipts for travel expense reimbursement (提交單據以核銷差旅費)</li><li>⚠️ <b>易混淆陷阱：</b>及物動詞為 reimburse（核銷／退還）；reimburse sb for expenses。</li><li>📖 <span class="ex-en">Employees seeking travel expense reimbursement must attach original receipts to their claim forms.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡欲申請公出代墊差旅費用核銷之同仁，送件時務必檢附各項交通與餐飲之原始統一發票收據單據。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 appropriation</span>
-                <span class="sbc-pos">[可數 / 不可數名詞 (n.)]</span>
-                <span class="sbc-meaning">撥款、專款；挪用、佔用</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>government appropriation for public transit development (大眾運輸預算撥款)</li><li>⚠️ <b>易混淆陷阱：</b>動詞 appropriate 表「撥出款項」或「挪用」；形容詞 appropriate 表「適當的」。</li><li>📖 <span class="ex-en">The municipal legislature approved a special budget appropriation to modernize urban drainage systems.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 市政議會於昨晚表決通過了一筆特別公共預算撥款，專門用以加速推動老舊都會地下排水防洪工程現代化。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 miscellaneous</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">雜項的、形形色色的、混雜的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>allocate petty cash for miscellaneous office expenses (提撥零用金作為雜項辦公支出)</li><li>⚠️ <b>易混淆陷阱：</b>財務報表常用 miscellaneous expenses（雜支費用）。</li><li>📖 <span class="ex-en">The finance department allocated a modest fund for miscellaneous stationery and catering expenses.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司財務會計部門特別核准提撥了一筆零用金備用專款，以支應日常採購文具紙張與各項雜項辦公行政支出。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 prominent</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">顯著的、傑出的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>prominent figure（知名人士、政要）。</li><li>⚠️ <b>易混淆陷阱：</b>prominent figure（知名人士、政要）。</li><li>📖 <span class="ex-en">Dr. Evelyn Sato, a prominent macroeconomist, will deliver the opening keynote address at the Zurich summit.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 著名總體經濟學家佐藤博士將在蘇黎世高峰會發表開幕主題演講。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 deficient</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">缺乏的、有缺陷的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>對比：sufficient (adj. 充足的)；衍生：deficit (n. 赤字、虧損)。</li><li>⚠️ <b>易混淆陷阱：</b>對比：sufficient (adj. 充足的)；衍生：deficit (n. 赤字、虧損)。</li><li>📖 <span class="ex-en">The safety audit revealed that the warehouse ventilation system was severely deficient in air-filtration capacity.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 工安稽核顯示，該倉庫的通風系統在空氣過濾效能上嚴重不足。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 ascertain</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">查明、確定、弄清</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>例：ascertain the cause of delay；衍生：certain (adj. 確定的)。</li><li>⚠️ <b>易混淆陷阱：</b>例：ascertain the cause of delay；衍生：certain (adj. 確定的)。</li><li>📖 <span class="ex-en">Forensic accountants were retained to ascertain the exact cause of the third-quarter inventory discrepancy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司聘請鑑識會計師查明第三季存貨帳目不一致的確切原因。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 pervasive</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">無處不在的、遍布的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>常見於科技、文化或市場影響力主題（如 pervasive technology）。</li><li>⚠️ <b>易混淆陷阱：</b>常見於科技、文化或市場影響力主題（如 pervasive technology）。</li><li>📖 <span class="ex-en">With cloud-based collaboration tools becoming pervasive across the industry, remote auditing is now standard practice.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 隨著雲端協作工具在業界無處不在，遠端審計已成為標準作業流程。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 collision</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">碰撞、衝突</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生動詞：collide (v. 相撞)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：collide (v. 相撞)。</li><li>📖 <span class="ex-en">All fleet delivery trucks are now equipped with radar sensors designed to prevent rear-end collisions.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有物流貨車車隊現均已配備雷達感測器，旨在防止發生後方追撞事故。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 rehearsal</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">排練、彩排</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生動詞：rehearse (v. 彩排)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：rehearse (v. 彩排)。</li><li>📖 <span class="ex-en">All keynote speakers must attend the technical dress rehearsal in the main auditorium at 8:00 A.M.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有主講嘉賓皆必須參加上午八點在主大禮堂舉行的技術設備正式彩排。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 saturated</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">飽和的、浸透的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>saturated market（飽和市場）。</li><li>⚠️ <b>易混淆陷阱：</b>saturated market（飽和市場）。</li><li>📖 <span class="ex-en">Because the domestic smartphone market is already highly saturated, the brand is expanding into Latin America.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 由於國內智慧型手機市場已高度飽和，該品牌正加速拓展至拉丁美洲市場。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 editorial</span>
-                <span class="sbc-pos">[n. / adj.]</span>
-                <span class="sbc-meaning">社論；編輯的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>出版、新聞與媒體情境詞。</li><li>⚠️ <b>易混淆陷阱：</b>出版、新聞與媒體情境詞。</li><li>📖 <span class="ex-en">In Sunday&#x27;s lead editorial, the financial newspaper praised the central bank&#x27;s interest-rate policy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在週日刊登的頭條社論中，該財經報紙盛讚了中央銀行的利率調控政策。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 testament</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">證明、鐵證</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：a testament to one&#x27;s ability/effort（對某人能力的明證）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：a testament to one&#x27;s ability/effort（對某人能力的明證）。</li><li>📖 <span class="ex-en">Our98% client renewal rate is a clear testament to the reliability and responsiveness of our support team.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們高達98%的客戶續約率，正是我們支援團隊可靠性與迅速回應能力的最佳證明。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 succession</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">接替、繼承；連續</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：in succession（連續地）；形容詞：successive（連續的）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：in succession（連續地）；形容詞：successive（連續的）。</li><li>📖 <span class="ex-en">After winning the industry quality award for four years in succession, the plant expanded its production capacity.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在連續四年榮獲業界品質大獎後，該工廠進一步擴充了其生產產能。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：關係代名詞子句簡化 (Participle Reduction) 視覺錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 主格關代 + 主動動詞 [Those who attend] ➔ 簡化為「V-ing」[Those attending]！</li>
-                <li>🔹 👀 主格關代 + 被動動詞 [Items that were ordered] ➔ 簡化為「V-en」[Items ordered]！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：省掉 who/which，主動留 -ing，被動留 -ed！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 1：獨立分詞構句（Weather permitting / Time permitting）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 獨立主詞 (Weather / Time) + 現在分詞 V-ing (permitting), 主句 S + V...</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>英語句子遵循「一山不容二虎」原則：在沒有連接詞（如 if / because / as）的情況下，逗號前的附屬結構絕不可填入真動詞（有限動詞）。Weather permitting（若天氣允許的話，原為 If weather permits）中，因省略了連接詞 If，主詞 weather 與主動動詞 permit 必須轉為現在分詞 permitting。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Weather permitting, the annual charity awards banquet will be held on the rooftop terrace overlooking the harbor. （若天氣允許的話，年度慈善頒獎晚宴將於俯瞰海港的頂樓露台舉行。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數名詞 Weather 就反射性選第三人稱單數真動詞 permits，造成無連接詞卻有兩個真動詞的致命錯誤。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Signals 1：be critical of + N vs. criticize + O（形容詞與及物動詞之介系詞訊號）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ be + critical + of + 名詞受詞  ｜  ✅ criticize + 名詞受詞（絕不可加 of）</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>看到空格位於 be 動詞（was / were / remain）之後，且空格後方緊接介系詞 of 時，必須秒選形容詞 critical（對……持批評態度的）。反之，若空格為主要動詞且後方直接接名詞受詞（無介系詞 of），才選及物動詞 criticize。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>The head of marketing was openly critical of the board&#x27;s decision to reduce digital advertising expenditure. （行銷主管公開對董事會削減數位廣告支出的決定持批評態度。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 was criticized of（criticize 為及物動詞，被動語態應為 was criticized by/for，主動亦不可加 of）。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

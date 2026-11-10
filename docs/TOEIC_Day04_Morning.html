@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 discharge</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">履行職責；解僱；准許出院；排放</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>一詞多義高頻字（discharge duties / patients）。</li><li>⚠️ <b>易混淆陷阱：</b>一詞多義高頻字（discharge duties / patients）。</li><li>📖 <span class="ex-en">The hospital Board praised the nursing staff for discharging their clinical duties with exceptional professionalism.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 醫院董事會大力盛讚護理全體團隊，以無比卓越的專業素養克盡並履行其各項臨床醫療照護職責。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 mandatory</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">強制的、法定的、義務的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>同義字：compulsory, obligatory。 ｜ 延伸語塊：mandatory attendance（強制出席/必須參加；mandatory = compulsory = obligatory = required）</li><li>⚠️ <b>易混淆陷阱：</b>同義字：compulsory, obligatory。 ｜ 反義詞為 optional！</li><li>📖 <span class="ex-en">Attendance at Friday&#x27;s cybersecurity awareness workshop is mandatory for all personnel handling client data.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有負責經手接觸客戶敏感資料的同仁，皆必須強制參加本週五舉辦的資安防護意識宣導工作坊。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 stringent</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">嚴格的、緊縮的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>搭配：stringent regulations / standards / policies。</li><li>⚠️ <b>易混淆陷阱：</b>搭配：stringent regulations / standards / policies。</li><li>📖 <span class="ex-en">Medical device manufacturers must comply with stringent sterilization standards prior to product distribution.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 醫療器材製造商在正式對外分銷流通產品之前，必須無條件完全符合極其嚴苛的滅菌安全標準。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 in stock</span>
+                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
+                <span class="sbc-meaning">有現貨庫存</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>in stock = available = on hand</li><li>⚠️ <b>易混淆陷阱：</b>可指『庫存』也可指『股票』（corporate stock）！</li><li>📖 <span class="ex-en">All replacement parts are currently in stock.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「有現貨庫存」於職場之情境：All replacement parts are currently in stock.</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 imperative</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">極重要的、勢在必行的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>句型：It is imperative that + S + (should) 原形動詞。</li><li>⚠️ <b>易混淆陷阱：</b>句型：It is imperative that + S + (should) 原形動詞。 ｜ 後面接 (should) + 原形動詞！</li><li>📖 <span class="ex-en">It is imperative that all international shipping manifests be verified before the cargo vessel departs.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有國際貨運艙單必須在貨船啟航前完成查核，這點至關重要。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 even though</span>
+                <span class="sbc-pos">[conj.]</span>
+                <span class="sbc-meaning">儘管、雖然</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>兩個單詞，接完整子句表讓步（非合體字）。</li><li>⚠️ <b>易混淆陷阱：</b>兩個單詞，接完整子句表讓步（非合體字）。</li><li>📖 <span class="ex-en">Even though raw material prices fluctuated wildly, the manufacturer maintained stable wholesale pricing.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即使原物料價格劇烈波動，該製造商仍維持了穩定的批發銷售定價。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 discretion</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">謹慎、裁量權</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：at one&#x27;s discretion（由某人自行斟酌裁奪）。 ｜ 延伸語塊：use one&#x27;s discretion（行使自身裁量權；discretion = judgment = authority） ｜ 延伸語塊：at the discretion of（由……自行斟酌決定；at the discretion of = determined by）</li><li>⚠️ <b>易混淆陷阱：</b>片語：at one&#x27;s discretion（由某人自行斟酌裁奪）。 ｜ 形容詞形式為 discretionary（自由裁量的）！ ｜ 固定商務片語！</li><li>📖 <span class="ex-en">Department managers may approve remote-work requests at their own discretion during severe weather alerts.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在發布嚴峻天候警報期間，部門主管可依自身裁量權核准同仁之遠距辦公申請。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 dedication</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">奉獻、專注致力</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：dedication to + N/V-ing（注意 to 為介系詞）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：dedication to + N/V-ing（注意 to 為介系詞）。</li><li>📖 <span class="ex-en">The retiring laboratory director was honored for her forty years of unwavering dedication to cancer research.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即將退休的實驗室主管因其四十年來對癌症研究所付出的堅定奉獻精神而獲得崇高表彰。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 scrutinize</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">仔細審查、澈底檢驗</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>同義改寫：examine thoroughly, inspect closely。</li><li>⚠️ <b>易混淆陷阱：</b>同義改寫：examine thoroughly, inspect closely。</li><li>📖 <span class="ex-en">Customs inspectors closely scrutinize all agricultural imports to prevent the introduction of invasive pests.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 海關檢驗官員密切嚴格審查所有進口農產品，以防範外來入侵有害生物之引入。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 alteration</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">修改、更動</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>⚠️ **勘誤注意**：勿與 alternation (交替、輪流) 混淆。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **勘誤注意**：勿與 alternation (交替、輪流) 混淆。</li><li>📖 <span class="ex-en">Tailors at our flagship boutique provide complimentary hemline alterations on all full-price business suits.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們旗艦精品門市的專屬駐店裁縫師，為所有全價商務西裝提供免費的下擺修改調整服務。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 literature</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">文獻；產品宣傳品、說明書</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>⚠️ **多益熟詞偏義**：除了文學，多益多考「產品文宣/手冊」。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **多益熟詞偏義**：除了文學，多益多考「產品文宣/手冊」。</li><li>📖 <span class="ex-en">Sales representatives distributed updated product literature to prospective buyers at the medical device trade fair.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 業務代表在醫療器材展覽會現場，向潛在國際買主廣泛發放更新版的最新產品宣傳手冊資料。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 relinquish</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">放棄（權利、職位、控制權）</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>如：relinquish one&#x27;s position / role / rights。</li><li>⚠️ <b>易混淆陷阱：</b>如：relinquish one&#x27;s position / role / rights。</li><li>📖 <span class="ex-en">Under the terms of the settlement, the holding company agreed to relinquish its voting majority on the board.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 根據這項法律和解協議的條款內容，該控股集團同意正式交出其在董事會中的多數投票表決權利。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 nonetheless</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">然而、儘管如此</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>等同於 nevertheless；副詞轉折語，不具連接兩子句之功能。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 nevertheless；副詞轉折語，不具連接兩子句之功能。</li><li>📖 <span class="ex-en">The construction project encountered severe inclement weather in March; nonetheless, the contractor finished on schedule.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該項工程專案在三月遭遇了嚴峻的惡劣天候；儘管如此，承包商仍如期完工。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 termination</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">終止、解僱</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>terminate a contract（終止合約）；termination notice。</li><li>⚠️ <b>易混淆陷阱：</b>terminate a contract（終止合約）；termination notice。</li><li>📖 <span class="ex-en">Either party may initiate contract termination by providing sixty days&#x27; written notice to the other party.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 任何一方均可藉由向對方提供六十天的書面通知，正式啟動終止合約程序。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 discrepancy</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">出入、不一致、差異</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>財務對帳必考：discrepancy between the invoice and the records。 ｜ 延伸語塊：resolve the discrepancy（解決差異/消除不一致；discrepancy = variance = inconsistency = divergence）</li><li>⚠️ <b>易混淆陷阱：</b>財務對帳必考：discrepancy between the invoice and the records。 ｜ discrepancy 為名詞！</li><li>📖 <span class="ex-en">The auditor discovered a $4,200 discrepancy between the digital invoice ledger and the bank statement.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 審計人員發現數位發票帳冊與銀行對帳單之間存在四千兩百美元的金額出入不符。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 in order that</span>
+                <span class="sbc-pos">[conj.]</span>
+                <span class="sbc-meaning">為了、以便</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>連接詞接子句，子句常伴隨情態動詞 can / may / could。</li><li>⚠️ <b>易混淆陷阱：</b>連接詞接子句，子句常伴隨情態動詞 can / may / could。</li><li>📖 <span class="ex-en">Please upload your presentation slides by Wednesday in order that our technical crew can test compatibility.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請於週三前上傳您的簡報投影片，以便我們的技術團隊能事先測試相容性。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：分詞當形容詞：看被修飾名詞是「主動發出」還是「被動承受」</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 名詞自己能做動作 ➔ 選 V-ing（demanding job 費力的工作, promising future 有前途的未來）</li>
+                <li>🔹 👀 名詞是被做的 / 承受動作 ➔ 選 V-ed（damaged goods 受損貨品, revised contract 修改後的合約）</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：主動發光選 -ing，被動受傷選 -ed！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Signals 1：be critical of + N vs. criticize + O（形容詞與及物動詞之介系詞訊號）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ be + critical + of + 名詞受詞  ｜  ✅ criticize + 名詞受詞（絕不可加 of）</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>看到空格位於 be 動詞（was / were / remain）之後，且空格後方緊接介系詞 of 時，必須秒選形容詞 critical（對……持批評態度的）。反之，若空格為主要動詞且後方直接接名詞受詞（無介系詞 of），才選及物動詞 criticize。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>The head of marketing was openly critical of the board&#x27;s decision to reduce digital advertising expenditure. （行銷主管公開對董事會削減數位廣告支出的決定持批評態度。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 was criticized of（criticize 為及物動詞，被動語態應為 was criticized by/for，主動亦不可加 of）。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 discharge</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">履行職責；解僱；准許出院；排放</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>一詞多義高頻字（discharge duties / patients）。</li><li>⚠️ <b>易混淆陷阱：</b>一詞多義高頻字（discharge duties / patients）。</li><li>📖 <span class="ex-en">The hospital Board praised the nursing staff for discharging their clinical duties with exceptional professionalism.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 醫院董事會大力盛讚護理全體團隊，以無比卓越的專業素養克盡並履行其各項臨床醫療照護職責。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 mandatory</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">強制的、法定的、義務的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>同義字：compulsory, obligatory。 ｜ 延伸語塊：mandatory attendance（強制出席/必須參加；mandatory = compulsory = obligatory = required）</li><li>⚠️ <b>易混淆陷阱：</b>同義字：compulsory, obligatory。 ｜ 反義詞為 optional！</li><li>📖 <span class="ex-en">Attendance at Friday&#x27;s cybersecurity awareness workshop is mandatory for all personnel handling client data.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有負責經手接觸客戶敏感資料的同仁，皆必須強制參加本週五舉辦的資安防護意識宣導工作坊。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 stringent</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">嚴格的、緊縮的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>搭配：stringent regulations / standards / policies。</li><li>⚠️ <b>易混淆陷阱：</b>搭配：stringent regulations / standards / policies。</li><li>📖 <span class="ex-en">Medical device manufacturers must comply with stringent sterilization standards prior to product distribution.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 醫療器材製造商在正式對外分銷流通產品之前，必須無條件完全符合極其嚴苛的滅菌安全標準。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 in stock</span>
-                <span class="sbc-pos">[商務核心語塊 (phr.)]</span>
-                <span class="sbc-meaning">有現貨庫存</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>in stock = available = on hand</li><li>⚠️ <b>易混淆陷阱：</b>可指『庫存』也可指『股票』（corporate stock）！</li><li>📖 <span class="ex-en">All replacement parts are currently in stock.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該句體現「有現貨庫存」於職場之情境：All replacement parts are currently in stock.</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 imperative</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">極重要的、勢在必行的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>句型：It is imperative that + S + (should) 原形動詞。</li><li>⚠️ <b>易混淆陷阱：</b>句型：It is imperative that + S + (should) 原形動詞。 ｜ 後面接 (should) + 原形動詞！</li><li>📖 <span class="ex-en">It is imperative that all international shipping manifests be verified before the cargo vessel departs.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有國際貨運艙單必須在貨船啟航前完成查核，這點至關重要。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 even though</span>
-                <span class="sbc-pos">[conj.]</span>
-                <span class="sbc-meaning">儘管、雖然</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>兩個單詞，接完整子句表讓步（非合體字）。</li><li>⚠️ <b>易混淆陷阱：</b>兩個單詞，接完整子句表讓步（非合體字）。</li><li>📖 <span class="ex-en">Even though raw material prices fluctuated wildly, the manufacturer maintained stable wholesale pricing.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即使原物料價格劇烈波動，該製造商仍維持了穩定的批發銷售定價。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 discretion</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">謹慎、裁量權</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：at one&#x27;s discretion（由某人自行斟酌裁奪）。 ｜ 延伸語塊：use one&#x27;s discretion（行使自身裁量權；discretion = judgment = authority） ｜ 延伸語塊：at the discretion of（由……自行斟酌決定；at the discretion of = determined by）</li><li>⚠️ <b>易混淆陷阱：</b>片語：at one&#x27;s discretion（由某人自行斟酌裁奪）。 ｜ 形容詞形式為 discretionary（自由裁量的）！ ｜ 固定商務片語！</li><li>📖 <span class="ex-en">Department managers may approve remote-work requests at their own discretion during severe weather alerts.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在發布嚴峻天候警報期間，部門主管可依自身裁量權核准同仁之遠距辦公申請。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 dedication</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">奉獻、專注致力</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：dedication to + N/V-ing（注意 to 為介系詞）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：dedication to + N/V-ing（注意 to 為介系詞）。</li><li>📖 <span class="ex-en">The retiring laboratory director was honored for her forty years of unwavering dedication to cancer research.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即將退休的實驗室主管因其四十年來對癌症研究所付出的堅定奉獻精神而獲得崇高表彰。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 scrutinize</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">仔細審查、澈底檢驗</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>同義改寫：examine thoroughly, inspect closely。</li><li>⚠️ <b>易混淆陷阱：</b>同義改寫：examine thoroughly, inspect closely。</li><li>📖 <span class="ex-en">Customs inspectors closely scrutinize all agricultural imports to prevent the introduction of invasive pests.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 海關檢驗官員密切嚴格審查所有進口農產品，以防範外來入侵有害生物之引入。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 alteration</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">修改、更動</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>⚠️ **勘誤注意**：勿與 alternation (交替、輪流) 混淆。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **勘誤注意**：勿與 alternation (交替、輪流) 混淆。</li><li>📖 <span class="ex-en">Tailors at our flagship boutique provide complimentary hemline alterations on all full-price business suits.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們旗艦精品門市的專屬駐店裁縫師，為所有全價商務西裝提供免費的下擺修改調整服務。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 literature</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">文獻；產品宣傳品、說明書</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>⚠️ **多益熟詞偏義**：除了文學，多益多考「產品文宣/手冊」。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **多益熟詞偏義**：除了文學，多益多考「產品文宣/手冊」。</li><li>📖 <span class="ex-en">Sales representatives distributed updated product literature to prospective buyers at the medical device trade fair.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 業務代表在醫療器材展覽會現場，向潛在國際買主廣泛發放更新版的最新產品宣傳手冊資料。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 relinquish</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">放棄（權利、職位、控制權）</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>如：relinquish one&#x27;s position / role / rights。</li><li>⚠️ <b>易混淆陷阱：</b>如：relinquish one&#x27;s position / role / rights。</li><li>📖 <span class="ex-en">Under the terms of the settlement, the holding company agreed to relinquish its voting majority on the board.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 根據這項法律和解協議的條款內容，該控股集團同意正式交出其在董事會中的多數投票表決權利。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 nonetheless</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">然而、儘管如此</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>等同於 nevertheless；副詞轉折語，不具連接兩子句之功能。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 nevertheless；副詞轉折語，不具連接兩子句之功能。</li><li>📖 <span class="ex-en">The construction project encountered severe inclement weather in March; nonetheless, the contractor finished on schedule.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該項工程專案在三月遭遇了嚴峻的惡劣天候；儘管如此，承包商仍如期完工。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 termination</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">終止、解僱</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>terminate a contract（終止合約）；termination notice。</li><li>⚠️ <b>易混淆陷阱：</b>terminate a contract（終止合約）；termination notice。</li><li>📖 <span class="ex-en">Either party may initiate contract termination by providing sixty days&#x27; written notice to the other party.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 任何一方均可藉由向對方提供六十天的書面通知，正式啟動終止合約程序。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 discrepancy</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">出入、不一致、差異</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>財務對帳必考：discrepancy between the invoice and the records。 ｜ 延伸語塊：resolve the discrepancy（解決差異/消除不一致；discrepancy = variance = inconsistency = divergence）</li><li>⚠️ <b>易混淆陷阱：</b>財務對帳必考：discrepancy between the invoice and the records。 ｜ discrepancy 為名詞！</li><li>📖 <span class="ex-en">The auditor discovered a $4,200 discrepancy between the digital invoice ledger and the bank statement.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 審計人員發現數位發票帳冊與銀行對帳單之間存在四千兩百美元的金額出入不符。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 in order that</span>
-                <span class="sbc-pos">[conj.]</span>
-                <span class="sbc-meaning">為了、以便</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>連接詞接子句，子句常伴隨情態動詞 can / may / could。</li><li>⚠️ <b>易混淆陷阱：</b>連接詞接子句，子句常伴隨情態動詞 can / may / could。</li><li>📖 <span class="ex-en">Please upload your presentation slides by Wednesday in order that our technical crew can test compatibility.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請於週三前上傳您的簡報投影片，以便我們的技術團隊能事先測試相容性。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：分詞當形容詞：看被修飾名詞是「主動發出」還是「被動承受」</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 名詞自己能做動作 ➔ 選 V-ing（demanding job 費力的工作, promising future 有前途的未來）</li>
-                <li>🔹 👀 名詞是被做的 / 承受動作 ➔ 選 V-ed（damaged goods 受損貨品, revised contract 修改後的合約）</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：主動發光選 -ing，被動受傷選 -ed！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Signals 1：be critical of + N vs. criticize + O（形容詞與及物動詞之介系詞訊號）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ be + critical + of + 名詞受詞  ｜  ✅ criticize + 名詞受詞（絕不可加 of）</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>看到空格位於 be 動詞（was / were / remain）之後，且空格後方緊接介系詞 of 時，必須秒選形容詞 critical（對……持批評態度的）。反之，若空格為主要動詞且後方直接接名詞受詞（無介系詞 of），才選及物動詞 criticize。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>The head of marketing was openly critical of the board&#x27;s decision to reduce digital advertising expenditure. （行銷主管公開對董事會削減數位廣告支出的決定持批評態度。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 was criticized of（criticize 為及物動詞，被動語態應為 was criticized by/for，主動亦不可加 of）。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

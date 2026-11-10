@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 via</span>
+                <span class="sbc-pos">[介系詞 (prep.)]</span>
+                <span class="sbc-meaning">經由、透過、取道 (=by way of / by means of)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>official documents will be delivered via express courier (官方文件將透過快捷快遞遞送)</li><li>⚠️ <b>易混淆陷阱：</b>介系詞，後接交通方式、通訊管道或中停地點（via email / via Frankfurt）。</li><li>📖 <span class="ex-en">All confidential contract drafts should be transmitted via encrypted file transfer rather than regular email.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有涉及核心商業機密的合作備忘錄與正式合約最終定稿，均應透過受高強度金鑰保護的專用檔案通道遞送。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 arm</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">分支機構、業務部門、機構之分支</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>the research arm of the multinational conglomerate (跨國企業集團之研發機構)</li><li>⚠️ <b>易混淆陷阱：</b>商務偏義字！除了「手臂」外，多益常考「分支業務單位（an investigative / commercial arm）」。</li><li>📖 <span class="ex-en">The commercial banking arm of the financial group recorded a thirty percent rise in net profits.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該跨國大型綜合企業集團旗下專責先進醫藥研發的海外業務分支機構，於昨日正式宣布獲得國際專利授權。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 unveil</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">推出、揭幕、發表</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>同義改寫：launch, reveal, introduce（常考新產品/服務上市）。 ｜ 使用者弱點語塊：unveil the cutting-edge consumer electronics device (發表頂尖消費電子裝置)</li><li>⚠️ <b>易混淆陷阱：</b>同義改寫：launch, reveal, introduce（常考新產品/服務上市）。 ｜ ⚠️ 弱點備忘：多益新產品發表與戰略藍圖公布必考字（unveil new initiatives）。</li><li>📖 <span class="ex-en">The automaker plans to unveil its next-generation autonomous delivery van at the Frankfurt Motor Show.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家汽車製造商計畫在法蘭克福車展上正式推出其下一代自駕外送貨車。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 omit</span>
+                <span class="sbc-pos">[及物動詞 (v.)]</span>
+                <span class="sbc-meaning">省略、遺漏、省去</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>omit unnecessary details from the executive report ｜ omit items</li><li>⚠️ <b>易混淆陷阱：</b>過去式及分詞須重複 t（omitted）；名詞為 omission（疏忽／遺漏）。</li><li>📖 <span class="ex-en">Please make sure not to omit any travel expenses when submitting your reimbursement form.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在提交差旅核銷申請表單時，請務必再三確認不要遺漏填報任何實際發生的差旅費用。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 hoist</span>
+                <span class="sbc-pos">[及物動詞 / 可數名詞 (v./n.)]</span>
+                <span class="sbc-meaning">吊起、升起；起重吊車</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>hoist the shipping container onto the freight vessel (將貨櫃吊上貨船)</li><li>⚠️ <b>易混淆陷阱：</b>多益聽力圖片題常考「吊車正在吊起建材」（A crane is hoisting materials）。</li><li>📖 <span class="ex-en">Dockworkers used an industrial crane to hoist heavy cargo containers onto the outgoing freighter.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 碼頭裝卸作業人員操作重型起重機，將巨大的貨櫃平穩吊起並安置至即將出港的遠洋貨輪上。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 subject</span>
+                <span class="sbc-pos">[adj. / v.]</span>
+                <span class="sbc-meaning">易受……影響的；需經……核可</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：be subject to change / approval / inspection（多益超高頻）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：be subject to change / approval / inspection（多益超高頻）。 ｜ subject 作形容詞！</li><li>📖 <span class="ex-en">All international flight schedules and boarding gate assignments are subject to change without prior notice.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有國際航班時刻表與登機門安排如有變動，恕不另行個別通知。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 narrate</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">敘述、旁白解說</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生名詞：narrator (n. 旁白員)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生名詞：narrator (n. 旁白員)。</li><li>📖 <span class="ex-en">A renowned broadcast journalist was hired to narrate the corporate documentary celebrating our centennial.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司聘請了一位知名的資深廣播新聞記者，為慶祝本公司創立百週年的企業紀錄片錄製旁白敘述。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 errand</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">差事、公幹雜事</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>run administrative errands for the department head (為部門主管奔走處理公事)</li><li>⚠️ <b>易混淆陷阱：</b>固定動詞搭配為 run errands（奔走辦事），不可與 task 或 chore 誤搭配。</li><li>📖 <span class="ex-en">The administrative assistant left the office briefly to run several banking errands before noon.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 行政部門助理同仁在中午用餐之前短暫外出，專程為部門主管奔走處理數筆緊急的銀行往來公幹雜事。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 accumulative</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">累積的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生動詞：accumulate (v. 累積、積累)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：accumulate (v. 累積、積累)。</li><li>📖 <span class="ex-en">The accumulative effect of minor assembly-line delays resulted in a significant production backlog.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 裝配線微小延誤的累積效應，導致了嚴重的生產積壓。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 subsequently</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">隨後地、後來</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>等同於 afterward；常用於商業事件流程與時間軸轉折。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 afterward；常用於商業事件流程與時間軸轉折。</li><li>📖 <span class="ex-en">The prototype initially failed thermal testing; subsequently, the engineering team redesigned the cooling fan.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該原型機最初未通過散熱測試；隨後，工程團隊重新設計了冷卻風扇。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 periodically</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">定期地、週期性地</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生：periodical (n. 期刊雜誌)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：periodical (n. 期刊雜誌)。</li><li>📖 <span class="ex-en">To prevent mechanical breakdowns, factory cooling towers must be descaled and inspected periodically.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 為了防止機械故障，工廠冷卻水塔必須定期清除水垢並進行檢驗維護。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 perseverance</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">堅毅、堅持不懈</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>職場表揚與成功故事核心字。</li><li>⚠️ <b>易混淆陷阱：</b>職場表揚與成功故事核心字。</li><li>📖 <span class="ex-en">Through remarkable perseverance, the R&amp;D engineers overcame three years of material durability challenges.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過堅韌不拔的毅力，研發工程團隊克服了長達三年的材料耐用度技術挑戰。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 manifestation</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">展現、表明、跡象</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生動詞：manifest (v. 表明、顯現)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：manifest (v. 表明、顯現)。</li><li>📖 <span class="ex-en">The surge in repeat enterprise orders is a direct manifestation of our improved quality control protocols.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 企業客戶續購重複訂單的大幅激增，正是我們品質控制標準流程優化後的具體展現。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 conscientiously</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">認真負責地、盡責地</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生：conscientious (adj. 盡責的)、conscience (n. 良心)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：conscientious (adj. 盡責的)、conscience (n. 良心)。</li><li>📖 <span class="ex-en">Ms. Lin conscientiously reviewed every clause of the vendor agreement before authorizing the wire transfer.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 林女士在授權電匯前，認真細緻地審查了供應商協議的每一項條款。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 discrimination</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">歧視；辨別力</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>workplace discrimination（職場歧視）。</li><li>⚠️ <b>易混淆陷阱：</b>workplace discrimination（職場歧視）。</li><li>📖 <span class="ex-en">Our corporate charter enforces a zero-tolerance policy regarding any form of workplace discrimination.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們的企業規章嚴格執行針對任何形式職場歧視的零容忍政策。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 circular economy</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">循環經濟</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生：circular (adj. 圓形的；n. 通報、傳單)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：circular (adj. 圓形的；n. 通報、傳單)。</li><li>📖 <span class="ex-en">By refurbishing returned electronics, our company actively contributes to a sustainable circular economy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過翻新整修退換貨的電子產品，我們公司積極為永續的循環經濟做出實質貢獻。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 6 插入句 (Sentence Insertion) 脈絡代名詞錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 看到前句有具體名詞 [such investments / this tenant] ➔ 插入句必須含有承接代名詞！</li>
+                <li>🔹 👀 注意固定處所介系詞搭配：恆用「on the premises」，不可用 in！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：有形資產選 tangible，處所介系詞鎖定 on the premises！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 1：獨立分詞構句（Weather permitting / Time permitting）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 獨立主詞 (Weather / Time) + 現在分詞 V-ing (permitting), 主句 S + V...</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>英語句子遵循「一山不容二虎」原則：在沒有連接詞（如 if / because / as）的情況下，逗號前的附屬結構絕不可填入真動詞（有限動詞）。Weather permitting（若天氣允許的話，原為 If weather permits）中，因省略了連接詞 If，主詞 weather 與主動動詞 permit 必須轉為現在分詞 permitting。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Weather permitting, the annual charity awards banquet will be held on the rooftop terrace overlooking the harbor. （若天氣允許的話，年度慈善頒獎晚宴將於俯瞰海港的頂樓露台舉行。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數名詞 Weather 就反射性選第三人稱單數真動詞 permits，造成無連接詞卻有兩個真動詞的致命錯誤。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 via</span>
-                <span class="sbc-pos">[介系詞 (prep.)]</span>
-                <span class="sbc-meaning">經由、透過、取道 (=by way of / by means of)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>official documents will be delivered via express courier (官方文件將透過快捷快遞遞送)</li><li>⚠️ <b>易混淆陷阱：</b>介系詞，後接交通方式、通訊管道或中停地點（via email / via Frankfurt）。</li><li>📖 <span class="ex-en">All confidential contract drafts should be transmitted via encrypted file transfer rather than regular email.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有涉及核心商業機密的合作備忘錄與正式合約最終定稿，均應透過受高強度金鑰保護的專用檔案通道遞送。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 arm</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">分支機構、業務部門、機構之分支</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>the research arm of the multinational conglomerate (跨國企業集團之研發機構)</li><li>⚠️ <b>易混淆陷阱：</b>商務偏義字！除了「手臂」外，多益常考「分支業務單位（an investigative / commercial arm）」。</li><li>📖 <span class="ex-en">The commercial banking arm of the financial group recorded a thirty percent rise in net profits.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該跨國大型綜合企業集團旗下專責先進醫藥研發的海外業務分支機構，於昨日正式宣布獲得國際專利授權。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 unveil</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">推出、揭幕、發表</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>同義改寫：launch, reveal, introduce（常考新產品/服務上市）。 ｜ 使用者弱點語塊：unveil the cutting-edge consumer electronics device (發表頂尖消費電子裝置)</li><li>⚠️ <b>易混淆陷阱：</b>同義改寫：launch, reveal, introduce（常考新產品/服務上市）。 ｜ ⚠️ 弱點備忘：多益新產品發表與戰略藍圖公布必考字（unveil new initiatives）。</li><li>📖 <span class="ex-en">The automaker plans to unveil its next-generation autonomous delivery van at the Frankfurt Motor Show.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家汽車製造商計畫在法蘭克福車展上正式推出其下一代自駕外送貨車。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 omit</span>
-                <span class="sbc-pos">[及物動詞 (v.)]</span>
-                <span class="sbc-meaning">省略、遺漏、省去</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>omit unnecessary details from the executive report ｜ omit items</li><li>⚠️ <b>易混淆陷阱：</b>過去式及分詞須重複 t（omitted）；名詞為 omission（疏忽／遺漏）。</li><li>📖 <span class="ex-en">Please make sure not to omit any travel expenses when submitting your reimbursement form.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在提交差旅核銷申請表單時，請務必再三確認不要遺漏填報任何實際發生的差旅費用。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 hoist</span>
-                <span class="sbc-pos">[及物動詞 / 可數名詞 (v./n.)]</span>
-                <span class="sbc-meaning">吊起、升起；起重吊車</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>hoist the shipping container onto the freight vessel (將貨櫃吊上貨船)</li><li>⚠️ <b>易混淆陷阱：</b>多益聽力圖片題常考「吊車正在吊起建材」（A crane is hoisting materials）。</li><li>📖 <span class="ex-en">Dockworkers used an industrial crane to hoist heavy cargo containers onto the outgoing freighter.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 碼頭裝卸作業人員操作重型起重機，將巨大的貨櫃平穩吊起並安置至即將出港的遠洋貨輪上。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 subject</span>
-                <span class="sbc-pos">[adj. / v.]</span>
-                <span class="sbc-meaning">易受……影響的；需經……核可</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：be subject to change / approval / inspection（多益超高頻）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：be subject to change / approval / inspection（多益超高頻）。 ｜ subject 作形容詞！</li><li>📖 <span class="ex-en">All international flight schedules and boarding gate assignments are subject to change without prior notice.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有國際航班時刻表與登機門安排如有變動，恕不另行個別通知。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 narrate</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">敘述、旁白解說</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生名詞：narrator (n. 旁白員)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生名詞：narrator (n. 旁白員)。</li><li>📖 <span class="ex-en">A renowned broadcast journalist was hired to narrate the corporate documentary celebrating our centennial.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 公司聘請了一位知名的資深廣播新聞記者，為慶祝本公司創立百週年的企業紀錄片錄製旁白敘述。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 errand</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">差事、公幹雜事</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>run administrative errands for the department head (為部門主管奔走處理公事)</li><li>⚠️ <b>易混淆陷阱：</b>固定動詞搭配為 run errands（奔走辦事），不可與 task 或 chore 誤搭配。</li><li>📖 <span class="ex-en">The administrative assistant left the office briefly to run several banking errands before noon.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 行政部門助理同仁在中午用餐之前短暫外出，專程為部門主管奔走處理數筆緊急的銀行往來公幹雜事。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 accumulative</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">累積的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生動詞：accumulate (v. 累積、積累)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：accumulate (v. 累積、積累)。</li><li>📖 <span class="ex-en">The accumulative effect of minor assembly-line delays resulted in a significant production backlog.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 裝配線微小延誤的累積效應，導致了嚴重的生產積壓。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 subsequently</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">隨後地、後來</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>等同於 afterward；常用於商業事件流程與時間軸轉折。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 afterward；常用於商業事件流程與時間軸轉折。</li><li>📖 <span class="ex-en">The prototype initially failed thermal testing; subsequently, the engineering team redesigned the cooling fan.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該原型機最初未通過散熱測試；隨後，工程團隊重新設計了冷卻風扇。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 periodically</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">定期地、週期性地</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生：periodical (n. 期刊雜誌)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：periodical (n. 期刊雜誌)。</li><li>📖 <span class="ex-en">To prevent mechanical breakdowns, factory cooling towers must be descaled and inspected periodically.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 為了防止機械故障，工廠冷卻水塔必須定期清除水垢並進行檢驗維護。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 perseverance</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">堅毅、堅持不懈</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>職場表揚與成功故事核心字。</li><li>⚠️ <b>易混淆陷阱：</b>職場表揚與成功故事核心字。</li><li>📖 <span class="ex-en">Through remarkable perseverance, the R&amp;D engineers overcame three years of material durability challenges.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過堅韌不拔的毅力，研發工程團隊克服了長達三年的材料耐用度技術挑戰。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 manifestation</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">展現、表明、跡象</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生動詞：manifest (v. 表明、顯現)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生動詞：manifest (v. 表明、顯現)。</li><li>📖 <span class="ex-en">The surge in repeat enterprise orders is a direct manifestation of our improved quality control protocols.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 企業客戶續購重複訂單的大幅激增，正是我們品質控制標準流程優化後的具體展現。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 conscientiously</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">認真負責地、盡責地</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生：conscientious (adj. 盡責的)、conscience (n. 良心)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：conscientious (adj. 盡責的)、conscience (n. 良心)。</li><li>📖 <span class="ex-en">Ms. Lin conscientiously reviewed every clause of the vendor agreement before authorizing the wire transfer.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 林女士在授權電匯前，認真細緻地審查了供應商協議的每一項條款。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 discrimination</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">歧視；辨別力</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>workplace discrimination（職場歧視）。</li><li>⚠️ <b>易混淆陷阱：</b>workplace discrimination（職場歧視）。</li><li>📖 <span class="ex-en">Our corporate charter enforces a zero-tolerance policy regarding any form of workplace discrimination.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們的企業規章嚴格執行針對任何形式職場歧視的零容忍政策。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 circular economy</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">循環經濟</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生：circular (adj. 圓形的；n. 通報、傳單)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：circular (adj. 圓形的；n. 通報、傳單)。</li><li>📖 <span class="ex-en">By refurbishing returned electronics, our company actively contributes to a sustainable circular economy.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過翻新整修退換貨的電子產品，我們公司積極為永續的循環經濟做出實質貢獻。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 6 插入句 (Sentence Insertion) 脈絡代名詞錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 看到前句有具體名詞 [such investments / this tenant] ➔ 插入句必須含有承接代名詞！</li>
-                <li>🔹 👀 注意固定處所介系詞搭配：恆用「on the premises」，不可用 in！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：有形資產選 tangible，處所介系詞鎖定 on the premises！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 1：獨立分詞構句（Weather permitting / Time permitting）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 獨立主詞 (Weather / Time) + 現在分詞 V-ing (permitting), 主句 S + V...</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>英語句子遵循「一山不容二虎」原則：在沒有連接詞（如 if / because / as）的情況下，逗號前的附屬結構絕不可填入真動詞（有限動詞）。Weather permitting（若天氣允許的話，原為 If weather permits）中，因省略了連接詞 If，主詞 weather 與主動動詞 permit 必須轉為現在分詞 permitting。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Weather permitting, the annual charity awards banquet will be held on the rooftop terrace overlooking the harbor. （若天氣允許的話，年度慈善頒獎晚宴將於俯瞰海港的頂樓露台舉行。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數名詞 Weather 就反射性選第三人稱單數真動詞 permits，造成無連接詞卻有兩個真動詞的致命錯誤。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

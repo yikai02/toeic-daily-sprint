@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 quote</span>
+                <span class="sbc-pos">[n. / v.]</span>
+                <span class="sbc-meaning">報價單；引用</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>等同於 quotation；商業詢價高頻。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 quotation；商業詢價高頻。</li><li>📖 <span class="ex-en">Before selecting a commercial roofing contractor, facilities management obtained written quotes from four vendors.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在遴選商業屋頂修繕承包商之前，總務設施管理部門取得了四家廠商的書面報價單。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 alike</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">兩者皆然、一視同仁（置於 A and B 之後）</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>customers and employees alike</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ 易混淆陷阱：A and B alike 置於兩個對等名詞之後；like A and B 則置於名詞之前。</li><li>📖 <span class="ex-en">The new ergonomic office chairs have received enthusiastic feedback from executives and administrative staff alike.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這款全新引進的人體工學辦公座椅，獲得了高階主管以及基層行政同仁雙方全體一致的高度肯定與讚賞。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 implement</span>
+                <span class="sbc-pos">[及物動詞 / 可數名詞 (v./n.)]</span>
+                <span class="sbc-meaning">實施、貫徹執行；器具、工具</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>implement new safety regulations (實施工安新規) ｜ implement corporate policy</li><li>⚠️ <b>易混淆陷阱：</b>作動詞必接政策、措施等受詞；名詞 implementation 表「執行實施」。</li><li>📖 <span class="ex-en">The human resources department will implement new remote-work guidelines starting on the first of next month.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人力資源部門將自下個月初起，正式在全公司實施最新修訂的遠距工作管理規章。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 directory</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">通訊錄、工商名錄、目錄</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>corporate staff directory (企業員工通訊錄) ｜ telephone directory</li><li>⚠️ <b>易混淆陷阱：</b>切勿與 direct（動詞／形容詞）或 direction（方向／指示）混淆。</li><li>📖 <span class="ex-en">New employees can find contact information for department supervisors in the internal staff directory.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 新進到職同仁可在內部企業通訊錄中，迅速查閱各部門主管與同事的聯絡方式。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 narration</span>
+                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
+                <span class="sbc-meaning">旁白、敘述、口述</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>voice-over narration for the promotional video (宣傳片旁白口述)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 narrate（敘述、配旁白）；narrator 為「旁白員、敘述者」。</li><li>📖 <span class="ex-en">The multimedia marketing team hired a professional actor to provide the voice-over narration for the new commercial.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 多媒體數位行銷團隊聘請了專業外配音員，為最新發布的宣傳短片錄製旁白口述。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 privilege</span>
+                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
+                <span class="sbc-meaning">特權、殊榮、榮幸</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>have the privilege of introducing our keynote speaker (有幸介紹我們的主講嘉賓)</li><li>⚠️ <b>易混淆陷阱：</b>商務演講開場固定客套句：It is a privilege to welcome you all。</li><li>📖 <span class="ex-en">It is an honor and a privilege to introduce Dr. Vance as our keynote speaker this morning.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 今天早晨能夠由我代表全體大會，向在場各位隆重介紹我們萬分敬佩的主講嘉賓凡斯博士，實屬無上殊榮。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 exclusion</span>
+                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
+                <span class="sbc-meaning">排除、排斥在外、免責條款</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>exclusion of liability outlined in the warranty clause (保固條款中所述之免責排除)</li><li>⚠️ <b>易混淆陷阱：</b>及物動詞為 exclude；形容詞 exclusive（專屬的／排他的）；exclusion clause（免責條款）。</li><li>📖 <span class="ex-en">Customers should carefully review the warranty terms regarding the exclusion of accidental water damage.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有購買本產品之消費者，均應詳加審閱保固合約手冊中關於排除天然意外與進水損害之各項免責條款。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 appraisal</span>
+                <span class="sbc-pos">[可數 / 不可數名詞 (n.)]</span>
+                <span class="sbc-meaning">評估、考核、估價</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>annual employee performance appraisal (年度員工績效考評)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 appraise（考核／評估）；注意勿與 apprise（通知告知）混淆。</li><li>📖 <span class="ex-en">Human resources conducts an annual employee performance appraisal every November.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人力資源發展部固定於每年十一月第一週，正式在全公司各事業處全面推展年度員工績效考評作業。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 logistics</span>
+                <span class="sbc-pos">[恆為複數名詞 (n. pl.)]</span>
+                <span class="sbc-meaning">物流、後勤運籌管理</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>streamline global logistics management to lower shipping costs (精簡全球物流管理以降低運費)</li><li>⚠️ <b>易混淆陷阱：</b>字尾恆有 s，指整個物流學科或運作體系時視為單數或複數，logistics hub（物流樞紐）。</li><li>📖 <span class="ex-en">By consolidating warehousing hubs, the firm streamlined its overseas logistics network.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過大刀闊斧整併既有的區域倉儲節點，該製造集團成功精簡了跨國海陸空物流後勤運籌體系，有效節省運費。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 prolonged</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">長期的、持久的、被拖長的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>prolonged droughts (長期乾旱) ｜ prolonged negotiations (持久談判)</li><li>⚠️ <b>易混淆陷阱：</b>由過去分詞轉化之形容詞，修飾談判、延遲或乾旱等持續很久的事件。</li><li>📖 <span class="ex-en">Following prolonged negotiations, the two pharmaceutical giants finally agreed on the merger terms.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在歷經了長達數個月勞資雙方緊湊且艱辛的馬拉松式持久談判後，這場重大罷工工潮終於迎來了和解的曙光。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 objective</span>
+                <span class="sbc-pos">[可數名詞 / 形容詞 (n./adj.)]</span>
+                <span class="sbc-meaning">目標、宗旨；客觀公正的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>principal objective of the marketing campaign (行銷活動之核心首要目標)</li><li>⚠️ <b>易混淆陷阱：</b>商務名詞表「目標」（primary / principal objective）；作形容詞表「客觀的」（objective analysis）。</li><li>📖 <span class="ex-en">The primary objective of the corporate restructuring is to accelerate product development cycles.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 此項由董事會主導之跨部門營運精簡重組計畫，其最關鍵的核心首要目標，就是力求縮短新產品推向市場的週期。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 namely</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">也就是說、即</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>用於補充說明前方名詞（＝that is to say）。</li><li>⚠️ <b>易混淆陷阱：</b>用於補充說明前方名詞（＝that is to say）。</li><li>📖 <span class="ex-en">Only two departments exceeded their quarterly cost-reduction targets, namely Procurement and Logistics.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 僅有兩個部門超越了其季度成本精簡目標，即採購部與物流部。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 clause</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">條款；子句</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>confidentiality clause（保密條款）；escape clause（免責條款）。</li><li>⚠️ <b>易混淆陷阱：</b>confidentiality clause（保密條款）；escape clause（免責條款）。</li><li>📖 <span class="ex-en">Our legal counsel inserted a penalty clause into the supply contract to protect against late deliveries.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們的法律顧問在供應合約中加入了一項罰則條款，以防範交貨延遲之風險。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 though</span>
+                <span class="sbc-pos">[conj. / adv.]</span>
+                <span class="sbc-meaning">雖然；然而</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>連接詞表雖然；放在句尾時為副詞表「然而、不過」。 ｜ 延伸語塊：as though it were（彷彿宛如；as though = as if）</li><li>⚠️ <b>易混淆陷阱：</b>連接詞表雖然；放在句尾時為副詞表「然而、不過」。 ｜ as though 常接虛擬語氣 were！</li><li>📖 <span class="ex-en">Though the initial investment was substantial, the solar array paid for itself within three fiscal years.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 儘管初期投資金額相當龐大，但太陽能陣列系統在三個會計年度內便已完全回收成本。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 even if</span>
+                <span class="sbc-pos">[conj.]</span>
+                <span class="sbc-meaning">即使、就算</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>表假設性讓步（即使發生某事，結果依然……）。</li><li>⚠️ <b>易混淆陷阱：</b>表假設性讓步（即使發生某事，結果依然……）。</li><li>📖 <span class="ex-en">Even if the municipal permit arrives tomorrow, road repaving cannot begin until the rain subsides.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即使市政施工許可證明日送達，在降雨平息之前仍無法展開道路重新鋪設作業。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 resent</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">對……感到憤恨不平</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>分詞/被動：resented。</li><li>⚠️ <b>易混淆陷阱：</b>分詞/被動：resented。</li><li>📖 <span class="ex-en">Several senior technicians resented being excluded from the software architecture planning committee.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 數名資深技術人員因被排除在軟體架構規劃委員會之外而感到不滿不滿。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：多義詞 (Polysemy) 商務情境一秒切換錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 看到「coverage」➔ 保險情境是『理賠範圍』，新聞情境是『媒體報導』！</li>
+                <li>🔹 👀 看到「conduct」➔ 動詞是『實施/執行（conduct a survey/audit）』，名詞是『個人操守』！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：多義詞不背死翻譯，看前後受詞決定真正詞義！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 quote</span>
-                <span class="sbc-pos">[n. / v.]</span>
-                <span class="sbc-meaning">報價單；引用</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>等同於 quotation；商業詢價高頻。</li><li>⚠️ <b>易混淆陷阱：</b>等同於 quotation；商業詢價高頻。</li><li>📖 <span class="ex-en">Before selecting a commercial roofing contractor, facilities management obtained written quotes from four vendors.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在遴選商業屋頂修繕承包商之前，總務設施管理部門取得了四家廠商的書面報價單。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 alike</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">兩者皆然、一視同仁（置於 A and B 之後）</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>customers and employees alike</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ 易混淆陷阱：A and B alike 置於兩個對等名詞之後；like A and B 則置於名詞之前。</li><li>📖 <span class="ex-en">The new ergonomic office chairs have received enthusiastic feedback from executives and administrative staff alike.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這款全新引進的人體工學辦公座椅，獲得了高階主管以及基層行政同仁雙方全體一致的高度肯定與讚賞。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 implement</span>
-                <span class="sbc-pos">[及物動詞 / 可數名詞 (v./n.)]</span>
-                <span class="sbc-meaning">實施、貫徹執行；器具、工具</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>implement new safety regulations (實施工安新規) ｜ implement corporate policy</li><li>⚠️ <b>易混淆陷阱：</b>作動詞必接政策、措施等受詞；名詞 implementation 表「執行實施」。</li><li>📖 <span class="ex-en">The human resources department will implement new remote-work guidelines starting on the first of next month.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人力資源部門將自下個月初起，正式在全公司實施最新修訂的遠距工作管理規章。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 directory</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">通訊錄、工商名錄、目錄</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>corporate staff directory (企業員工通訊錄) ｜ telephone directory</li><li>⚠️ <b>易混淆陷阱：</b>切勿與 direct（動詞／形容詞）或 direction（方向／指示）混淆。</li><li>📖 <span class="ex-en">New employees can find contact information for department supervisors in the internal staff directory.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 新進到職同仁可在內部企業通訊錄中，迅速查閱各部門主管與同事的聯絡方式。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 narration</span>
-                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
-                <span class="sbc-meaning">旁白、敘述、口述</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>voice-over narration for the promotional video (宣傳片旁白口述)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 narrate（敘述、配旁白）；narrator 為「旁白員、敘述者」。</li><li>📖 <span class="ex-en">The multimedia marketing team hired a professional actor to provide the voice-over narration for the new commercial.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 多媒體數位行銷團隊聘請了專業外配音員，為最新發布的宣傳短片錄製旁白口述。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 privilege</span>
-                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
-                <span class="sbc-meaning">特權、殊榮、榮幸</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>have the privilege of introducing our keynote speaker (有幸介紹我們的主講嘉賓)</li><li>⚠️ <b>易混淆陷阱：</b>商務演講開場固定客套句：It is a privilege to welcome you all。</li><li>📖 <span class="ex-en">It is an honor and a privilege to introduce Dr. Vance as our keynote speaker this morning.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 今天早晨能夠由我代表全體大會，向在場各位隆重介紹我們萬分敬佩的主講嘉賓凡斯博士，實屬無上殊榮。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 exclusion</span>
-                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
-                <span class="sbc-meaning">排除、排斥在外、免責條款</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>exclusion of liability outlined in the warranty clause (保固條款中所述之免責排除)</li><li>⚠️ <b>易混淆陷阱：</b>及物動詞為 exclude；形容詞 exclusive（專屬的／排他的）；exclusion clause（免責條款）。</li><li>📖 <span class="ex-en">Customers should carefully review the warranty terms regarding the exclusion of accidental water damage.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 所有購買本產品之消費者，均應詳加審閱保固合約手冊中關於排除天然意外與進水損害之各項免責條款。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 appraisal</span>
-                <span class="sbc-pos">[可數 / 不可數名詞 (n.)]</span>
-                <span class="sbc-meaning">評估、考核、估價</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>annual employee performance appraisal (年度員工績效考評)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 appraise（考核／評估）；注意勿與 apprise（通知告知）混淆。</li><li>📖 <span class="ex-en">Human resources conducts an annual employee performance appraisal every November.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人力資源發展部固定於每年十一月第一週，正式在全公司各事業處全面推展年度員工績效考評作業。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 logistics</span>
-                <span class="sbc-pos">[恆為複數名詞 (n. pl.)]</span>
-                <span class="sbc-meaning">物流、後勤運籌管理</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>streamline global logistics management to lower shipping costs (精簡全球物流管理以降低運費)</li><li>⚠️ <b>易混淆陷阱：</b>字尾恆有 s，指整個物流學科或運作體系時視為單數或複數，logistics hub（物流樞紐）。</li><li>📖 <span class="ex-en">By consolidating warehousing hubs, the firm streamlined its overseas logistics network.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 透過大刀闊斧整併既有的區域倉儲節點，該製造集團成功精簡了跨國海陸空物流後勤運籌體系，有效節省運費。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 prolonged</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">長期的、持久的、被拖長的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>prolonged droughts (長期乾旱) ｜ prolonged negotiations (持久談判)</li><li>⚠️ <b>易混淆陷阱：</b>由過去分詞轉化之形容詞，修飾談判、延遲或乾旱等持續很久的事件。</li><li>📖 <span class="ex-en">Following prolonged negotiations, the two pharmaceutical giants finally agreed on the merger terms.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在歷經了長達數個月勞資雙方緊湊且艱辛的馬拉松式持久談判後，這場重大罷工工潮終於迎來了和解的曙光。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 objective</span>
-                <span class="sbc-pos">[可數名詞 / 形容詞 (n./adj.)]</span>
-                <span class="sbc-meaning">目標、宗旨；客觀公正的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>principal objective of the marketing campaign (行銷活動之核心首要目標)</li><li>⚠️ <b>易混淆陷阱：</b>商務名詞表「目標」（primary / principal objective）；作形容詞表「客觀的」（objective analysis）。</li><li>📖 <span class="ex-en">The primary objective of the corporate restructuring is to accelerate product development cycles.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 此項由董事會主導之跨部門營運精簡重組計畫，其最關鍵的核心首要目標，就是力求縮短新產品推向市場的週期。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 namely</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">也就是說、即</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>用於補充說明前方名詞（＝that is to say）。</li><li>⚠️ <b>易混淆陷阱：</b>用於補充說明前方名詞（＝that is to say）。</li><li>📖 <span class="ex-en">Only two departments exceeded their quarterly cost-reduction targets, namely Procurement and Logistics.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 僅有兩個部門超越了其季度成本精簡目標，即採購部與物流部。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 clause</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">條款；子句</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>confidentiality clause（保密條款）；escape clause（免責條款）。</li><li>⚠️ <b>易混淆陷阱：</b>confidentiality clause（保密條款）；escape clause（免責條款）。</li><li>📖 <span class="ex-en">Our legal counsel inserted a penalty clause into the supply contract to protect against late deliveries.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 我們的法律顧問在供應合約中加入了一項罰則條款，以防範交貨延遲之風險。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 though</span>
-                <span class="sbc-pos">[conj. / adv.]</span>
-                <span class="sbc-meaning">雖然；然而</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>連接詞表雖然；放在句尾時為副詞表「然而、不過」。 ｜ 延伸語塊：as though it were（彷彿宛如；as though = as if）</li><li>⚠️ <b>易混淆陷阱：</b>連接詞表雖然；放在句尾時為副詞表「然而、不過」。 ｜ as though 常接虛擬語氣 were！</li><li>📖 <span class="ex-en">Though the initial investment was substantial, the solar array paid for itself within three fiscal years.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 儘管初期投資金額相當龐大，但太陽能陣列系統在三個會計年度內便已完全回收成本。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 even if</span>
-                <span class="sbc-pos">[conj.]</span>
-                <span class="sbc-meaning">即使、就算</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>表假設性讓步（即使發生某事，結果依然……）。</li><li>⚠️ <b>易混淆陷阱：</b>表假設性讓步（即使發生某事，結果依然……）。</li><li>📖 <span class="ex-en">Even if the municipal permit arrives tomorrow, road repaving cannot begin until the rain subsides.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即使市政施工許可證明日送達，在降雨平息之前仍無法展開道路重新鋪設作業。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 resent</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">對……感到憤恨不平</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>分詞/被動：resented。</li><li>⚠️ <b>易混淆陷阱：</b>分詞/被動：resented。</li><li>📖 <span class="ex-en">Several senior technicians resented being excluded from the software architecture planning committee.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 數名資深技術人員因被排除在軟體架構規劃委員會之外而感到不滿不滿。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：多義詞 (Polysemy) 商務情境一秒切換錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 看到「coverage」➔ 保險情境是『理賠範圍』，新聞情境是『媒體報導』！</li>
-                <li>🔹 👀 看到「conduct」➔ 動詞是『實施/執行（conduct a survey/audit）』，名詞是『個人操守』！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：多義詞不背死翻譯，看前後受詞決定真正詞義！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Rule 2：分詞形容詞 (varied selection / informed decision) 與 否定遞進 (let alone)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ a + varied + selection / assortment + of...  ｜  ✅ make + an + informed + decision  ｜  ✅ 否定句 / lack + N, + let alone + 更高階事物</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益常考「形近詞與固定搭配」盲點：(1) 修飾單數集合名詞 selection 需用分詞形容詞 varied（多樣化的），various 則直接修飾複數名詞（various options）；(2) make an informed decision 指做出深思熟慮的明智決定，informative 則是修飾演講或書籍提供豐富資訊；(3) let alone 專門置於否定或缺乏（lack / cannot）句境後，表「更不用說、何況」；(4) be opposed to + N / V-ing（to 為介系詞），主動 oppose 則直接接受詞。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Bar Italia offers a varied selection of gourmet teas, allowing clients to make an informed choice, let alone enjoying complimentary pastries. （義大利餐吧提供多樣化的頂級茶品選品，讓顧客能做出明智抉擇，更不用說還能享受免費糕點。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：受中文影響說 a various selection（文法錯誤）；誤選 rather than 或 in contrast 替代 let alone。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 robust</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">強健的、穩固的、強勁的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>robust economic expansion ｜ robust cybersecurity software (穩健的資安防護軟體)</li><li>⚠️ <b>易混淆陷阱：</b>修飾經濟成長（robust growth）或系統架構（robust infrastructure）。</li><li>📖 <span class="ex-en">Despite global economic volatility, the multinational retail chain reported robust revenue growth.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即便面對全球總體經濟情勢的高度不確定性，該跨國連鎖通路集團依然繳出了營收強健穩步擴張的佳績。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 suburb</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">郊區、市郊 (住宅區高頻)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>a quiet residential suburb located outside the metropolis (位於大都市外的寧靜住宅郊區)</li><li>⚠️ <b>易混淆陷阱：</b>形容詞為 suburban（郊區的）；in the suburbs 表「在郊區居住」。</li><li>📖 <span class="ex-en">Many families choose to live in the green suburbs and commute into the financial center by light rail.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 許多在市中心金融商務特區服務的高階白領家庭，寧可選擇安居在綠樹成蔭的寧靜住宅郊區，兼顧生活品質。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 varied</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">多樣的、各式各樣的、形形色色的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>a varied selection of imported specialty coffees (多樣化的進口特調咖啡選品)</li><li>⚠️ <b>易混淆陷阱：</b>修飾單數集合名詞 selection / assortment 時用 varied；various 則直接修飾複數名詞。</li><li>📖 <span class="ex-en">The international food market offers a varied selection of organic cheeses and artisanal breads.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該高檔國際精品進口食品選品店，每日均為高端饕客陳列並提供多樣化且種類繁多的歐陸手工特調咖啡與乳酪。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 compact</span>
+                <span class="sbc-pos">[形容詞 / 可數名詞 (adj./n.)]</span>
+                <span class="sbc-meaning">緊湊小巧的、精簡的；協定、合約</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>compact vehicle (小型車) ｜ compact office layout (緊湊精簡的辦公室格局)</li><li>⚠️ <b>易混淆陷阱：</b>形容詞表體積精簡省空間；名詞可表正式條約或小型車。</li><li>📖 <span class="ex-en">The startup opted for a compact office layout to minimize overhead expenses during its initial year of operation.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家新創科技公司選擇了緊湊精簡的辦公室格局，以將營運首年的管理開銷降至最低。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 obliged</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">感激的；有義務的、被迫的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>feel obliged to assist colleagues (覺得有義務協助同事) ｜ be obliged to comply</li><li>⚠️ <b>易混淆陷阱：</b>be obliged to + V 表示「依法或道義上有義務做某事」；much obliged 表「非常感激」。</li><li>📖 <span class="ex-en">Under the terms of the confidentiality agreement, contractors are obliged to protect proprietary client data.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 依據雙方簽訂的嚴格保密條款，合約承包商在道義與法規上有義務全力保護客戶的專有資料。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 utilize</span>
+                <span class="sbc-pos">[及物動詞 (v.)]</span>
+                <span class="sbc-meaning">利用、使用、善加利用 (=make use of)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>fully utilize underperforming commercial assets (充分利用效益不彰之資產)</li><li>⚠️ <b>易混淆陷阱：</b>比 use 更正式，常用於商務資源或產能的最佳化（utilize resources / capacity）。</li><li>📖 <span class="ex-en">The logistics manager suggested utilizing regional storage depots to reduce cross-country shipping times.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 物流統籌經理提出具體建言，主張善加利用效益未達預期的區域閒置倉儲，以有效縮短跨區運送耗時。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 shuttle</span>
+                <span class="sbc-pos">[可數名詞 / 動詞 (n./v.)]</span>
+                <span class="sbc-meaning">接駁車；穿梭往返</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>complimentary airport shuttle service (免費機場接駁服務)</li><li>⚠️ <b>易混淆陷阱：</b>常與 complimentary（免費的）連用，指飯店或會場之往返接駁車。</li><li>📖 <span class="ex-en">Guests staying at the resort hotel can take advantage of a complimentary shuttle service to the train station.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡下榻該海濱度假飯店的貴賓，均可全額免費搭乘往返於鄰近高鐵車站的定時接駁專車服務。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 optimal</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">最佳的、最優的、最適宜的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>achieve optimal efficiency during peak manufacturing hours (達到最優效率)</li><li>⚠️ <b>易混淆陷阱：</b>同義字為 optimum；副詞為 optimally（最適化地）。</li><li>📖 <span class="ex-en">The ventilation system was recalibrated to maintain optimal temperature conditions in the server room.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 機房通風空調系統已經重新校準，以在伺服器高乘載運作時維持最優良最適宜的恆溫濕度環境。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 on-site</span>
+                <span class="sbc-pos">[形容詞 / 副詞 (adj./adv.)]</span>
+                <span class="sbc-meaning">現場的、實地的；在現場</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>conduct an on-site inspection of the facility (實施廠區實地檢查)</li><li>⚠️ <b>易混淆陷阱：</b>常與 inspection（檢查）、daycare（托兒設施）、parking（現場停車）連用。</li><li>📖 <span class="ex-en">Safety compliance auditors conducted an on-site inspection of the chemical manufacturing plant.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 工業安全法規稽核員今日親赴化學原料製造工廠，展開全面且嚴謹的現場實地安全檢查作業。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 amenity</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">便利設施、生活休閒設施 (飯店/社區必考)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>luxury hotel amenities including a heated pool and sauna (頂級飯店休閒設施)</li><li>⚠️ <b>易混淆陷阱：</b>多益常以複數 amenities 出現，指泳池、健身房、商務中心等附屬便利設施。</li><li>📖 <span class="ex-en">The residential complex offers modern amenities such as an on-site fitness center and bicycle storage.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這處全新完工的頂級住宅綜合社區，配備了各項齊全的生活便利設施，包括駐點健身房與溫水游泳池。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 rectify</span>
+                <span class="sbc-pos">[及物動詞 (v.)]</span>
+                <span class="sbc-meaning">矯正、改正、補救 (=correct/remedy)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>promptly rectify the billing error on the final invoice (迅速修正發票帳務錯誤)</li><li>⚠️ <b>易混淆陷阱：</b>正式商業書信動詞，rectify an error / mistake / situation。</li><li>📖 <span class="ex-en">The billing department worked overtime to rectify the software glitch before issuing monthly invoices.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 客戶服務與計費管理團隊全員加班排查，務求在今日下班正式寄發每月帳單前，迅速矯正修正軟體系統計算錯誤。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 opposed</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">反對的、抗拒的 (固定搭配介系詞 to)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>Community leaders are firmly opposed to the commercial zoning (社區領袖強烈反對商業分區)</li><li>⚠️ <b>易混淆陷阱：</b>固定搭配：be opposed to + N / V-ing（to 為介系詞）。主動 oppose 則直接接受詞。</li><li>📖 <span class="ex-en">Several neighborhood associations are firmly opposed to the proposed industrial zoning expansion.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該行政區境內的數個主要在地居民自治協會，正聯合採取堅定立場，公開表達強烈反對此項新商業分區開發案。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 exclusive</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">獨家的、專屬高級的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>exclusive of（不包括）；常考合約與會員獨享權益。 ｜ 延伸語塊：exclusive access to（專屬使用權；exclusive to = restricted to）</li><li>⚠️ <b>易混淆陷阱：</b>exclusive of（不包括）；常考合約與會員獨享權益。 ｜ 副詞形式為 exclusively！</li><li>📖 <span class="ex-en">Platinum cardholders enjoy exclusive access to the airport VIP lounge, which is exclusive of guest pass fees.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 白金卡持卡人享有專屬使用機場貴賓室的權益，且該權益不包含隨行賓客入場通行證費用。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 outlined</span>
+                <span class="sbc-pos">[形容詞 / 過去分詞 (adj./p.p.)]</span>
+                <span class="sbc-meaning">概述的、畫出輪廓的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>outline the strategic roadmap (概述戰略藍圖) ｜ as outlined in the proposal (如提案所述)</li><li>⚠️ <b>易混淆陷阱：</b>常作後位修飾分詞（the strategy outlined in the report），勿與 outline（動詞原形／名詞）混淆。</li><li>📖 <span class="ex-en">As outlined in the corporate restructuring proposal, the research division will receive additional funding.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 如企業組織重組提案中所述，研發核心部門將依序獲得額外的專案挹注資金。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 profound</span>
+                <span class="sbc-pos">[形容詞 (adj.)]</span>
+                <span class="sbc-meaning">深遠的、深刻的、巨大的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>have a profound impact on quarterly market demand (對季度市場需求產生深遠影響)</li><li>⚠️ <b>易混淆陷阱：</b>修飾影響力、見解或變革（profound impact / influence / changes）。</li><li>📖 <span class="ex-en">The introduction of artificial intelligence tools has had a profound impact on customer support operations.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人工智慧創新工具的全面導入，對整體客戶支援與售後服務流程產生了深遠巨大的變革影響。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 manually</span>
+                <span class="sbc-pos">[副詞 (adv.)]</span>
+                <span class="sbc-meaning">手動地、人工操作地</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>Customer applications must be processed manually (必須手動審核申請)</li><li>⚠️ <b>易混淆陷阱：</b>與 automatically（自動地）構成反義對比；形容詞為 manual（手動的／手冊）。</li><li>📖 <span class="ex-en">Customer purchase orders received by fax must be verified and entered into the database manually.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡是透過紙本傳真方式遞送的客戶採購訂單，皆必須由專責人員以人工手動方式核對並輸入系統。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 7 雙篇閱讀 (Double Passage) 交叉對照錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 看到題幹問「Why did ... hire / What requirement ...」➔ 100% 須跨篇比對（篇一規定 + 篇二帳單/回信）！</li>
+                <li>🔹 👀 注意到期與騰空詞彙：動詞「vacate」對應 leave/empty；名詞「expiration」對應 deadline！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：雙篇題必有一題考交叉資訊，鎖定金額、日期與星號條款對照！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 3：簡化關係子句（主句已有真動詞，無關代時必選分詞）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 主詞 + [過去分詞 p.p. / 現在分詞 V-ing 後位修飾片語] + 主句主要真動詞</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>解題時務必先掃描整句找出「主句真動詞」（如 will be retained）。若主詞後方沒有關係代名詞（which / that / who），則主詞與主句真動詞之間的空格只能填入「分詞（V-ing 表主動 / p.p. 表被動）」，絕不可再填入 are left 或 have been left 等真動詞！</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Personal items left behind by passengers on commuter trains will be retained at the central lost-and-found office for 30 days. （乘客遺留在通勤列車上的個人物品將於中央失物招領處保留三十天。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：沒看到句尾的真動詞 will be retained，誤將空格當作主句動詞而選 are left behind 或 have been left behind。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 robust</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">強健的、穩固的、強勁的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>robust economic expansion ｜ robust cybersecurity software (穩健的資安防護軟體)</li><li>⚠️ <b>易混淆陷阱：</b>修飾經濟成長（robust growth）或系統架構（robust infrastructure）。</li><li>📖 <span class="ex-en">Despite global economic volatility, the multinational retail chain reported robust revenue growth.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 即便面對全球總體經濟情勢的高度不確定性，該跨國連鎖通路集團依然繳出了營收強健穩步擴張的佳績。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 suburb</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">郊區、市郊 (住宅區高頻)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>a quiet residential suburb located outside the metropolis (位於大都市外的寧靜住宅郊區)</li><li>⚠️ <b>易混淆陷阱：</b>形容詞為 suburban（郊區的）；in the suburbs 表「在郊區居住」。</li><li>📖 <span class="ex-en">Many families choose to live in the green suburbs and commute into the financial center by light rail.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 許多在市中心金融商務特區服務的高階白領家庭，寧可選擇安居在綠樹成蔭的寧靜住宅郊區，兼顧生活品質。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 varied</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">多樣的、各式各樣的、形形色色的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>a varied selection of imported specialty coffees (多樣化的進口特調咖啡選品)</li><li>⚠️ <b>易混淆陷阱：</b>修飾單數集合名詞 selection / assortment 時用 varied；various 則直接修飾複數名詞。</li><li>📖 <span class="ex-en">The international food market offers a varied selection of organic cheeses and artisanal breads.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該高檔國際精品進口食品選品店，每日均為高端饕客陳列並提供多樣化且種類繁多的歐陸手工特調咖啡與乳酪。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 compact</span>
-                <span class="sbc-pos">[形容詞 / 可數名詞 (adj./n.)]</span>
-                <span class="sbc-meaning">緊湊小巧的、精簡的；協定、合約</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>compact vehicle (小型車) ｜ compact office layout (緊湊精簡的辦公室格局)</li><li>⚠️ <b>易混淆陷阱：</b>形容詞表體積精簡省空間；名詞可表正式條約或小型車。</li><li>📖 <span class="ex-en">The startup opted for a compact office layout to minimize overhead expenses during its initial year of operation.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這家新創科技公司選擇了緊湊精簡的辦公室格局，以將營運首年的管理開銷降至最低。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 obliged</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">感激的；有義務的、被迫的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>feel obliged to assist colleagues (覺得有義務協助同事) ｜ be obliged to comply</li><li>⚠️ <b>易混淆陷阱：</b>be obliged to + V 表示「依法或道義上有義務做某事」；much obliged 表「非常感激」。</li><li>📖 <span class="ex-en">Under the terms of the confidentiality agreement, contractors are obliged to protect proprietary client data.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 依據雙方簽訂的嚴格保密條款，合約承包商在道義與法規上有義務全力保護客戶的專有資料。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 utilize</span>
-                <span class="sbc-pos">[及物動詞 (v.)]</span>
-                <span class="sbc-meaning">利用、使用、善加利用 (=make use of)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>fully utilize underperforming commercial assets (充分利用效益不彰之資產)</li><li>⚠️ <b>易混淆陷阱：</b>比 use 更正式，常用於商務資源或產能的最佳化（utilize resources / capacity）。</li><li>📖 <span class="ex-en">The logistics manager suggested utilizing regional storage depots to reduce cross-country shipping times.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 物流統籌經理提出具體建言，主張善加利用效益未達預期的區域閒置倉儲，以有效縮短跨區運送耗時。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 shuttle</span>
-                <span class="sbc-pos">[可數名詞 / 動詞 (n./v.)]</span>
-                <span class="sbc-meaning">接駁車；穿梭往返</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>complimentary airport shuttle service (免費機場接駁服務)</li><li>⚠️ <b>易混淆陷阱：</b>常與 complimentary（免費的）連用，指飯店或會場之往返接駁車。</li><li>📖 <span class="ex-en">Guests staying at the resort hotel can take advantage of a complimentary shuttle service to the train station.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡下榻該海濱度假飯店的貴賓，均可全額免費搭乘往返於鄰近高鐵車站的定時接駁專車服務。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 optimal</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">最佳的、最優的、最適宜的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>achieve optimal efficiency during peak manufacturing hours (達到最優效率)</li><li>⚠️ <b>易混淆陷阱：</b>同義字為 optimum；副詞為 optimally（最適化地）。</li><li>📖 <span class="ex-en">The ventilation system was recalibrated to maintain optimal temperature conditions in the server room.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 機房通風空調系統已經重新校準，以在伺服器高乘載運作時維持最優良最適宜的恆溫濕度環境。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 on-site</span>
-                <span class="sbc-pos">[形容詞 / 副詞 (adj./adv.)]</span>
-                <span class="sbc-meaning">現場的、實地的；在現場</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>conduct an on-site inspection of the facility (實施廠區實地檢查)</li><li>⚠️ <b>易混淆陷阱：</b>常與 inspection（檢查）、daycare（托兒設施）、parking（現場停車）連用。</li><li>📖 <span class="ex-en">Safety compliance auditors conducted an on-site inspection of the chemical manufacturing plant.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 工業安全法規稽核員今日親赴化學原料製造工廠，展開全面且嚴謹的現場實地安全檢查作業。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 amenity</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">便利設施、生活休閒設施 (飯店/社區必考)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>luxury hotel amenities including a heated pool and sauna (頂級飯店休閒設施)</li><li>⚠️ <b>易混淆陷阱：</b>多益常以複數 amenities 出現，指泳池、健身房、商務中心等附屬便利設施。</li><li>📖 <span class="ex-en">The residential complex offers modern amenities such as an on-site fitness center and bicycle storage.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 這處全新完工的頂級住宅綜合社區，配備了各項齊全的生活便利設施，包括駐點健身房與溫水游泳池。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 rectify</span>
-                <span class="sbc-pos">[及物動詞 (v.)]</span>
-                <span class="sbc-meaning">矯正、改正、補救 (=correct/remedy)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>promptly rectify the billing error on the final invoice (迅速修正發票帳務錯誤)</li><li>⚠️ <b>易混淆陷阱：</b>正式商業書信動詞，rectify an error / mistake / situation。</li><li>📖 <span class="ex-en">The billing department worked overtime to rectify the software glitch before issuing monthly invoices.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 客戶服務與計費管理團隊全員加班排查，務求在今日下班正式寄發每月帳單前，迅速矯正修正軟體系統計算錯誤。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 opposed</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">反對的、抗拒的 (固定搭配介系詞 to)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>Community leaders are firmly opposed to the commercial zoning (社區領袖強烈反對商業分區)</li><li>⚠️ <b>易混淆陷阱：</b>固定搭配：be opposed to + N / V-ing（to 為介系詞）。主動 oppose 則直接接受詞。</li><li>📖 <span class="ex-en">Several neighborhood associations are firmly opposed to the proposed industrial zoning expansion.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該行政區境內的數個主要在地居民自治協會，正聯合採取堅定立場，公開表達強烈反對此項新商業分區開發案。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 exclusive</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">獨家的、專屬高級的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>exclusive of（不包括）；常考合約與會員獨享權益。 ｜ 延伸語塊：exclusive access to（專屬使用權；exclusive to = restricted to）</li><li>⚠️ <b>易混淆陷阱：</b>exclusive of（不包括）；常考合約與會員獨享權益。 ｜ 副詞形式為 exclusively！</li><li>📖 <span class="ex-en">Platinum cardholders enjoy exclusive access to the airport VIP lounge, which is exclusive of guest pass fees.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 白金卡持卡人享有專屬使用機場貴賓室的權益，且該權益不包含隨行賓客入場通行證費用。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 outlined</span>
-                <span class="sbc-pos">[形容詞 / 過去分詞 (adj./p.p.)]</span>
-                <span class="sbc-meaning">概述的、畫出輪廓的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>outline the strategic roadmap (概述戰略藍圖) ｜ as outlined in the proposal (如提案所述)</li><li>⚠️ <b>易混淆陷阱：</b>常作後位修飾分詞（the strategy outlined in the report），勿與 outline（動詞原形／名詞）混淆。</li><li>📖 <span class="ex-en">As outlined in the corporate restructuring proposal, the research division will receive additional funding.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 如企業組織重組提案中所述，研發核心部門將依序獲得額外的專案挹注資金。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 profound</span>
-                <span class="sbc-pos">[形容詞 (adj.)]</span>
-                <span class="sbc-meaning">深遠的、深刻的、巨大的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>have a profound impact on quarterly market demand (對季度市場需求產生深遠影響)</li><li>⚠️ <b>易混淆陷阱：</b>修飾影響力、見解或變革（profound impact / influence / changes）。</li><li>📖 <span class="ex-en">The introduction of artificial intelligence tools has had a profound impact on customer support operations.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 人工智慧創新工具的全面導入，對整體客戶支援與售後服務流程產生了深遠巨大的變革影響。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 manually</span>
-                <span class="sbc-pos">[副詞 (adv.)]</span>
-                <span class="sbc-meaning">手動地、人工操作地</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>Customer applications must be processed manually (必須手動審核申請)</li><li>⚠️ <b>易混淆陷阱：</b>與 automatically（自動地）構成反義對比；形容詞為 manual（手動的／手冊）。</li><li>📖 <span class="ex-en">Customer purchase orders received by fax must be verified and entered into the database manually.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 凡是透過紙本傳真方式遞送的客戶採購訂單，皆必須由專責人員以人工手動方式核對並輸入系統。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：Part 7 雙篇閱讀 (Double Passage) 交叉對照錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 看到題幹問「Why did ... hire / What requirement ...」➔ 100% 須跨篇比對（篇一規定 + 篇二帳單/回信）！</li>
-                <li>🔹 👀 注意到期與騰空詞彙：動詞「vacate」對應 leave/empty；名詞「expiration」對應 deadline！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：雙篇題必有一題考交叉資訊，鎖定金額、日期與星號條款對照！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 3：簡化關係子句（主句已有真動詞，無關代時必選分詞）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 主詞 + [過去分詞 p.p. / 現在分詞 V-ing 後位修飾片語] + 主句主要真動詞</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>解題時務必先掃描整句找出「主句真動詞」（如 will be retained）。若主詞後方沒有關係代名詞（which / that / who），則主詞與主句真動詞之間的空格只能填入「分詞（V-ing 表主動 / p.p. 表被動）」，絕不可再填入 are left 或 have been left 等真動詞！</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Personal items left behind by passengers on commuter trains will be retained at the central lost-and-found office for 30 days. （乘客遺留在通勤列車上的個人物品將於中央失物招領處保留三十天。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：沒看到句尾的真動詞 will be retained，誤將空格當作主句動詞而選 are left behind 或 have been left behind。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Rule 1：疑問詞引導不定詞 (how best to) 與 介系詞關係代名詞 (介系詞 + whom / which)</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ S + V + [疑問副詞 how / where / when] + best to + V  ｜  ✅ 先行詞 (人), 介系詞 + whom + S + V</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>多益 Part 5 兩大結構秒殺：(1) 疑問詞搭配不定詞片語作受詞（disagree over how best to advertise... 如何最妥善地宣傳），當及物動詞後已有名詞受詞時，絕不可選代名詞 what，必選副詞 how；(2) 介系詞後若接指人的先行詞，必用關係代名詞受格 whom（如 without whom, to whom, with whom），選 them 會造成 Comma Splice（逗號連接兩獨立子句）之嚴重文法錯誤，且 that 前絕不可有介系詞！</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>The board debated over how best to allocate the emergency contingency reserve, without which the overseas branch could not operate. （董事會激辯如何最妥善地分配緊急準備金，若沒有這筆資金，海外分行將無法運作。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：誤選 what（what to do 只有在 do 後面缺受詞時才成立；advertise 後面已有名詞受詞，必須用 how）；先行詞為人時誤選 without that（關代 that 前方嚴禁介系詞與逗號）。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

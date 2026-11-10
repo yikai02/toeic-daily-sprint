@@ -774,31 +774,50 @@
         }
 
         .study-bullet-card {
-            background: var(--bg-canvas);
+            background: var(--surface-subtle);
             border: 1px solid var(--border-hairline);
             border-radius: 6px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            transition: all 150ms ease;
         }
 
-        .study-bullet-head {
+        .study-bullet-card:hover {
+            background: var(--surface-hover);
+            border-color: var(--border-subtle);
+        }
+
+        .study-bullet-head, .sbc-head {
             display: flex;
             align-items: baseline;
-            gap: 8px;
-            font-size: 14.5px;
-            margin-bottom: 4px;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 15px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-hairline);
         }
 
-        .study-word {
+        .study-word, .sbc-word {
             font-family: "Newsreader", "Lora", serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            letter-spacing: -0.01em;
         }
 
-        .study-meaning {
-            font-size: 13.5px;
+        .sbc-pos {
+            font-family: "Cinzel", sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .study-meaning, .sbc-meaning {
+            font-size: 14px;
             color: var(--text-secondary);
+            font-weight: 500;
         }
 
         .bullet-list-study {
@@ -986,16 +1005,252 @@
             <div class="bar-actions">
                 <button type="button" class="action-btn-sm" id="wrong-filter-btn" onclick="toggleWrongOnly()" title="只看答錯題目進行強化複習">❌ 錯題</button>
                 <button type="button" class="action-btn-sm" onclick="resetQuiz()" title="重置作答進度">🔄 重置</button>
+                <a href="#sec-part1" class="action-btn-sm" style="text-decoration:none;">📚 單字 (16)</a>
+                <a href="#sec-part2" class="action-btn-sm" style="text-decoration:none;">📐 文法 (2)</a>
                 <a href="#sec-part3" class="action-btn-sm" style="text-decoration:none;">🎯 單選 (1-25)</a>
                 <a href="#sec-part4" class="action-btn-sm" style="text-decoration:none;">🧩 填空 (26-37)</a>
                 <a href="#sec-part5" class="action-btn-sm" style="text-decoration:none;">📄 長文 (38-43)</a>
-                <a href="#sec-reference" class="action-btn-sm" style="text-decoration:none;">📚 速記</a>
             </div>
         </div>
         <div class="progress-track">
             <div class="progress-fill" id="score-progress-fill" style="width: 0%;"></div>
         </div>
     </div>
+
+    
+    <section class="section-container" id="sec-part1">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📚 <b>PART 1 // 本日核心單字表</b>（高頻精選 16 字）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#1 urgent</span>
+                <span class="sbc-pos">[adj.]</span>
+                <span class="sbc-meaning">緊急的、刻不容緩的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>副詞：urgently；搭配：urgent request / matter。 ｜ 延伸語塊：prioritize urgent tasks（優先處理緊急任務；prioritize = give precedence to）</li><li>⚠️ <b>易混淆陷阱：</b>副詞：urgently；搭配：urgent request / matter。 ｜ 名詞形式為 priority！</li><li>📖 <span class="ex-en">Please forward any urgent client inquiries directly to the on-call shift supervisor for immediate handling.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請將任何緊急的客戶諮詢事項直接轉交由值班值班督導進行即刻處理。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#2 exempt</span>
+                <span class="sbc-pos">[v. / adj.]</span>
+                <span class="sbc-meaning">免除、豁免；被免除的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>搭配：exempt customs duties（免關稅）；be exempt from。</li><li>⚠️ <b>易混淆陷阱：</b>搭配：exempt customs duties（免關稅）；be exempt from。</li><li>📖 <span class="ex-en">Small businesses with annual revenues below the statutory threshold are exempt from the new municipal surcharge.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 年營業額低於法定免稅門檻規範的小型微創企業，依法得享有免除繳納全新市政附加稅款之優惠。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#3 harassment</span>
+                <span class="sbc-pos">[不可數名詞 (n.)]</span>
+                <span class="sbc-meaning">騷擾 (職場人資規章必備核心詞)</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>strict workplace harassment policy (反職場騷擾嚴格政策)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 harass（騷擾）；注意不可數名詞屬性，前不加 a 亦無複數。</li><li>📖 <span class="ex-en">All newly hired managers are required to complete an annual training seminar on preventing workplace harassment.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體新晉管理幹部均被嚴格要求必須每年完成防止職場騷擾與營造友善工作環境的專案培訓研討會。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#4 repetition</span>
+                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
+                <span class="sbc-meaning">重複、反覆、冗長反覆</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>avoid needless repetition in the business proposal (避免企劃案中不必要的重複贅述)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 repeat；形容詞 repetitive（重複乏味的）；切勿混淆拼寫。</li><li>📖 <span class="ex-en">The editor recommended cutting several redundant paragraphs to avoid needless repetition.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 資深審查編輯強烈建議刪除提案中數個語意重疊的贅述段落，以徹底避免商務企劃書中不必要的冗言重複。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#5 delegation</span>
+                <span class="sbc-pos">[可數名詞 (n.)]</span>
+                <span class="sbc-meaning">代表團；委派、授權</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>international trade delegation representing renewable energy (綠能國際貿易代表團)</li><li>⚠️ <b>易混淆陷阱：</b>指代表團時為可數名詞；指「授權」時為不可數名詞（delegation of authority）。</li><li>📖 <span class="ex-en">A senior commercial delegation will arrive tomorrow to discuss bilateral export agreements.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 一支由歐洲綠能知名專家與企業領袖組成的國際跨國貿易代表團，即將於明日抵達我國展開參訪交流。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#6 neglect</span>
+                <span class="sbc-pos">[v. / n.]</span>
+                <span class="sbc-meaning">疏忽、忽視</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>衍生：negligently (adv. 疏忽地)、negligence (n. 過失、玩忽職守)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：negligently (adv. 疏忽地)、negligence (n. 過失、玩忽職守)。</li><li>📖 <span class="ex-en">Tenants who neglect to submit their lease renewal forms thirty days in advance may forfeit their security deposit.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 若房客未提前三十天提交租約續約表單，可能會被沒收押金。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#7 thereby</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">藉此、因而</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>文法重點：後方常接分詞構句 thereby + V-ing（如 thereby cutting costs）。</li><li>⚠️ <b>易混淆陷阱：</b>文法重點：後方常接分詞構句 thereby + V-ing（如 thereby cutting costs）。</li><li>📖 <span class="ex-en">The firm consolidated three regional warehouses into a single automated hub, thereby cutting transit costs by 22%.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該公司將三個區域倉庫整併為單一自動化物流樞紐，從而降低了22%的運輸成本。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#8 whereas</span>
+                <span class="sbc-pos">[conj.]</span>
+                <span class="sbc-meaning">然而、鑑於</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>對比連接詞，後方接完整子句表兩者對比（S + V whereas S + V）。</li><li>⚠️ <b>易混淆陷阱：</b>對比連接詞，後方接完整子句表兩者對比（S + V whereas S + V）。</li><li>📖 <span class="ex-en">Domestic sales of desktop computers declined by five percent, whereas enterprise cloud subscriptions surged.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 桌上型電腦的國內銷售量下滑了5%，反之企業雲端訂閱服務則大幅激增。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#9 however</span>
+                <span class="sbc-pos">[adv.]</span>
+                <span class="sbc-meaning">然而</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>轉折副詞，前後需使用句號或分號隔開，不可直接當連接詞用。 ｜ 延伸語塊：however difficult（無論多麼困難；however difficult = no matter how difficult）</li><li>⚠️ <b>易混淆陷阱：</b>轉折副詞，前後需使用句號或分號隔開，不可直接當連接詞用。 ｜ however + 形容詞/副詞 + S + V 表示『無論多麼……』！</li><li>📖 <span class="ex-en">The proposed software upgrade offers enhanced security; however, it is not compatible with older terminals.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 提議的軟體升級功能強化了安全性；然而，它與舊型終端設備無法相容。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#10 as far as</span>
+                <span class="sbc-pos">[conj. / prep.]</span>
+                <span class="sbc-meaning">遠至……；就……而言</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>範圍界定：as far as I know、as far as ... is concerned。</li><li>⚠️ <b>易混淆陷阱：</b>範圍界定：as far as I know、as far as ... is concerned。</li><li>📖 <span class="ex-en">As far as the quarterly marketing budget is concerned, no further expenditure can be authorized this month.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 就季度行銷預算而言，本月份已無法再核准任何額外的支出款項。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#11 confine</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">限制、禁閉</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：confine A to B（將 A 限制在 B 範圍內）；confined (adj. 狹小的)。</li><li>⚠️ <b>易混淆陷阱：</b>片語：confine A to B（將 A 限制在 B 範圍內）；confined (adj. 狹小的)。</li><li>📖 <span class="ex-en">Please confine your presentation remarks to the ten-minute slot allocated on the symposium agenda.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請將您的發言內容嚴格限制在座談會議程所分配的十分鐘時段之內。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#12 abstain</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">戒絕、棄權</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>片語：abstain from voting（投票棄權）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：abstain from voting（投票棄權）。</li><li>📖 <span class="ex-en">Three board members abstained from voting on the merger resolution due to potential conflicts of interest.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 因潛在利益衝突考量，三位董事會成員在企業合併決議案表決中投下了棄權票。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#13 courier</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">快遞人員、快遞公司</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>courier service（快遞服務，聽力 Part 3/4 改寫常用詞）。</li><li>⚠️ <b>易混淆陷阱：</b>courier service（快遞服務，聽力 Part 3/4 改寫常用詞）。</li><li>📖 <span class="ex-en">Sensitive legal contracts must be dispatched via an insured overnight courier rather than standard mail.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 機密的法律契約必須透過投保之隔日送達快遞遞送，而非一般平信郵寄。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#14 garment</span>
+                <span class="sbc-pos">[n.]</span>
+                <span class="sbc-meaning">（一件）成衣、服裝</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>garment industry（成衣業，常作為 clothes 的高階替換字）。</li><li>⚠️ <b>易混淆陷阱：</b>garment industry（成衣業，常作為 clothes 的高階替換字）。</li><li>📖 <span class="ex-en">Every waterproof garment manufactured at our Milan facility undergoes rigorous seam-sealing inspection.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在我們米蘭工廠生產的每一件防水成衣，都必須通過嚴格的接縫密封防水檢測。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#15 scatter</span>
+                <span class="sbc-pos">[v.]</span>
+                <span class="sbc-meaning">散佈、散落</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>Part 1 物品擺放狀態：Documents are scattered across the desk.</li><li>⚠️ <b>易混淆陷阱：</b>Part 1 物品擺放狀態：Documents are scattered across the desk.</li><li>📖 <span class="ex-en">Technicians had to gather dozens of inventory barcodes that had been scattered across the loading dock.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 技術人員必須收集散落在裝卸貨碼頭各處的數十張存貨條碼標籤。</span></li>
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">
+                <span class="sbc-word">#16 complex</span>
+                <span class="sbc-pos">[n. / adj.]</span>
+                <span class="sbc-meaning">複合建築群/園區；複雜的</span>
+            </div>
+            <ul class="bullet-list-study">
+                <li>💼 <b>常考搭配：</b>⚠️ **陷阱**：多益常考名詞「大樓園區」（office complex），非指租金。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **陷阱**：多益常考名詞「大樓園區」（office complex），非指租金。</li><li>📖 <span class="ex-en">The municipal council approved plans to convert the historic textile mill into a modern retail and office complex.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 市議會核准了將歷史悠久的紡織廠改建為現代化零售與辦公綜合商務園區的規劃方案。</span></li>
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
+    
+    <section class="section-container" id="sec-part2">
+        <details class="ref-accordion" open>
+            <summary class="ref-accordion-summary">
+                <span>📐 <b>PART 2 // 本日核心文法速記</b>（秒殺錨點 ＆ 2 大考點）</span>
+                <span class="ref-toggle-hint">收合/展開 ▲</span>
+            </summary>
+            <div class="ref-accordion-body">
+                
+        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
+            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：商務同義詞替換 (Paraphrase) 視覺秒殺錨點</div>
+            <ul class="bullet-list-study">
+                <li>🔹 👀 看到 renovate ➔ 原文或選項秒對應 remodel, refurbish, overhaul！</li>
+                <li>🔹 👀 看到 expedite ➔ 原文或選項秒對應 accelerate, speed up, rush, priority！</li>
+                <li>🏆 <b>法則：</b>⚡ 教練金句：看到精簡選 streamline，看到加速選 expedite！</li>
+            </ul>
+        </div>
+        
+                
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #1：Rule 3：簡化關係子句（主句已有真動詞，無關代時必選分詞）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 主詞 + [過去分詞 p.p. / 現在分詞 V-ing 後位修飾片語] + 主句主要真動詞</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>解題時務必先掃描整句找出「主句真動詞」（如 will be retained）。若主詞後方沒有關係代名詞（which / that / who），則主詞與主句真動詞之間的空格只能填入「分詞（V-ing 表主動 / p.p. 表被動）」，絕不可再填入 are left 或 have been left 等真動詞！</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>Personal items left behind by passengers on commuter trains will be retained at the central lost-and-found office for 30 days. （乘客遺留在通勤列車上的個人物品將於中央失物招領處保留三十天。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：沒看到句尾的真動詞 will be retained，誤將空格當作主句動詞而選 are left behind 或 have been left behind。</li>
+                
+            </ul>
+        </div>
+        
+        <div class="study-bullet-card">
+            <div class="sbc-head">📐 文法模組 #2：Rule 1：重要性形容詞之虛擬語氣（It is imperative / vital / mandatory that + S + 原形動詞）</div>
+            <ul class="bullet-list-study">
+                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ It is + imperative / essential / vital / mandatory / urgent + that + S + (should) + 原形動詞 V / be + p.p.</li>
+                <li class="gm-expl">💡 <b>觀念解析：</b>當主句出現表「極重要、強制、必要」的形容詞（imperative, essential, vital, mandatory, crucial）或要求建議動詞（mandate, insist, recommend）時，後方 that 子句中的助動詞 should 恆被省略，不論子句主詞為單數或過去語境，動詞一律使用「原形動詞」；若為被動語態則使用「be + 過去分詞（如 be ascertained）」。</li>
+                <li class="gp-correct-box">✅ <b>正確示範：</b>It is imperative that the root cause of the wire transfer delay be ascertained no later than five o&#x27;clock this afternoon. （務必在今天下午五點前查明電匯延誤的根本原因，這點至關重要。）</li>
+                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數主詞 the cause 就誤選 is ascertained 或 was ascertained，忽略了 imperative 觸發省略 should 的原形被動 be ascertained。</li>
+                
+            </ul>
+        </div>
+        
+            </div>
+        </details>
+    </section>
+    
 
     
     <section class="section-container" id="sec-part3">
@@ -5429,239 +5684,6 @@
     
     </div>
     
-    </section>
-    
-
-    
-    <section class="section-container" id="sec-reference" style="margin-top:28px;">
-        <details class="ref-accordion">
-            <summary class="ref-accordion-summary">
-                <span>📚 <b>展開本日核心單字與文法速記重點</b>（16 字 · 2 文法模組）</span>
-                <span class="ref-toggle-hint">點擊展開速查 ▼</span>
-            </summary>
-            <div class="ref-accordion-body">
-                
-    <div class="ref-sub-section" id="sec-part1">
-        <div class="ref-sub-title">📚 本日核心單字速查表 (16 字)</div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#1 urgent</span>
-                <span class="sbc-pos">[adj.]</span>
-                <span class="sbc-meaning">緊急的、刻不容緩的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>副詞：urgently；搭配：urgent request / matter。 ｜ 延伸語塊：prioritize urgent tasks（優先處理緊急任務；prioritize = give precedence to）</li><li>⚠️ <b>易混淆陷阱：</b>副詞：urgently；搭配：urgent request / matter。 ｜ 名詞形式為 priority！</li><li>📖 <span class="ex-en">Please forward any urgent client inquiries directly to the on-call shift supervisor for immediate handling.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請將任何緊急的客戶諮詢事項直接轉交由值班值班督導進行即刻處理。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#2 exempt</span>
-                <span class="sbc-pos">[v. / adj.]</span>
-                <span class="sbc-meaning">免除、豁免；被免除的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>搭配：exempt customs duties（免關稅）；be exempt from。</li><li>⚠️ <b>易混淆陷阱：</b>搭配：exempt customs duties（免關稅）；be exempt from。</li><li>📖 <span class="ex-en">Small businesses with annual revenues below the statutory threshold are exempt from the new municipal surcharge.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 年營業額低於法定免稅門檻規範的小型微創企業，依法得享有免除繳納全新市政附加稅款之優惠。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#3 harassment</span>
-                <span class="sbc-pos">[不可數名詞 (n.)]</span>
-                <span class="sbc-meaning">騷擾 (職場人資規章必備核心詞)</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>strict workplace harassment policy (反職場騷擾嚴格政策)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 harass（騷擾）；注意不可數名詞屬性，前不加 a 亦無複數。</li><li>📖 <span class="ex-en">All newly hired managers are required to complete an annual training seminar on preventing workplace harassment.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 全體新晉管理幹部均被嚴格要求必須每年完成防止職場騷擾與營造友善工作環境的專案培訓研討會。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#4 repetition</span>
-                <span class="sbc-pos">[不可數 / 可數名詞 (n.)]</span>
-                <span class="sbc-meaning">重複、反覆、冗長反覆</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>avoid needless repetition in the business proposal (避免企劃案中不必要的重複贅述)</li><li>⚠️ <b>易混淆陷阱：</b>動詞為 repeat；形容詞 repetitive（重複乏味的）；切勿混淆拼寫。</li><li>📖 <span class="ex-en">The editor recommended cutting several redundant paragraphs to avoid needless repetition.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 資深審查編輯強烈建議刪除提案中數個語意重疊的贅述段落，以徹底避免商務企劃書中不必要的冗言重複。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#5 delegation</span>
-                <span class="sbc-pos">[可數名詞 (n.)]</span>
-                <span class="sbc-meaning">代表團；委派、授權</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>international trade delegation representing renewable energy (綠能國際貿易代表團)</li><li>⚠️ <b>易混淆陷阱：</b>指代表團時為可數名詞；指「授權」時為不可數名詞（delegation of authority）。</li><li>📖 <span class="ex-en">A senior commercial delegation will arrive tomorrow to discuss bilateral export agreements.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 一支由歐洲綠能知名專家與企業領袖組成的國際跨國貿易代表團，即將於明日抵達我國展開參訪交流。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#6 neglect</span>
-                <span class="sbc-pos">[v. / n.]</span>
-                <span class="sbc-meaning">疏忽、忽視</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>衍生：negligently (adv. 疏忽地)、negligence (n. 過失、玩忽職守)。</li><li>⚠️ <b>易混淆陷阱：</b>衍生：negligently (adv. 疏忽地)、negligence (n. 過失、玩忽職守)。</li><li>📖 <span class="ex-en">Tenants who neglect to submit their lease renewal forms thirty days in advance may forfeit their security deposit.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 若房客未提前三十天提交租約續約表單，可能會被沒收押金。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#7 thereby</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">藉此、因而</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>文法重點：後方常接分詞構句 thereby + V-ing（如 thereby cutting costs）。</li><li>⚠️ <b>易混淆陷阱：</b>文法重點：後方常接分詞構句 thereby + V-ing（如 thereby cutting costs）。</li><li>📖 <span class="ex-en">The firm consolidated three regional warehouses into a single automated hub, thereby cutting transit costs by 22%.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 該公司將三個區域倉庫整併為單一自動化物流樞紐，從而降低了22%的運輸成本。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#8 whereas</span>
-                <span class="sbc-pos">[conj.]</span>
-                <span class="sbc-meaning">然而、鑑於</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>對比連接詞，後方接完整子句表兩者對比（S + V whereas S + V）。</li><li>⚠️ <b>易混淆陷阱：</b>對比連接詞，後方接完整子句表兩者對比（S + V whereas S + V）。</li><li>📖 <span class="ex-en">Domestic sales of desktop computers declined by five percent, whereas enterprise cloud subscriptions surged.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 桌上型電腦的國內銷售量下滑了5%，反之企業雲端訂閱服務則大幅激增。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#9 however</span>
-                <span class="sbc-pos">[adv.]</span>
-                <span class="sbc-meaning">然而</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>轉折副詞，前後需使用句號或分號隔開，不可直接當連接詞用。 ｜ 延伸語塊：however difficult（無論多麼困難；however difficult = no matter how difficult）</li><li>⚠️ <b>易混淆陷阱：</b>轉折副詞，前後需使用句號或分號隔開，不可直接當連接詞用。 ｜ however + 形容詞/副詞 + S + V 表示『無論多麼……』！</li><li>📖 <span class="ex-en">The proposed software upgrade offers enhanced security; however, it is not compatible with older terminals.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 提議的軟體升級功能強化了安全性；然而，它與舊型終端設備無法相容。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#10 as far as</span>
-                <span class="sbc-pos">[conj. / prep.]</span>
-                <span class="sbc-meaning">遠至……；就……而言</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>範圍界定：as far as I know、as far as ... is concerned。</li><li>⚠️ <b>易混淆陷阱：</b>範圍界定：as far as I know、as far as ... is concerned。</li><li>📖 <span class="ex-en">As far as the quarterly marketing budget is concerned, no further expenditure can be authorized this month.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 就季度行銷預算而言，本月份已無法再核准任何額外的支出款項。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#11 confine</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">限制、禁閉</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：confine A to B（將 A 限制在 B 範圍內）；confined (adj. 狹小的)。</li><li>⚠️ <b>易混淆陷阱：</b>片語：confine A to B（將 A 限制在 B 範圍內）；confined (adj. 狹小的)。</li><li>📖 <span class="ex-en">Please confine your presentation remarks to the ten-minute slot allocated on the symposium agenda.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 請將您的發言內容嚴格限制在座談會議程所分配的十分鐘時段之內。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#12 abstain</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">戒絕、棄權</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>片語：abstain from voting（投票棄權）。</li><li>⚠️ <b>易混淆陷阱：</b>片語：abstain from voting（投票棄權）。</li><li>📖 <span class="ex-en">Three board members abstained from voting on the merger resolution due to potential conflicts of interest.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 因潛在利益衝突考量，三位董事會成員在企業合併決議案表決中投下了棄權票。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#13 courier</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">快遞人員、快遞公司</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>courier service（快遞服務，聽力 Part 3/4 改寫常用詞）。</li><li>⚠️ <b>易混淆陷阱：</b>courier service（快遞服務，聽力 Part 3/4 改寫常用詞）。</li><li>📖 <span class="ex-en">Sensitive legal contracts must be dispatched via an insured overnight courier rather than standard mail.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 機密的法律契約必須透過投保之隔日送達快遞遞送，而非一般平信郵寄。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#14 garment</span>
-                <span class="sbc-pos">[n.]</span>
-                <span class="sbc-meaning">（一件）成衣、服裝</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>garment industry（成衣業，常作為 clothes 的高階替換字）。</li><li>⚠️ <b>易混淆陷阱：</b>garment industry（成衣業，常作為 clothes 的高階替換字）。</li><li>📖 <span class="ex-en">Every waterproof garment manufactured at our Milan facility undergoes rigorous seam-sealing inspection.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 在我們米蘭工廠生產的每一件防水成衣，都必須通過嚴格的接縫密封防水檢測。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#15 scatter</span>
-                <span class="sbc-pos">[v.]</span>
-                <span class="sbc-meaning">散佈、散落</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>Part 1 物品擺放狀態：Documents are scattered across the desk.</li><li>⚠️ <b>易混淆陷阱：</b>Part 1 物品擺放狀態：Documents are scattered across the desk.</li><li>📖 <span class="ex-en">Technicians had to gather dozens of inventory barcodes that had been scattered across the loading dock.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 技術人員必須收集散落在裝卸貨碼頭各處的數十張存貨條碼標籤。</span></li>
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">
-                <span class="sbc-word">#16 complex</span>
-                <span class="sbc-pos">[n. / adj.]</span>
-                <span class="sbc-meaning">複合建築群/園區；複雜的</span>
-            </div>
-            <ul class="bullet-list-study">
-                <li>💼 <b>常考搭配：</b>⚠️ **陷阱**：多益常考名詞「大樓園區」（office complex），非指租金。</li><li>⚠️ <b>易混淆陷阱：</b>⚠️ **陷阱**：多益常考名詞「大樓園區」（office complex），非指租金。</li><li>📖 <span class="ex-en">The municipal council approved plans to convert the historic textile mill into a modern retail and office complex.</span><br><span class="ex-zh" style="margin-top:4px;display:inline-block;">📝 市議會核准了將歷史悠久的紡織廠改建為現代化零售與辦公綜合商務園區的規劃方案。</span></li>
-            </ul>
-        </div>
-        
-    </div>
-    
-                
-    <div class="ref-sub-section" id="sec-part2" style="margin-top:14px;">
-        <div class="ref-sub-title">📐 本日核心文法速記</div>
-        
-        <div class="study-bullet-card" style="border-left: 4px solid var(--accent-gold);">
-            <div class="sbc-head" style="color:var(--accent-gold);">⚡ 秒殺錨點：商務同義詞替換 (Paraphrase) 視覺秒殺錨點</div>
-            <ul class="bullet-list-study">
-                <li>🔹 👀 看到 renovate ➔ 原文或選項秒對應 remodel, refurbish, overhaul！</li>
-                <li>🔹 👀 看到 expedite ➔ 原文或選項秒對應 accelerate, speed up, rush, priority！</li>
-                <li>🏆 <b>法則：</b>⚡ 教練金句：看到精簡選 streamline，看到加速選 expedite！</li>
-            </ul>
-        </div>
-        
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #1：Rule 3：簡化關係子句（主句已有真動詞，無關代時必選分詞）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ 主詞 + [過去分詞 p.p. / 現在分詞 V-ing 後位修飾片語] + 主句主要真動詞</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>解題時務必先掃描整句找出「主句真動詞」（如 will be retained）。若主詞後方沒有關係代名詞（which / that / who），則主詞與主句真動詞之間的空格只能填入「分詞（V-ing 表主動 / p.p. 表被動）」，絕不可再填入 are left 或 have been left 等真動詞！</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>Personal items left behind by passengers on commuter trains will be retained at the central lost-and-found office for 30 days. （乘客遺留在通勤列車上的個人物品將於中央失物招領處保留三十天。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：沒看到句尾的真動詞 will be retained，誤將空格當作主句動詞而選 are left behind 或 have been left behind。</li>
-                
-            </ul>
-        </div>
-        
-        <div class="study-bullet-card">
-            <div class="sbc-head">📐 文法模組 #2：Rule 1：重要性形容詞之虛擬語氣（It is imperative / vital / mandatory that + S + 原形動詞）</div>
-            <ul class="bullet-list-study">
-                <li class="gm-formula">📐 <b>秒殺公式：</b>✅ It is + imperative / essential / vital / mandatory / urgent + that + S + (should) + 原形動詞 V / be + p.p.</li>
-                <li class="gm-expl">💡 <b>觀念解析：</b>當主句出現表「極重要、強制、必要」的形容詞（imperative, essential, vital, mandatory, crucial）或要求建議動詞（mandate, insist, recommend）時，後方 that 子句中的助動詞 should 恆被省略，不論子句主詞為單數或過去語境，動詞一律使用「原形動詞」；若為被動語態則使用「be + 過去分詞（如 be ascertained）」。</li>
-                <li class="gp-correct-box">✅ <b>正確示範：</b>It is imperative that the root cause of the wire transfer delay be ascertained no later than five o&#x27;clock this afternoon. （務必在今天下午五點前查明電匯延誤的根本原因，這點至關重要。）</li>
-                <li class="gp-wrong-box">⚠️ <b>常見陷阱：</b>❌ 常見陷阱：看到單數主詞 the cause 就誤選 is ascertained 或 was ascertained，忽略了 imperative 觸發省略 should 的原形被動 be ascertained。</li>
-                
-            </ul>
-        </div>
-        
-    </div>
-    
-            </div>
-        </details>
     </section>
     
 

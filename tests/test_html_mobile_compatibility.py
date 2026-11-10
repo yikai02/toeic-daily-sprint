@@ -67,13 +67,23 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         """HTML must render a clear mobile tip banner for iPhone Telegram preview users."""
         self.assertIn('mobile-tip-banner', self.html)
 
-    def test_questions_positioned_before_reference_accordion(self):
-        """Practice questions must appear first right below sticky bar; vocab/grammar in collapsible reference at bottom."""
+    def test_all_five_parts_present_and_navigable(self):
+        """All five curriculum modules (Part 1-5) must be present and navigable in curriculum order."""
+        p1_pos = self.html.find('id="sec-part1"')
+        p2_pos = self.html.find('id="sec-part2"')
         p3_pos = self.html.find('id="sec-part3"')
-        ref_pos = self.html.find('id="sec-reference"')
-        self.assertNotEqual(p3_pos, -1)
-        self.assertNotEqual(ref_pos, -1)
-        self.assertLess(p3_pos, ref_pos, "Questions (Part 3) must be rendered before reference accordion!")
+        p4_pos = self.html.find('id="sec-part4"')
+        p5_pos = self.html.find('id="sec-part5"')
+        self.assertNotEqual(p1_pos, -1, "Part 1 (Vocab) must exist!")
+        self.assertNotEqual(p2_pos, -1, "Part 2 (Grammar) must exist!")
+        self.assertNotEqual(p3_pos, -1, "Part 3 (Questions) must exist!")
+        self.assertNotEqual(p4_pos, -1, "Part 4 (Cloze) must exist!")
+        self.assertNotEqual(p5_pos, -1, "Part 5 (Reading) must exist!")
+        self.assertLess(p1_pos, p2_pos, "Part 1 Vocab must precede Part 2 Grammar")
+        self.assertLess(p2_pos, p3_pos, "Part 2 Grammar must precede Part 3 Questions")
+        self.assertIn('href="#sec-part1"', self.html)
+        self.assertIn('href="#sec-part2"', self.html)
+        self.assertIn('href="#sec-part3"', self.html)
 
     def test_bulleted_explanations_and_no_fluff_banners(self):
         """Feedback must be concise bullet lists and bloated intro banners eliminated."""
