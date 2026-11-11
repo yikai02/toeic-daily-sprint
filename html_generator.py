@@ -1101,8 +1101,10 @@ def render_day_html(
     <div class="sticky-control-bar" id="live-score-bar">
         <div class="bar-top-row">
             <div class="score-stats">
-                <span>進度: <b id="score-progress">0 / {total_q}</b></span>
-                <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                <div class="score-stats-left">
+                    <span>進度: <b id="score-progress">0 / {total_q}</b></span>
+                    <span class="score-pct-badge" id="score-pct">0% 正確</span>
+                </div>
                 <span id="cloud-sync-status" class="sync-badge-live" onclick="fetchCloudProgress(true)" title="點擊立即從雲端同步最新進度">雲端同步就緒</span>
             </div>
             <div class="bar-actions">
@@ -1348,7 +1350,7 @@ def render_day_html(
             background: var(--surface-container);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            padding: 12px 16px;
+            padding: 8px 12px;
             margin-bottom: 24px;
             display: flex;
             flex-direction: column;
@@ -1359,6 +1361,7 @@ def render_day_html(
         @media (min-width: 640px) {{
             .sticky-control-bar {{
                 top: 16px;
+                padding: 12px 16px;
             }}
         }}
 
@@ -1369,20 +1372,20 @@ def render_day_html(
             width: 100%;
         }}
 
-        @media (min-width: 540px) {{
-            .bar-top-row {{
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }}
-        }}
-
         .score-stats {{
             font-size: 13px;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            width: 100%;
+        }}
+
+        .score-stats-left {{
+            display: flex;
+            align-items: center;
             gap: 8px;
             flex-wrap: wrap;
         }}
@@ -1427,17 +1430,11 @@ def render_day_html(
 
         .bar-actions {{
             display: flex;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 4px;
             align-items: center;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
             padding: 4px 0;
             width: 100%;
-        }}
-
-        .bar-actions::-webkit-scrollbar {{
-            display: none;
         }}
 
         .action-btn-sm {{
@@ -1446,9 +1443,9 @@ def render_day_html(
             background: var(--surface-pill);
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
-            padding: 8px 12px;
+            padding: 4px 8px;
             border-radius: var(--radius-md);
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 500;
             cursor: pointer;
             font-family: inherit;
@@ -1457,6 +1454,16 @@ def render_day_html(
             display: inline-flex;
             align-items: center;
             gap: 4px;
+        }}
+
+        @media (min-width: 640px) {{
+            .bar-actions {{
+                gap: 8px;
+            }}
+            .action-btn-sm {{
+                padding: 8px 12px;
+                font-size: 12px;
+            }}
         }}
 
         .action-btn-sm:hover {{
@@ -1506,6 +1513,7 @@ def render_day_html(
 
         .section-container {{
             margin-bottom: 32px;
+            scroll-margin-top: 212px;
         }}
 
         .section-title {{
@@ -1530,6 +1538,14 @@ def render_day_html(
             margin-bottom: 16px;
             color: var(--text-primary);
             transition: border-color 150ms ease;
+            scroll-margin-top: 212px;
+        }}
+
+        @media (min-width: 640px) {{
+            .section-container,
+            .question-block {{
+                scroll-margin-top: 140px;
+            }}
         }}
 
         .question-block:hover {{

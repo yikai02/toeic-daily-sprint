@@ -84,6 +84,13 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         self.assertIn('href="#sec-part1"', self.html)
         self.assertIn('href="#sec-part2"', self.html)
         self.assertIn('href="#sec-part3"', self.html)
+        self.assertIn('href="#sec-part4"', self.html)
+        self.assertIn('href="#sec-part5"', self.html)
+
+    def test_sticky_bar_actions_wrap_and_scroll_margin_set(self):
+        """Sticky bar actions must wrap without clipping 長文 (38–43), and targets must clear the bar."""
+        self.assertIn('flex-wrap: wrap;', self.html)
+        self.assertIn('scroll-margin-top:', self.html)
 
     def test_bulleted_explanations_and_no_fluff_banners(self):
         """Feedback must be concise bullet lists and bloated intro banners eliminated."""
