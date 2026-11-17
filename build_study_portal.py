@@ -38,6 +38,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
 
     today_url = f"TOEIC_Day{current_day:02d}_{sess_tag}.html"
     today_topic = DAYS_DATA.get(current_day, {}).get("topic", "")
+    today_date = DAYS_DATA.get(current_day, {}).get("date", "")
     today_morning_url = f"TOEIC_Day{current_day:02d}_Morning.html"
     today_afternoon_url = f"TOEIC_Day{current_day:02d}_Afternoon.html"
 
@@ -462,7 +463,7 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
     <!-- Today's Quick Launch -->
     <section class="quick-launch-card">
         <div class="ql-header">
-            <div class="ql-title" id="ql-title">Day {current_day:02d} / 今日進度直達</div>
+            <div class="ql-title" id="ql-title">Day {current_day:02d} ({today_date}) / 今日進度直達</div>
             <span class="today-chip">進行中</span>
         </div>
         <div class="ql-topic" id="ql-topic">
@@ -496,24 +497,57 @@ def render_portal_index_html(current_day: int, token: str = "") -> str:
     <script>
     (function() {{
         try {{
-            // Dynamic Client-side Taipei Date & Countdown
             const startDate = new Date('2026-11-04T00:00:00+08:00');
-            const examDate = new Date('2026-11-29T00:00:00+08:00');
             const now = new Date();
             const msPerDay = 86400000;
-            const daysLeft = Math.max(0, Math.ceil((examDate - now) / msPerDay));
-            const countdownEl = document.getElementById('portal-countdown');
-            if (countdownEl) countdownEl.innerText = daysLeft;
-
             const diffDays = Math.floor((now - startDate) / msPerDay) + 1;
             const currentDay = Math.max(1, Math.min(25, diffDays));
+            const dayStr = String(currentDay).padStart(2, '0');
+            const daysLeft = Math.max(0, 26 - diffDays);
 
-            // Dynamic highlight on the road map
+            const countdownEl = document.getElementById('portal-countdown');
+            if (countdownEl) countdownEl.textContent = String(daysLeft);
+
+            const btnM = document.getElementById('ql-btn-m');
+            if (btnM) btnM.setAttribute('href', `TOEIC_Day${{dayStr}}_Morning.html`);
+            const btnA = document.getElementById('ql-btn-a');
+            if (btnA) btnA.setAttribute('href', `TOEIC_Day${{dayStr}}_Afternoon.html`);
+
             const dayCards = document.querySelectorAll('.day-card');
             dayCards.forEach(card => {{
                 const d = parseInt(card.getAttribute('data-day') || '0', 10);
+                card.classList.remove('current-day-highlight');
+                const oldChip = card.querySelector('.today-chip');
+                if (oldChip) oldChip.remove();
+
                 if (d === currentDay) {{
                     card.classList.add('current-day-highlight');
+                    const head = card.querySelector('.day-head');
+                    if (head) {{
+                        const chip = document.createElement('span');
+                        chip.className = 'today-chip';
+                        chip.textContent = '今日進度';
+                        head.appendChild(chip);
+                    }}
+                    const dateEl = card.querySelector('.day-date');
+                    const topicEl = card.querySelector('.day-topic');
+                    const dDate = dateEl ? dateEl.textContent.trim() : '';
+                    const dTopic = topicEl ? topicEl.textContent.trim() : '';
+
+                    const qlTitle = document.getElementById('ql-title');
+                    if (qlTitle) {{
+                        qlTitle.textContent = dDate
+                            ? `Day ${{dayStr}} (${{dDate}}) / 今日進度直達`
+                            : `Day ${{dayStr}} / 今日進度直達`;
+                    }}
+                    const qlTopic = document.getElementById('ql-topic');
+                    if (qlTopic && dTopic) {{
+                        qlTopic.textContent = '';
+                        const b = document.createElement('b');
+                        b.textContent = '核心考點：';
+                        qlTopic.appendChild(b);
+                        qlTopic.appendChild(document.createTextNode(dTopic));
+                    }}
                 }}
             }});
         }} catch(e) {{

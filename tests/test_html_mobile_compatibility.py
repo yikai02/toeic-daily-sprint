@@ -11,6 +11,7 @@ Verifies that:
 """
 
 import unittest
+from build_study_portal import render_portal_index_html
 from html_generator import render_day_html
 from master_curriculum import DAYS_DATA
 from adaptive_srs_engine import build_session_payload
@@ -98,6 +99,18 @@ class TestHtmlMobileCompatibility(unittest.TestCase):
         self.assertIn('重點考點', self.html)
         self.assertIn('全句中譯', self.html)
         self.assertNotIn('part-intro-banner', self.html)
+
+    def test_portal_quick_launch_dynamic_date_sync(self):
+        """Portal index must include date in 今日進度直達 and dynamically update card/roadmap state."""
+        portal_html = render_portal_index_html(14)
+        self.assertIn('Day 14 (11/17) / 今日進度直達', portal_html)
+        self.assertIn('TOEIC_Day14_Morning.html', portal_html)
+        self.assertIn('TOEIC_Day14_Afternoon.html', portal_html)
+        self.assertIn("document.getElementById('ql-title')", portal_html)
+        self.assertIn("document.getElementById('ql-topic')", portal_html)
+        self.assertIn("document.getElementById('ql-btn-m')", portal_html)
+        self.assertIn("document.getElementById('ql-btn-a')", portal_html)
+        self.assertIn('oldChip.remove()', portal_html)
 
 
 if __name__ == "__main__":

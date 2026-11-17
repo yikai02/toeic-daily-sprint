@@ -367,24 +367,24 @@
     <header class="portal-hero">
         <div class="hero-badge">Toeic 860+ Master Portal</div>
         <h1 class="hero-title">多益 25 天黃金衝刺特訓地圖</h1>
-        <div class="hero-subtitle">考前倒數 <b id="portal-countdown">18</b> 天 ｜ 早晚雙軌 43 題高頻題庫 · 點擊直接作答</div>
+        <div class="hero-subtitle">考前倒數 <b id="portal-countdown">12</b> 天 ｜ 早晚雙軌 43 題高頻題庫 · 點擊直接作答</div>
     </header>
 
     <!-- Today's Quick Launch -->
     <section class="quick-launch-card">
         <div class="ql-header">
-            <div class="ql-title" id="ql-title">Day 08 / 今日進度直達</div>
+            <div class="ql-title" id="ql-title">Day 14 (11/17) / 今日進度直達</div>
             <span class="today-chip">進行中</span>
         </div>
         <div class="ql-topic" id="ql-topic">
-            <b>核心考點：</b>名詞動詞同形誤判 (damage) ｜ 差旅與服裝規範
+            <b>核心考點：</b>關係子句簡化 ｜ 履行承諾、加盟與迫切情勢
         </div>
         <div class="ql-buttons">
-            <a href="TOEIC_Day08_Morning.html" id="ql-btn-m" class="cta-btn cta-morning">
+            <a href="TOEIC_Day14_Morning.html" id="ql-btn-m" class="cta-btn cta-morning">
                 <span>上午特訓</span>
                 <span class="cta-sub">43 題 / 實戰衝刺 ↗</span>
             </a>
-            <a href="TOEIC_Day08_Afternoon.html" id="ql-btn-a" class="cta-btn cta-afternoon">
+            <a href="TOEIC_Day14_Afternoon.html" id="ql-btn-a" class="cta-btn cta-afternoon">
                 <span>下午特訓</span>
                 <span class="cta-sub">43 題 / 深度複習 ↗</span>
             </a>
@@ -505,11 +505,11 @@
             </div>
             <div class="days-grid">
                 
-            <div class="day-card current-day-highlight" data-day="8">
+            <div class="day-card" data-day="8">
                 <div class="day-head">
                     <span class="day-num">Day 08</span>
                     <span class="day-date">11/11</span>
-                    <span class="today-chip">今日進度</span>
+                    
                 </div>
                 <div class="day-topic">名詞動詞同形誤判 (damage) ｜ 差旅與服裝規範</div>
                 <div class="day-links">
@@ -583,11 +583,11 @@
                 </div>
             </div>
             
-            <div class="day-card" data-day="14">
+            <div class="day-card current-day-highlight" data-day="14">
                 <div class="day-head">
                     <span class="day-num">Day 14</span>
                     <span class="day-date">11/17</span>
-                    
+                    <span class="today-chip">今日進度</span>
                 </div>
                 <div class="day-topic">關係子句簡化 ｜ 履行承諾、加盟與迫切情勢</div>
                 <div class="day-links">
@@ -772,24 +772,57 @@
     <script>
     (function() {
         try {
-            // Dynamic Client-side Taipei Date & Countdown
             const startDate = new Date('2026-11-04T00:00:00+08:00');
-            const examDate = new Date('2026-11-29T00:00:00+08:00');
             const now = new Date();
             const msPerDay = 86400000;
-            const daysLeft = Math.max(0, Math.ceil((examDate - now) / msPerDay));
-            const countdownEl = document.getElementById('portal-countdown');
-            if (countdownEl) countdownEl.innerText = daysLeft;
-
             const diffDays = Math.floor((now - startDate) / msPerDay) + 1;
             const currentDay = Math.max(1, Math.min(25, diffDays));
+            const dayStr = String(currentDay).padStart(2, '0');
+            const daysLeft = Math.max(0, 26 - diffDays);
 
-            // Dynamic highlight on the road map
+            const countdownEl = document.getElementById('portal-countdown');
+            if (countdownEl) countdownEl.textContent = String(daysLeft);
+
+            const btnM = document.getElementById('ql-btn-m');
+            if (btnM) btnM.setAttribute('href', `TOEIC_Day${dayStr}_Morning.html`);
+            const btnA = document.getElementById('ql-btn-a');
+            if (btnA) btnA.setAttribute('href', `TOEIC_Day${dayStr}_Afternoon.html`);
+
             const dayCards = document.querySelectorAll('.day-card');
             dayCards.forEach(card => {
                 const d = parseInt(card.getAttribute('data-day') || '0', 10);
+                card.classList.remove('current-day-highlight');
+                const oldChip = card.querySelector('.today-chip');
+                if (oldChip) oldChip.remove();
+
                 if (d === currentDay) {
                     card.classList.add('current-day-highlight');
+                    const head = card.querySelector('.day-head');
+                    if (head) {
+                        const chip = document.createElement('span');
+                        chip.className = 'today-chip';
+                        chip.textContent = '今日進度';
+                        head.appendChild(chip);
+                    }
+                    const dateEl = card.querySelector('.day-date');
+                    const topicEl = card.querySelector('.day-topic');
+                    const dDate = dateEl ? dateEl.textContent.trim() : '';
+                    const dTopic = topicEl ? topicEl.textContent.trim() : '';
+
+                    const qlTitle = document.getElementById('ql-title');
+                    if (qlTitle) {
+                        qlTitle.textContent = dDate
+                            ? `Day ${dayStr} (${dDate}) / 今日進度直達`
+                            : `Day ${dayStr} / 今日進度直達`;
+                    }
+                    const qlTopic = document.getElementById('ql-topic');
+                    if (qlTopic && dTopic) {
+                        qlTopic.textContent = '';
+                        const b = document.createElement('b');
+                        b.textContent = '核心考點：';
+                        qlTopic.appendChild(b);
+                        qlTopic.appendChild(document.createTextNode(dTopic));
+                    }
                 }
             });
         } catch(e) {
